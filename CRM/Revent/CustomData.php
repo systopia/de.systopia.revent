@@ -25,7 +25,9 @@ define('CUSTOM_DATA_HELPER_LOG_ERROR', 5);
 class CRM_Revent_CustomData {
 
   /** caches custom field data, indexed by group name */
+  protected static $custom_group2name  = NULL;
   protected static $custom_group_cache = array();
+  protected static $custom_field_cache = array();
 
   protected $ts_domain = NULL;
   protected $version   = CUSTOM_DATA_HELPER_VERSION;
@@ -323,13 +325,46 @@ class CRM_Revent_CustomData {
    * @param $data   array  key=>value data, keys will be changed
    * @param $depth  int    recursively follow arrays
    */
-  public static function labelCustomFields(&$data, depth=1) {
-    // $custom_fields_used = array();
-    // foreach ($data as $key => $value) {
-    //   // collect all custom field IDs
+  public static function labelCustomFields(&$data, $depth=1) {
+    if ($depth == 0) return;
 
+    $custom_fields_used = array();
+    foreach ($data as $key => $value) {
+      if (preg_match('#^custom_(?P<field_id>\d+)$#', $key, $match)) {
+        $custom_fields_used[] = $match['field_id'];
+      }
+    }
 
-    // }
+    // cache fields
+    self::cacheCustomFields($custom_fields_used);
+
+    // replace names
+    foreach ($data as $key => &$value) {
+      if (preg_match('#^custom_(?P<field_id>\d+)$#', $key, $match)) {
+        $new_key = self::getFieldIdentifier($match['field_id']);
+        $data[$new_key] = $value;
+        unset($data[$key]);
+      }
+
+      // recursively look into that array
+      if (is_array($value) && $depth > 0) {
+        self::labelCustomFields($value, $depth-1);
+      }
+    }
+  }
+
+  public static function getFieldIdentifier($field_id) {
+    // just to be on the safe side
+    self::cacheCustomFields(array($field_id));
+
+    // get custom field
+    $custom_field = self::$custom_field_cache[$field_id];
+    if ($custom_field) {
+      $group_name = self::getGroupName($custom_field['custom_group_id']);
+      return "{$group_name}.{$custom_field['name']}";
+    } else {
+      return 'FIELD_NOT_FOUND_' . $field_id;
+    }
   }
 
   /**
@@ -398,8 +433,8 @@ class CRM_Revent_CustomData {
   }
 
   /**
-  * Get CustomField entity (cached)
-  */
+   * Precache a list of custom groups
+   */
   public static function cacheCustomGroups($custom_group_names) {
     foreach ($custom_group_names as $custom_group_name) {
       if (!isset(self::$custom_group_cache[$custom_group_name])) {
@@ -410,8 +445,52 @@ class CRM_Revent_CustomData {
           'option.limit'    => 0));
         foreach ($fields['values'] as $field) {
           self::$custom_group_cache[$custom_group_name][$field['name']] = $field;
+          self::$custom_group_cache[$custom_group_name][$field['id']]   = $field;
         }
       }
     }
+  }
+
+  /**
+   * Precache a list of custom fields
+   */
+  public static function cacheCustomFields($custom_field_ids) {
+    // first: check if they are already cached
+    $fields_to_load = array();
+    foreach ($custom_field_ids as $field_id) {
+      if (!array_key_exists($field_id, self::$custom_field_cache)) {
+        $fields_to_load[] = $field_id;
+      }
+    }
+
+    // load missing fields
+    if (!empty($fields_to_load)) {
+      $loaded_fields = civicrm_api3('CustomField', 'get', array(
+        'id'           => array('IN' => $fields_to_load),
+        'option.limit' => 0,
+        ));
+      foreach ($loaded_fields['values'] as $field) {
+        self::$custom_field_cache[$field['id']] = $field;
+      }
+    }
+  }
+
+  /**
+   * Get the internal name of a custom gruop
+   */
+  public static function getGroupName($custom_group_id) {
+    if (self::$custom_group2name === NULL) {
+      // load groups
+      $group_search = civicrm_api3('CustomGroup', 'get', array(
+        'return'       => 'name',
+        'option.limit' => 0,
+        ));
+      self::$custom_group2name = array();
+      foreach ($group_search['values'] as $customGroup) {
+        self::$custom_group2name[$customGroup['id']] = $customGroup['name'];
+      }
+    }
+
+    return self::$custom_group2name[$custom_group_id];
   }
 }

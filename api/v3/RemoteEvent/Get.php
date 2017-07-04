@@ -22,11 +22,15 @@ function civicrm_api3_remote_event_get($params) {
 
   if (!empty($params['id'])) {
     // first priority is BY ID
-    $result = civicrm_api3('Event', 'get', array('id' => $params['id']));
+    $result = civicrm_api3('Event', 'get', array(
+      'check_permissions' => 0,
+      'id'                => $params['id']));
 
   } elseif (!empty($params['external_identifier'])) {
     // first priority is BY external_identifier
-    $query = array('remote_event_connection.external_identifier' => $params['external_identifier']);
+    $query = array(
+      'check_permissions'                           => 0,
+      'remote_event_connection.external_identifier' => $params['external_identifier']);
     CRM_Revent_CustomData::resolveCustomFields($query);
     $result = civicrm_api3('Event', 'get', $query);
 
@@ -36,7 +40,7 @@ function civicrm_api3_remote_event_get($params) {
   }
 
   // replace custom fields with labels
-  CRM_Revent_CustomData::labelCustomFields($result);
+  CRM_Revent_CustomData::labelCustomFields($result, 3);
 
   return civicrm_api3_create_success($result);
 }
