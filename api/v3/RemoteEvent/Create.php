@@ -19,10 +19,9 @@
  */
 function civicrm_api3_remote_event_create($params) {
 
-  if (empty($params['event_type_id'] && empty($params['template_id']))) {
-    return civicrm_api3_create_error("You have to either provide 'event_type_id' or 'template_id'");
-  }
-
+  $params['remote_event_connection.external_identifier'] = $params['external_identifier'];
+  unset($params['external_identifier']);
+  CRM_Revent_CustomData::resolveCustomFields($params);
   return civicrm_api3('Event', 'create', $params);
 }
 
@@ -32,20 +31,26 @@ function civicrm_api3_remote_event_create($params) {
 function _civicrm_api3_remote_event_create_spec(&$params) {
   $params['external_identifier'] = array(
     'name'         => 'external_identifier',
-    'api.required' => 0,
+    'api.required' => 1,
     'type'         => CRM_Utils_Type::T_STRING,
     'title'        => 'Event External Identifier',
     );
   $params['start_date'] = array(
     'name'         => 'start_date',
-    'api.required' => 0,
+    'api.required' => 1,
     'type'         => CRM_Utils_Type::T_DATE,
     'title'        => 'Remote Event start date',
   );
   $params['title'] = array(
     'name'         => 'title',
-    'api.required' => 0,
+    'api.required' => 1,
     'type'         => CRM_Utils_Type::T_STRING,
     'title'        => 'Remote Event title',
+  );
+  $params['event_type_id'] = array(
+    'name'         => 'event_type_id',
+    'api.required' => 1,
+    'type'         => CRM_Utils_Type::T_INT,
+    'title'        => 'Remote Event event_type_id',
   );
 }
