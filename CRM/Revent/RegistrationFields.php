@@ -13,6 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+define('REVENT_SCHEMA_VERSION',  '0.1.dev');
 define('FIELDSET_WEIGHT_OFFSET', 100);
 
 /**
@@ -20,18 +21,20 @@ define('FIELDSET_WEIGHT_OFFSET', 100);
  */
 class CRM_Revent_RegistrationFields {
 
+  protected static $extension_version = NULL;
+
   protected $event = NULL;
 
-  public function __construct($event_search) {
-    // determine the fields to load
+
+  public function __construct($event_identification) {
+    // LOAD event
     $event_fields_to_load = array(
       'remote_event_registration.registration_fields' => 1,
       'title'                                         => 1
       );
     CRM_Revent_CustomData::resolveCustomFields($event_fields_to_load);
-    $event_search['return'] = implode(',', array_keys($event_fields_to_load));
-    error_log(json_encode($event_search));
-    $this->event = civicrm_api3('Event', 'getsingle', $event_search);
+    $event_identification['return'] = implode(',', array_keys($event_fields_to_load));
+    $this->event = civicrm_api3('Event', 'getsingle', $event_identification);
     CRM_Revent_CustomData::labelCustomFields($this->event, 3);
   }
 
@@ -52,11 +55,79 @@ class CRM_Revent_RegistrationFields {
     // step 2: apply customisation
     // TODO
 
-    return $rendered_fields;
+    return array(
+      'schema_version'    => REVENT_SCHEMA_VERSION,
+      'extension_version' => self::getExtensionVersion(),
+      'fields'            => $rendered_fields,
+      'values'            => NULL);
   }
 
+  /**
+   * render one group
+   */
+  public function renderGroup($group_id) {
+    if (preg_match("#^(?P<type>\w+)-(?P<id>\d+)$#", $group_id, $match)) {
+      switch ($match['type']) {
+        case 'BuiltInProfile':
+          return $this->renderCustomBuiltinProfile($match['id']);
 
+        case 'CustomGroup':
+        case 'OptionGroup': // legacy
+          return $this->renderCustomGroup($match['id']);
 
+        default:
+          throw new Exception("Unknown field set type '{$match['type']}'!");
+      }
+    } else {
+      throw new Exception("Unknown field set id '{$group_id}'!");
+    }
+  }
+
+  /**
+   * render a custom group
+   */
+  public function renderCustomGroup($custom_group_id) {
+    $result = array();
+    $fields = civicrm_api3('CustomField', 'get', array(
+      'check_permissions' => 0,
+      'custom_group_id'   => $custom_group_id,
+      'option.limit'      => 0,
+      'sequential'        => 0,
+      ));
+    // render fields
+    foreach ($fields['values'] as $custom_field) {
+      $key = "custom_{$custom_field['id']}";
+      $result[$key] = array(
+        'type'         => strtolower($custom_field['data_type']),
+        'label'        => $custom_field['label'],
+        'group'        => CRM_Revent_CustomData::getGroupName($custom_group_id),
+        'group_title'  => CRM_Revent_CustomData::getGroupName($custom_group_id),
+        'verification' => '',
+        'weight'       => $custom_field['weight'],
+        'mandatory'    => $custom_field['is_required'],
+        'length'       => $custom_field['text_length'],
+      );
+    }
+
+    // resolve fields
+    CRM_Revent_CustomData::cacheCustomFields(array_keys($fields['values']));
+    CRM_Revent_CustomData::labelCustomFields($result, 4);
+
+    // set (resolved) name
+    foreach ($result as $key => &$value) {
+      $value['name'] = $key;
+    }
+
+    return $result;
+  }
+
+  /**
+   * render a custom group
+   */
+  public function renderCustomBuiltinProfile($built_in_id) {
+    // TODO: implement
+    return array();
+  }
 
 
   /****************************************************
@@ -123,7 +194,7 @@ class CRM_Revent_RegistrationFields {
 
     $result = array();
     foreach ($query['values'] as $customGroup) {
-      $key = "OptionGroup-{$customGroup['id']}";
+      $key = "CustomGroup-{$customGroup['id']}";
       $result[$key] = array(
         'value'  => $key,
         'weight' => $customGroup['weight'] + FIELDSET_WEIGHT_OFFSET,
@@ -154,5 +225,23 @@ class CRM_Revent_RegistrationFields {
         'name'   => 'profile_2',
       )
     );
+  }
+
+
+
+  /***************************************************
+   *                         HELPER                  *
+   ***************************************************/
+
+  /**
+   * Get the extension version
+   */
+  public static function getExtensionVersion() {
+    if (self::$extension_version === NULL) {
+      $mapper = CRM_Extension_System::singleton()->getMapper();
+      $info   = $mapper->keyToInfo('de.systopia.revent');
+      self::$extension_version = $info->version;
+    }
+    return self::$extension_version;
   }
 }

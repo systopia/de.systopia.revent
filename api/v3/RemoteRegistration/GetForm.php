@@ -37,7 +37,8 @@ function civicrm_api3_remote_registration_get_form($params) {
   $renderer = new CRM_Revent_RegistrationFields($event_search);
   $field_descriptions = $renderer->renderEventRegistrationForm();
 
-  return civicrm_api3_create_success($field_descriptions);
+  $null = NULL; // needed as a variable below
+  return civicrm_api3_create_success(array(), $params, 'RemoteRegistration', 'get_form', $null, $field_descriptions);
 }
 
 /**
