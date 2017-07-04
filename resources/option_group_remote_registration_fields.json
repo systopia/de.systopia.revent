@@ -1,6 +1,8 @@
 {
   "_comment": "This is a dynamic group and will only be created here.",
   "_lookup": ["name"],
+  "_translate": ["title"],
+  "title": "Registration FieldSets",
   "name": "remote_registration_fields",
   "_values": [
     {

@@ -1,6 +1,31 @@
 <?php
+/*-------------------------------------------------------+
+| SYSTOPIA REMOTE EVENT REGISTRATION                     |
+| Copyright (C) 2017 SYSTOPIA                            |
+| Author: B. Endres (endres@systopia.de)                 |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++--------------------------------------------------------*/
 
 require_once 'revent.civix.php';
+
+/**
+ * trigger the synchronisation of the CustomGroup <-> selector option group
+ */
+function revent_civicrm_post($op, $objectName, $objectId, &$objectRef) {
+  if ($objectName == 'CustomGroup') {
+    if ($op == 'create' || $op == 'edit' || $op == 'delete') {
+      CRM_Revent_RegistrationFields::synchroniseFields();
+    }
+  }
+}
+
 
 /**
  * Implements hook_civicrm_config().
@@ -127,31 +152,3 @@ function revent_civicrm_angularModules(&$angularModules) {
 function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _revent_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
-
-// --- Functions below this ship commented out. Uncomment as required. ---
-
-/**
- * Implements hook_civicrm_preProcess().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
- *
-function revent_civicrm_preProcess($formName, &$form) {
-
-} // */
-
-/**
- * Implements hook_civicrm_navigationMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- *
-function revent_civicrm_navigationMenu(&$menu) {
-  _revent_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => ts('The Page', array('domain' => 'de.systopia.revent')),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
-    'permission' => 'access CiviReport,access CiviContribute',
-    'operator' => 'OR',
-    'separator' => 0,
-  ));
-  _revent_civix_navigationMenu($menu);
-} // */
