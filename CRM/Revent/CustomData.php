@@ -14,7 +14,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('CUSTOM_DATA_HELPER_VERSION', '0.3.4.dev');
+define('CUSTOM_DATA_HELPER_VERSION', '0.3.5.dev');
 define('CUSTOM_DATA_HELPER_LOG_LEVEL', 1);
 
 // log levels
@@ -316,6 +316,21 @@ class CRM_Revent_CustomData {
     }
   }
 
+  /**
+   * function to replace custom_XX notation with the more
+   * stable "<custom_group_name>.<custom_field_name>" format
+   *
+   * @param $data   array  key=>value data, keys will be changed
+   * @param $depth  int    recursively follow arrays
+   */
+  public static function labelCustomFields(&$data, depth=1) {
+    // $custom_fields_used = array();
+    // foreach ($data as $key => $value) {
+    //   // collect all custom field IDs
+
+
+    // }
+  }
 
   /**
    * internal function to replace "<custom_group_name>.<custom_field_name>"
@@ -356,6 +371,18 @@ class CRM_Revent_CustomData {
     }
   }
 
+
+  /**
+  * Get CustomField entity (cached)
+  */
+  public static function getCustomFieldKey($custom_group_name, $custom_field_name) {
+    $field = self::getCustomField($custom_group_name, $custom_field_name);
+    if ($field) {
+      return 'custom_' . $field['id'];
+    } else {
+      return NULL;
+    }
+  }
 
   /**
   * Get CustomField entity (cached)
