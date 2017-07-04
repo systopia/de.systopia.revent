@@ -20,6 +20,49 @@ define('FIELDSET_WEIGHT_OFFSET', 100);
  */
 class CRM_Revent_RegistrationFields {
 
+  protected $event = NULL;
+
+  public function __construct($event_search) {
+    // determine the fields to load
+    $event_fields_to_load = array(
+      'remote_event_registration.registration_fields' => 1,
+      'title'                                         => 1
+      );
+    CRM_Revent_CustomData::resolveCustomFields($event_fields_to_load);
+    $event_search['return'] = implode(',', array_keys($event_fields_to_load));
+    error_log(json_encode($event_search));
+    $this->event = civicrm_api3('Event', 'getsingle', $event_search);
+    CRM_Revent_CustomData::labelCustomFields($this->event, 3);
+  }
+
+  /**
+   * Create a JSON representation of the
+   *  event registration form
+   */
+  public function renderEventRegistrationForm() {
+    $rendered_fields = array();
+
+    // step 1: render all groups
+    $groups = $this->event['remote_event_registration.registration_fields'];
+    foreach ($groups as $group_id) {
+      $rendered_fields += $this->renderGroup($group_id);
+    }
+
+
+    // step 2: apply customisation
+    // TODO
+
+    return $rendered_fields;
+  }
+
+
+
+
+
+  /****************************************************
+   *          Field Synchronisation (static)          *
+   ***************************************************/
+
   /**
    * Update the remote_registration_fields option group to reflect
    *  the current custom groups, profiles, etc.
@@ -27,8 +70,6 @@ class CRM_Revent_RegistrationFields {
   public static function synchroniseFields() {
     // load current custom groups
     $desired_list = self::getActiveFieldSets() + self::getProfiles();
-
-    error_log("DESIRED " . json_encode($desired_list));
 
     // now, get all current values
     $query = civicrm_api3('OptionValue', 'get', array(
@@ -114,17 +155,4 @@ class CRM_Revent_RegistrationFields {
       )
     );
   }
-
-  /**
-   * Create a JSON representation of the
-   *  event registration form
-   */
-  public function renderEventRegistration($event_id) {
-    // TODO
-    // 1) get event fields and customisations
-    // 2) transform into meta data structure
-    // 3) apply customisations
-  }
-
-
 }
