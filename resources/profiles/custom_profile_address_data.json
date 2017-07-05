@@ -1,0 +1,82 @@
+{
+  "_comment": "Attributes for ",
+  "label": "Address Daten Profil",
+  "name": "custom_profile_address_data",
+  "fields": [{
+      "group": "custom_profile_address_data",
+      "group_title": "Address Daten",
+      "label": "Funktion",
+      "length": "128",
+      "mandatory": 1,
+      "name": "job_title",
+      "type": "string",
+      "verification": null,
+      "weight": "1"
+    },
+    {
+      "group": "custom_profile_address_data",
+      "group_title": "Address Daten",
+      "label": "Addresszusatz",
+      "length": "128",
+      "mandatory": 1,
+      "name": "supplemental_address_1",
+      "type": "string",
+      "verification": null,
+      "weight": "2"
+    }, {
+      "group": "custom_profile_address_data",
+      "group_title": "Address Daten",
+      "label": "Straße",
+      "length": "128",
+      "mandatory": 1,
+      "name": "street_address",
+      "type": "string",
+      "verification": null,
+      "weight": "3"
+    },
+    {
+      "group": "custom_profile_address_data",
+      "group_title": "Address Daten",
+      "label": "Hausnummer",
+      "length": "128",
+      "mandatory": 1,
+      "name": "street_number",
+      "type": "string",
+      "verification": null,
+      "weight": "4"
+    },
+    {
+      "group": "custom_profile_address_data",
+      "group_title": "Address Daten",
+      "label": "PLZ",
+      "length": "128",
+      "mandatory": 1,
+      "name": "postal_code",
+      "type": "string",
+      "verification": null,
+      "weight": "5"
+    },
+    {
+      "group": "custom_profile_address_data",
+      "group_title": "Address Daten",
+      "label": "Ort",
+      "length": "128",
+      "mandatory": 1,
+      "name": "city",
+      "type": "string",
+      "verification": null,
+      "weight": "6"
+    },
+    {
+      "group": "custom_profile_address_data",
+      "group_title": "Address Daten",
+      "label": "Land",
+      "length": "128",
+      "mandatory": 1,
+      "name": "country_id",
+      "type": "string",
+      "verification": null,
+      "weight": "7"
+    }
+  ]
+}

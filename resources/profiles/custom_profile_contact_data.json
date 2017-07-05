@@ -1,0 +1,60 @@
+{
+  "_comment": "List of Profiles with corrosponding attributes",
+  "label": "Personen Daten Profil",
+  "name": "custom_profile_contact_data",
+  "fields": [{
+      "group": "custom_profile_contact_data",
+      "group_title": "Personen Daten",
+      "label": "Anrede",
+      "length": "128",
+      "mandatory": 1,
+      "name": "individual_prefix",
+      "type": "string",
+      "verification": null,
+      "weight": "1"
+    },
+    {
+      "group": "custom_profile_contact_data",
+      "group_title": "Personen Daten",
+      "label": "Titel",
+      "length": "128",
+      "mandatory": 1,
+      "name": "formal_title",
+      "type": "string",
+      "verification": null,
+      "weight": "2"
+    }, {
+      "group": "custom_profile_contact_data",
+      "group_title": "Personen Daten",
+      "label": "Vorname",
+      "length": "128",
+      "mandatory": 1,
+      "name": "first_name",
+      "type": "string",
+      "verification": null,
+      "weight": "3"
+    },
+    {
+      "group": "custom_profile_contact_data",
+      "group_title": "Personen Daten",
+      "label": "Nachname",
+      "length": "128",
+      "mandatory": 1,
+      "name": "last_name",
+      "type": "string",
+      "verification": null,
+      "weight": "4"
+    },
+    {
+      "group": "custom_profile_contact_data",
+      "group_title": "Personen Daten",
+      "label": "Suffix",
+      "length": "128",
+      "mandatory": 1,
+      "name": "suffix_id",
+      "type": "string",
+      "verification": null,
+      "weight": "5"
+    }
+  ]
+}
