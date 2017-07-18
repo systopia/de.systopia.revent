@@ -25,7 +25,6 @@ class CRM_Revent_RegistrationFields {
 
   protected $event = NULL;
 
-
   public function __construct($event_identification) {
     // LOAD event
     $event_fields_to_load = array(
@@ -41,24 +40,29 @@ class CRM_Revent_RegistrationFields {
   /**
    * Create a JSON representation of the
    *  event registration form
+   *  based on Drupal https://api.drupal.org/api/drupal/developer!topics!forms_api_reference.html/7.x
    */
   public function renderEventRegistrationForm() {
     $rendered_fields = array();
+    $rendered_groups = array();
 
     // step 1: render all groups
     $groups = $this->event['remote_event_registration.registration_fields'];
     foreach ($groups as $group_id) {
-      $rendered_fields += $this->renderGroup($group_id);
+      $rendered_groups[] = $this->renderGroupMetadata($group_id);
+      $rendered_fields  += $this->renderGroup($group_id);
     }
 
 
     // step 2: apply customisation
     // TODO
 
+    // step 3: compile result
     return array(
       'schema_version'    => REVENT_SCHEMA_VERSION,
       'extension_version' => self::getExtensionVersion(),
       'fields'            => $rendered_fields,
+      'groups'            => $rendered_groups,
       'values'            => NULL);
   }
 
@@ -86,7 +90,48 @@ class CRM_Revent_RegistrationFields {
   /**
    * render a custom group
    */
-  public function renderCustomGroup($custom_group_id) {
+  public function renderCustomBuiltinProfile($built_in_id) {
+    // TODO: implement
+    return array();
+  }
+
+  /**
+   * render the metadata of the group itself
+   */
+  protected function renderGroupMetadata($custom_group_id) {
+    if (preg_match("#^(?P<type>\w+)-(?P<id>\d+)$#", $custom_group_id, $match)) {
+      switch ($match['type']) {
+        case 'BuiltInProfile':
+          return array(
+            'name'   => "TODO",
+            'label'  => "TODO",
+            'weight' => "TODO",
+            );
+          // return $this->renderCustomBuiltinProfile($match['id']);
+
+        case 'CustomGroup':
+        case 'OptionGroup': // legacy
+          $custom_group = civicrm_api3('CustomGroup', 'getsingle', array('id' => $match['id']));
+          return array(
+            'name'   => $custom_group['name'],
+            'label'  => $custom_group['title'],
+            'weight' => $custom_group['weight'],
+            );
+
+        default:
+          throw new Exception("Unknown field set type '{$match['type']}'!");
+      }
+    } else {
+      throw new Exception("Unknown field set id '{$group_id}'!");
+    }
+
+
+  }
+
+  /**
+   * render a custom group
+   */
+  protected function renderCustomGroup($custom_group_id) {
     $result = array();
     $fields = civicrm_api3('CustomField', 'get', array(
       'check_permissions' => 0,
@@ -97,16 +142,33 @@ class CRM_Revent_RegistrationFields {
     // render fields
     foreach ($fields['values'] as $custom_field) {
       $key = "custom_{$custom_field['id']}";
-      $result[$key] = array(
-        'type'         => strtolower($custom_field['data_type']),
-        'label'        => $custom_field['label'],
+      // copy the generic fields
+      $metadata = array(
+        'title'        => $custom_field['label'],
         'group'        => CRM_Revent_CustomData::getGroupName($custom_group_id),
-        'group_title'  => CRM_Revent_CustomData::getGroupName($custom_group_id),
-        'verification' => '',
         'weight'       => $custom_field['weight'],
-        'mandatory'    => $custom_field['is_required'],
-        'length'       => $custom_field['text_length'],
+        'required'     => $custom_field['is_required'],
+        'maxlength'    => $custom_field['text_length'],
+        'description'  => CRM_Utils_Array::value('help_pre', $custom_field, ''),
       );
+
+      // add the type-specfic fields
+      $this->renderType($custom_field, $metadata);
+
+      // localisation
+      $languages = array('de', 'en');
+      foreach ($languages as $language) {
+        // do some simple fields
+        $fields = array('title', 'description', 'options');
+        foreach ($fields as $field) {
+          if (isset($metadata[$field])) {
+            $metadata["{$field}_{$language}"] = $metadata[$field];
+          }
+        }
+      }
+
+      // store in result
+      $result[$key] = $metadata;
     }
 
     // resolve fields
@@ -121,12 +183,103 @@ class CRM_Revent_RegistrationFields {
     return $result;
   }
 
+
   /**
-   * render a custom group
+   * Render and add the type specific fields,
+   *  in particular 'type', 'validation', 'options'
+   *
    */
-  public function renderCustomBuiltinProfile($built_in_id) {
-    // TODO: implement
-    return array();
+  protected function renderType($custom_field, &$metadata) {
+    switch ($custom_field['html_type']) {
+      case 'Text':
+        $metadata['type'] = 'textfield';
+        $this->renderValidation($custom_field, $metadata);
+        break;
+
+      case 'Radio':
+      case 'Multi-Select':
+        $metadata['type'] = 'checkboxes';
+        $metadata['options'] = $this->getOptions($custom_field);
+        break;
+
+      case 'Select Date':
+        $metadata['type'] = 'date';
+        break;
+
+      case 'Autocomplete-Select':
+      case 'Select':
+        $metadata['type'] = 'select';
+        $metadata['options'] = $this->getOptions($custom_field);
+        break;
+
+      case 'Link':
+        $metadata['type'] = 'textfield';
+        $metadata['validation'] = 'url';
+        break;
+
+      case 'TextArea':
+      case 'RichTextEditor':
+        $metadata['type'] = 'textarea';
+        $metadata['validation'] = 'string';
+
+      default:
+      case 'File':
+        $metadata['type'] = 'error';
+    }
+  }
+
+  /**
+   * Render the validation type
+   */
+  protected function renderValidation($custom_field, &$metadata) {
+    switch ($custom_field['data_type']) {
+      case 'String':
+        $metadata['validation'] = 'string';
+        break;
+
+      case 'Boolean':
+        $metadata['validation'] = 'bool';
+        break;
+
+      case 'Memo':
+        $metadata['validation'] = 'string';
+        break;
+
+      case 'Int':
+        $metadata['validation'] = 'int';
+        break;
+
+      case 'Money':
+        $metadata['validation'] = 'float';
+        break;
+
+      default:
+      case 'Date':
+      case 'ContactReference':
+      case 'File':
+        $metadata['type'] = 'error';
+        break;
+    }
+  }
+
+  /**
+   * Get options as a key/name map
+   */
+  protected function getOptions($custom_field) {
+    if (empty($custom_field['custom_group_id'])) {
+      // return a generic map
+      return array( '0' => 'No', '1' => 'Yes');
+    }
+
+    $options = array();
+    $option_query = civicrm_api3('OptionValue', 'get', array(
+      'option_group_id' => $custom_field['option_group_id'],
+      'options.limit'   => 0,
+      'return'          => 'value,label'));
+    foreach ($option_query['values'] as $option_value) {
+      $options[$option_value['value']] = $option_value['label'];
+    }
+    return $options;
   }
 
 
