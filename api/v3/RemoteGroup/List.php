@@ -15,14 +15,23 @@
 
 
 /**
- * Get an event based on the give data
+ * List all eligible groups
  */
-function civicrm_api3_remote_event_get_event_types($params) {
-  return civicrm_api3('OptionValue', 'get', array(
-    'option_group_id' => 'event_type',
-    'option.limit'    => 0,
-    'sequential'      => 1,
-    'is_active'       => 1,
-    'return'          => 'value,label,weight'
-    ));
+function civicrm_api3_remote_group_list($params) {
+  $result = array();
+
+  // TODO: restrict to eligible groups
+  $result = civicrm_api3('Group', 'get', array(
+    'options.limit' => 0));
+
+  // replace custom fields with labels
+  CRM_Revent_CustomData::labelCustomFields($result['values'], 2);
+
+  return civicrm_api3_create_success($result['values']);
+}
+
+/**
+ * Schedule a Contract modification
+ */
+function _civicrm_api3_remote_group_list_spec(&$params) {
 }
