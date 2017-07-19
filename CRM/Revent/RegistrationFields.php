@@ -93,7 +93,21 @@ class CRM_Revent_RegistrationFields {
   public function renderCustomBuiltinProfile($custom_group_id) {
     $folder = dirname(__FILE__) . '/../../resources/profiles';
     $group_data = json_decode(file_get_contents("{$folder}/{$custom_group_id}.json"), TRUE);
-    return $group_data['fields'];
+
+    // process field data
+    $fields = $group_data['fields'];
+    foreach ($fields as &$metadata) {
+      // resolve custom group
+      if (isset($metadata['options']) && !is_array($metadata['options'])) {
+        $metadata['option_group_id'] = $metadata['options'];
+        $metadata['options'] = $this->getOptions($metadata);
+      }
+
+      // add localisation
+      $this->renderLocalisation($metadata);
+    }
+
+    return $fields;
   }
 
   /**
@@ -159,16 +173,7 @@ class CRM_Revent_RegistrationFields {
       $this->renderType($custom_field, $metadata);
 
       // localisation
-      $languages = array('de', 'en');
-      foreach ($languages as $language) {
-        // do some simple fields
-        $fields = array('title', 'description', 'options');
-        foreach ($fields as $field) {
-          if (isset($metadata[$field])) {
-            $metadata["{$field}_{$language}"] = $metadata[$field];
-          }
-        }
-      }
+      $this->renderLocalisation($metadata);
 
       // store in result
       $result[$key] = $metadata;
@@ -185,7 +190,6 @@ class CRM_Revent_RegistrationFields {
 
     return $result;
   }
-
 
   /**
    * Render and add the type specific fields,
@@ -269,7 +273,7 @@ class CRM_Revent_RegistrationFields {
    * Get options as a key/name map
    */
   protected function getOptions($custom_field) {
-    if (empty($custom_field['custom_group_id'])) {
+    if (empty($custom_field['option_group_id'])) {
       // return a generic map
       return array( '0' => 'No', '1' => 'Yes');
     }
@@ -278,12 +282,34 @@ class CRM_Revent_RegistrationFields {
     $option_query = civicrm_api3('OptionValue', 'get', array(
       'option_group_id' => $custom_field['option_group_id'],
       'options.limit'   => 0,
+      'is_active'       => 1,
       'return'          => 'value,label'));
     foreach ($option_query['values'] as $option_value) {
       $options[$option_value['value']] = $option_value['label'];
     }
     return $options;
   }
+
+  /**
+   * Add a localisation extra data
+   */
+  protected function renderLocalisation(&$metadata) {
+    // FIXM: this is probably not enough...
+    $languages = array('de', 'en');
+    foreach ($languages as $language) {
+      // do some simple fields
+      $fields = array('title', 'description', 'options');
+      foreach ($fields as $field) {
+        if (isset($metadata[$field])) {
+          $metadata["{$field}_{$language}"] = $metadata[$field];
+        }
+      }
+    }
+  }
+
+
+
+
 
 
   /****************************************************
