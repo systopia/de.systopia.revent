@@ -42,7 +42,7 @@ class CRM_Revent_RegistrationFields {
    *  event registration form
    *  based on Drupal https://api.drupal.org/api/drupal/developer!topics!forms_api_reference.html/7.x
    */
-  public function renderEventRegistrationForm() {
+  public function renderEventRegistrationForm($customised=TRUE) {
     $rendered_fields = array();
     $rendered_groups = array();
 
@@ -55,7 +55,9 @@ class CRM_Revent_RegistrationFields {
 
 
     // step 2: apply customisation
-    // TODO
+    if ($customised) {
+      // TODO
+    }
 
     // step 3: compile result
     return array(
@@ -85,6 +87,13 @@ class CRM_Revent_RegistrationFields {
     } else {
       throw new Exception("Unknown field set id '{$group_id}'!");
     }
+  }
+
+  /**
+   * Update the customisation data
+   */
+  public function updateCustomisation($groups, $fields) {
+    // TODO: calculate and update custom data
   }
 
   /**
