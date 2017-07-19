@@ -73,7 +73,7 @@ class CRM_Revent_RegistrationFields {
     if (preg_match("#^(?P<type>\w+)-(?P<id>\d+)$#", $group_id, $match)) {
       switch ($match['type']) {
         case 'BuiltInProfile':
-          return $this->renderCustomBuiltinProfile($match['id']);
+          return $this->renderCustomBuiltinProfile($group_id);
 
         case 'CustomGroup':
         case 'OptionGroup': // legacy
@@ -90,9 +90,10 @@ class CRM_Revent_RegistrationFields {
   /**
    * render a custom group
    */
-  public function renderCustomBuiltinProfile($built_in_id) {
-    // TODO: implement
-    return array();
+  public function renderCustomBuiltinProfile($custom_group_id) {
+    $folder = dirname(__FILE__) . '/../../resources/profiles';
+    $group_data = json_decode(file_get_contents("{$folder}/{$custom_group_id}.json"), TRUE);
+    return $group_data['fields'];
   }
 
   /**
@@ -102,19 +103,21 @@ class CRM_Revent_RegistrationFields {
     if (preg_match("#^(?P<type>\w+)-(?P<id>\d+)$#", $custom_group_id, $match)) {
       switch ($match['type']) {
         case 'BuiltInProfile':
+          $folder = dirname(__FILE__) . '/../../resources/profiles';
+          $group_data = json_decode(file_get_contents("{$folder}/{$custom_group_id}.json"), TRUE);
+
           return array(
-            'name'   => "TODO",
-            'label'  => "TODO",
-            'weight' => "TODO",
+            'name'   => $group_data['name'],
+            'title'  => $group_data['title'],
+            'weight' => $group_data['weight'],
             );
-          // return $this->renderCustomBuiltinProfile($match['id']);
 
         case 'CustomGroup':
         case 'OptionGroup': // legacy
           $custom_group = civicrm_api3('CustomGroup', 'getsingle', array('id' => $match['id']));
           return array(
             'name'   => $custom_group['name'],
-            'label'  => $custom_group['title'],
+            'title'  => $custom_group['title'],
             'weight' => $custom_group['weight'],
             );
 
@@ -364,20 +367,24 @@ class CRM_Revent_RegistrationFields {
    * Get all eligible Profiles
    */
   public static function getProfiles() {
-    return array(
-      'BuiltInProfile-1' => array(
-        'value'  => 'BuiltInProfile-1',
-        'weight' => 1,
-        'label'  => ts('Email und Sprache', array('domain' => 'de.systopia.revent')),
-        'name'   => 'profile_1',
-      ),
-      'BuiltInProfile-2' => array(
-        'value'  => 'BuiltInProfile-2',
-        'weight' => 2,
-        'label'  => ts('Name und Email Pflicht', array('domain' => 'de.systopia.revent')),
-        'name'   => 'profile_2',
-      )
-    );
+    $profiles = array();
+    $folder = dirname(__FILE__) . '/../../resources/profiles';
+    $files  = scandir($folder);
+    foreach ($files as $file) {
+      if (preg_match('#^(?P<name>BuiltInProfile-\d+).json$#', $file, $match)) {
+        $data = json_decode(file_get_contents($folder . '/' . $file), TRUE);
+        if ($data) {
+          $profiles[$match['name']] = array(
+            'title'  => $data['title'],
+            'name'   => $match['name'],
+            'weight' => $data['weight'],
+          );
+        } else {
+          error_log("Couldn't parse '{$file}'.");
+        }
+      }
+    }
+    return $profiles;
   }
 
 

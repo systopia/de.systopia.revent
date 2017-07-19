@@ -1,0 +1,66 @@
+{
+  "title": "Adressdaten",
+  "name": "BuiltInProfile-1",
+  "weight": -10,
+  "fields": {
+    "job_title": {
+      "group": "BuiltInProfile-1",
+      "title": "Funktion",
+      "maxlength": "128",
+      "required": 1,
+      "name": "job_title",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "1"
+    },
+    "street_address": {
+      "group": "BuiltInProfile-1",
+      "title": "Straße",
+      "maxlength": "96",
+      "required": 1,
+      "name": "street_address",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "2"
+    },
+    "supplemental_address_1": {
+      "group": "BuiltInProfile-1",
+      "title": "Addresszusatz",
+      "maxlength": "96",
+      "required": 1,
+      "name": "supplemental_address_1",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "3"
+    },
+    "postal_code": {
+      "group": "BuiltInProfile-1",
+      "title": "PLZ",
+      "maxlength": "64",
+      "required": 1,
+      "name": "postal_code",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "5"
+    },
+    "city": {
+      "group": "BuiltInProfile-1",
+      "title": "Ort",
+      "maxlength": "64",
+      "required": 1,
+      "name": "city",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "6"
+    },
+    "country_id": {
+      "group": "BuiltInProfile-1",
+      "title": "Land",
+      "required": 1,
+      "name": "country_id",
+      "type": "select",
+      "options": {"1082": "Deutschland"},
+      "weight": "7"
+    }
+  }
+}

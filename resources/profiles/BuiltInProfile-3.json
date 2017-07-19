@@ -1,0 +1,57 @@
+{
+  "title": "Personendaten",
+  "name": "BuiltInProfile-3",
+  "weight": -40,
+  "fields": {
+    "prefix_id": {
+      "group": "BuiltInProfile-3",
+      "title": "Anrede",
+      "maxlength": "10",
+      "required": 1,
+      "name": "prefix_id",
+      "type": "select",
+      "options": "individual_prefix",
+      "weight": "1"
+    },
+    "formal_title": {
+      "group": "BuiltInProfile-3",
+      "title": "Titel",
+      "maxlength": "64",
+      "required": 1,
+      "name": "formal_title",
+      "type": "string",
+      "validation": "string",
+      "weight": "2"
+    },
+    "first_name": {
+      "group": "BuiltInProfile-3",
+      "title": "Vorname",
+      "maxlength": "64",
+      "required": 1,
+      "name": "first_name",
+      "type": "string",
+      "validation": "string",
+      "weight": "3"
+    },
+    "last_name": {
+      "group": "BuiltInProfile-3",
+      "title": "Nachname",
+      "maxlength": "64",
+      "required": 1,
+      "name": "last_name",
+      "type": "string",
+      "validation": "string",
+      "weight": "4"
+    },
+    "suffix_id": {
+      "group": "BuiltInProfile-3",
+      "title": "Suffix",
+      "maxlength": "128",
+      "required": 1,
+      "name": "suffix_id",
+      "type": "select",
+      "options": "individual_suffix",
+      "weight": "5"
+    }
+  }
+}

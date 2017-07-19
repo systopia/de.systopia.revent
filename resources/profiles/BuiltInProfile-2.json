@@ -1,0 +1,37 @@
+{
+  "title": "Kommunikationsdaten",
+  "name": "BuiltInProfile-2",
+  "weight": -20,
+  "fields": {
+    "email": {
+      "group": "BuiltInProfile-2",
+      "title": "Email",
+      "maxlength": "254",
+      "required": 1,
+      "name": "email",
+      "type": "textfield",
+      "validation": "email",
+      "weight": "1"
+    },
+    "phone": {
+      "group": "BuiltInProfile-2",
+      "title": "Festnetz",
+      "maxlength": "32",
+      "required": 1,
+      "name": "phone",
+      "type": "textfield",
+      "validation": "string",
+      "weight": "2"
+    },
+    "phone_2": {
+      "group": "BuiltInProfile-2",
+      "title": "Mobil",
+      "maxlength": "32",
+      "required": 1,
+      "name": "phone_2",
+      "type": "textfield",
+      "validation": "string",
+      "weight": "4"
+    }
+  }
+}
