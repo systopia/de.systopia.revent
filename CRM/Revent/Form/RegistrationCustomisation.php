@@ -21,6 +21,7 @@
 class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
   protected $registrationRenderer = NULL;
+  protected $default_data = NULL;
 
   public function buildQuickForm() {
     // get event ID
@@ -56,15 +57,18 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     }
 
     // data is now sorted. create forms now for all groups
-    // TODO: do we need $i/$j here as actual counter?
     foreach($data['groups'] as $indexed_group) {
       foreach ($indexed_group['fields'] as $indexed_field) {
         $this->createFormElements($indexed_group['name'], $indexed_field['name']);
+        $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], 0);
         foreach ($indexed_field['languages'] as $indexed_language) {
           $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_language);
+          $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], $indexed_language);
         } // for loop over field languages
       } // for loop fields
     } // for loop groups
+
+
 
     // assign the whole groups array to the template form
     $this->assign('groups', $data['groups']);
@@ -83,46 +87,13 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   }
 
   /**
-   * compares to arrays elements weight and returns the difference
-   * according to callback function of usort
-   * @param $a
-   * @param $b
-   *
-   * @return integer
+   * set the default (=current) values in the form
    */
-  private static function compareHelper($a, $b) {
-    return $a['weight'] - $b['weight'];
+  public function setDefaultValues() {
+    return $this->default_data;
   }
 
-  /**
-   * creates form elements indexed by group, field and language
-   *
-   * @param $groupIndex
-   * @param $fieldIndex
-   * @param $languageIndex (1 = default language, always available)
-   */
-  private function createFormElements($group_title, $field_title, $language = 0) {
-    $this->add(
-      'text',
-      "title_{$group_title}_{$field_title}_{$language}",
-      'title'
-    );
-    $this->add(
-      'text',
-      "description_{$group_title}_{$field_title}_{$language}",
-      'description'
-    );
-    $this->add(
-      'advcheckbox',
-      "required_{$group_title}_{$field_title}_{$language}",
-      'required'
-    );
-    $this->add(
-      'text',
-      "weight_{$group_title}_{$field_title}_{$language}",
-      'weight'
-    );
-  }
+
 
   public function postProcess() {
     $values = $this->exportValues();
@@ -135,4 +106,70 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $data = $this->registrationRenderer->updateCustomisation($groups, $fields);
     parent::postProcess();
   }
-}
+
+  // Helper functions
+
+    /**
+     * compares to arrays elements weight and returns the difference
+     * according to callback function of usort
+     * @param $a
+     * @param $b
+     *
+     * @return integer
+     */
+    private static function compareHelper($a, $b) {
+      return $a['weight'] - $b['weight'];
+    }
+
+    /**
+     * creates form elements indexed by group, field and language
+     *
+     * @param $groupIndex
+     * @param $fieldIndex
+     * @param $languageIndex (1 = default language, always available)
+     */
+    private function createFormElements($group_title, $field_title, $language = 0) {
+      $this->add(
+        'text',
+        "title_{$group_title}_{$field_title}_{$language}",
+        'title'
+      );
+      $this->add(
+        'text',
+        "description_{$group_title}_{$field_title}_{$language}",
+        'description'
+      );
+      $this->add(
+        'advcheckbox',
+        "required_{$group_title}_{$field_title}_{$language}",
+        'required'
+      );
+      $this->add(
+        'text',
+        "weight_{$group_title}_{$field_title}_{$language}",
+        'weight'
+      );
+    }
+
+    private function createDefaultFormValues($value, $group_title, $field_title, $language = 0) {
+
+      if ($language == "0") {
+        $this->default_data["title_{$value['group']}_{$value['name']}_0"] = $value['name'];
+        if (isset($value['description'])) {
+          $this->default_data["description_{$value['group']}_{$value['name']}_0"] = $value['name'];
+        }
+        $this->default_data["required_{$value['group']}_{$value['name']}_0"] = $value['required'];
+        $this->default_data["weight_{$value['group']}_{$value['name']}_0"] = $value['weight'];
+      } else {
+        $this->default_data["title_{$value['group']}_{$value['name']}_{$language}"] = $value["title_{$language}"];
+        $t = "title_{$value['group']}_{$value['name']}_{$language}";
+        if (isset($value["description_{$language}"])) {
+          $this->default_data["description_{$value['group']}_{$value['name']}_{$language}"] = $value['name'];
+        }
+        $this->default_data["required_{$value['group']}_{$value['name']}_{$language}"] = $value['required'];
+        $this->default_data["weight_{$value['group']}_{$value['name']}_{$language}"] = $value['weight'];
+      }
+
+    }
+
+  }
