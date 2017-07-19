@@ -13,7 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('REVENT_SCHEMA_VERSION',  '0.1.dev');
+define('REVENT_SCHEMA_VERSION',  '0.2.dev');
 define('FIELDSET_WEIGHT_OFFSET', 100);
 
 /**
