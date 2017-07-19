@@ -56,7 +56,7 @@ class CRM_Revent_RegistrationFields {
 
     // step 2: apply customisation
     if ($customised) {
-      // TODO
+      $this->applyCustomisation($rendered_groups, $rendered_fields);
     }
 
     // step 3: compile result
@@ -93,7 +93,52 @@ class CRM_Revent_RegistrationFields {
    * Update the customisation data
    */
   public function updateCustomisation($groups, $fields) {
-    // TODO: calculate and update custom data
+    // first: render the default data without customisation
+    $default_metadata = $this->renderEventRegistrationForm(FALSE);
+
+    // generate DIFFs
+    $new_custom_result = array('groups' => array(), 'fields' => array());
+    foreach ($new_custom_result as $field => &$new_custom_data) {
+      foreach ($default_metadata[$field] as $identifier => $default_group_data) {
+        $submitted_group_data = CRM_Utils_Array::value($identifier, $groups, array());
+        $new_custom_data[$identifier] = array();
+        $this->pushDiff($submitted_group_data, $default_group_data, $new_custom_data[$identifier]);
+      }
+    }
+
+    // store new serialised data
+    $new_custom_serialised = json_encode($new_custom_result);
+    error_log("CALCULATED " . $new_custom_serialised);
+
+    $update = array(
+      'entiy_id' => $event['id'],
+      'remote_event_registration.registration_customisations' => $new_custom_serialised
+      );
+
+    CRM_Revent_CustomData::resolveCustomFields($update);
+    civicrm_api3('CustomValue', 'create', $update);
+  }
+
+  /**
+   * Update the customisation data
+   */
+  protected function applyCustomisation(&$groups, &$fields) {
+    $customisation_raw = $this->event['remote_event_registration.registration_customisations'];
+    $customisation = json_decode($customisation_raw, TRUE);
+
+    // apply group data
+    foreach ($customisation['groups'] as $group_name => $group_data) {
+      foreach ($group_data as $key => $value) {
+        $groups[$group_name][$key] = $value;
+      }
+    }
+
+    // apply field data
+    foreach ($customisation['fields'] as $field_name => $field_data) {
+      foreach ($field_data as $key => $value) {
+        $groups[$field_name][$key] = $value;
+      }
+    }
   }
 
   /**
@@ -440,5 +485,27 @@ class CRM_Revent_RegistrationFields {
       self::$extension_version = $info->version;
     }
     return self::$extension_version;
+  }
+
+  /**
+   * compares the two array and pushes the diff
+   */
+  protected function pushDiff($default_data, $submitted_data, &$diff_target_data) {
+    $fields = array_keys($submitted_data + $default_data);
+    foreach ($fields as $key) {
+      $default_value   = CRM_Utils_Array::value($key, $default_data,   '');
+      $submitted_value = CRM_Utils_Array::value($key, $submitted_data, '');
+
+      if (is_array($default_value)) {
+        $diff_target_data[$key] = array();
+        $this->pushDiff($default_value, $submitted_value, $diff_target_data[$key]);
+
+      } else {
+        $submitted_value = CRM_Utils_Array::value($key, $submitted_data, '');
+        if ($default_value != $submitted_value) {
+          $diff_target_data[$identifier][$key] = $submitted_value;
+        }
+      }
+    }
   }
 }
