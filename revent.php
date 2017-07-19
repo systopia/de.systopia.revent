@@ -81,7 +81,7 @@ function revent_civicrm_enable() {
   _revent_civix_civicrm_enable();
 
   require_once 'CRM/Revent/CustomData.php';
-  $customData = new CRM_Revent_CustomData('de.systopia.contract');
+  $customData = new CRM_Revent_CustomData('de.systopia.revent');
   $customData->syncOptionGroup(__DIR__ . '/resources/option_group_remote_registration_fields.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_remote_event_connection.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_remote_event_registration.json');
