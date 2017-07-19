@@ -374,8 +374,10 @@ class CRM_Revent_RegistrationFields {
       if (preg_match('#^(?P<name>BuiltInProfile-\d+).json$#', $file, $match)) {
         $data = json_decode(file_get_contents($folder . '/' . $file), TRUE);
         if ($data) {
-          $profiles[$match['name']] = array(
-            'title'  => $data['title'],
+          $key = $match['name'];
+          $profiles[$key] = array(
+            'value'  => $key,
+            'label'  => $data['title'],
             'name'   => $match['name'],
             'weight' => $data['weight'],
           );
