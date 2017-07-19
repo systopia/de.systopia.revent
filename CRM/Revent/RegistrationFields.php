@@ -174,7 +174,7 @@ class CRM_Revent_RegistrationFields {
         'group'        => CRM_Revent_CustomData::getGroupName($custom_group_id),
         'weight'       => $custom_field['weight'],
         'required'     => $custom_field['is_required'],
-        'maxlength'    => $custom_field['text_length'],
+        'maxlength'    => CRM_Utils_Array::value('text_length', $custom_field, ''),
         'description'  => CRM_Utils_Array::value('help_pre', $custom_field, ''),
       );
 
