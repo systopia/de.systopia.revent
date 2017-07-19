@@ -57,34 +57,17 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
     // data is now sorted. create forms now for all groups
     // TODO: do we need $i/$j here as actual counter?
-    $groupIndex =1;
     foreach($data['groups'] as $indexed_group) {
-      $fieldIndex = 1;
       foreach ($indexed_group['fields'] as $indexed_field) {
-        $languageIndex = 1;
-        $this->createFormElements($groupIndex, $fieldIndex, $languageIndex);
-        $languageIndex++;
+        $this->createFormElements($indexed_group['name'], $indexed_field['name']);
         foreach ($indexed_field['languages'] as $indexed_language) {
-          $this->createFormElements($groupIndex, $fieldIndex, $languageIndex);
-          if ($languageIndex != count($indexed_field['languages'])) {
-            $languageIndex++;
-          }
+          $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_language);
         } // for loop over field languages
-        // assign number of languages for field $j and group $i
-        $this->assign("line_numbers_{$groupIndex}_{$fieldIndex}", range(1, $languageIndex));
-        if ($fieldIndex != count($indexed_group['fields'])) {
-          $fieldIndex++;
-        }
       } // for loop fields
-      // assign number of fields for group $i
-      $this->assign("line_numbers_{$groupIndex}", range(1, $fieldIndex));
-      if ($groupIndex != count($data['groups'])) {
-        $groupIndex++;
-      }
     } // for loop groups
 
-    // assign line numbers for groups
-    $this->assign("line_numbers", range(1, $groupIndex));
+    // assign the whole groups array to the template form
+    $this->assign('groups', $data['groups']);
 
     // submit button
     $this->addButtons(array(
@@ -118,25 +101,25 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
    * @param $fieldIndex
    * @param $languageIndex (1 = default language, always available)
    */
-  private function createFormElements($groupIndex, $fieldIndex, $languageIndex) {
+  private function createFormElements($group_title, $field_title, $language = 0) {
     $this->add(
       'text',
-      "title_{$groupIndex}_{$fieldIndex}_{$languageIndex}",
+      "title_{$group_title}_{$field_title}_{$language}",
       'title'
     );
     $this->add(
       'text',
-      "description_{$groupIndex}_{$fieldIndex}_{$languageIndex}",
+      "description_{$group_title}_{$field_title}_{$language}",
       'description'
     );
     $this->add(
       'advcheckbox',
-      "required_{$groupIndex}_{$fieldIndex}_{$languageIndex}",
+      "required_{$group_title}_{$field_title}_{$language}",
       'required'
     );
     $this->add(
       'text',
-      "weight_{$groupIndex}_{$fieldIndex}_{$languageIndex}",
+      "weight_{$group_title}_{$field_title}_{$language}",
       'weight'
     );
   }
