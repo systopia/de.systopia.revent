@@ -35,14 +35,23 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $this->registrationRenderer = new CRM_Revent_RegistrationFields(array('id' => $event_id));
     $data = $this->registrationRenderer->renderEventRegistrationForm();
 
-    // // add form elements
-    // $this->add(
-    //   'select', // field type
-    //   'favorite_color', // field name
-    //   'Favorite Color', // field label
-    //   $this->getColorOptions(), // list of options
-    //   TRUE // is required
-    // );
+    // sort after group weight
+    usort($data['groups'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
+    // put fields to corrosponding sorted groups
+    foreach($data['fields'] as $value) {
+      foreach($data['groups'] as &$group) {
+        if ($group['name'] == $value['group']) {
+          $group['fields'][$value['name']] = $value;
+        }
+      }
+    }
+    // sort associated groups according to weight
+    foreach ($data['groups'] as &$group) {
+      usort($group['fields'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
+    }
+
+    // data is now sorted. create forms now for all groups/fields
+
     $this->addButtons(array(
       array(
         'type' => 'submit',
@@ -55,6 +64,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
+  private static function compareHelper($a, $b) {
+    return $a['weight'] - $b['weight'];
+  }
 
   public function postProcess() {
     $values = $this->exportValues();
