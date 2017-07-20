@@ -23,11 +23,19 @@ function civicrm_api3_remote_group_list($params) {
   // TODO: restrict to eligible groups
   $result = civicrm_api3('Group', 'get', array(
     'options.limit' => 0));
+  $groups = $result['values'];
 
   // replace custom fields with labels
-  CRM_Revent_CustomData::labelCustomFields($result['values'], 2);
+  CRM_Revent_CustomData::labelCustomFields($groups, 2);
 
-  return civicrm_api3_create_success($result['values']);
+  // TODO: add profiles (random for now)
+  $profiles = array('email', 'email_name', 'email_name_postal');
+  foreach ($groups as &$group) {
+    $random_index = array_rand($profiles);
+    $group['profile'] = $profiles[$random_index];
+  }
+
+  return civicrm_api3_create_success($groups);
 }
 
 /**

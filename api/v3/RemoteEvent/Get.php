@@ -42,6 +42,11 @@ function civicrm_api3_remote_event_get($params) {
   // replace custom fields with labels
   CRM_Revent_CustomData::labelCustomFields($result, 3);
 
+  // add CiviCRM URL
+  foreach ($result['values'] as $event_id => &$event) {
+    $event['civicrm_link'] = CRM_Utils_System::url('civicrm/event/info', "reset=1&id={$event_id}", true);
+  }
+
   return civicrm_api3_create_success($result);
 }
 
