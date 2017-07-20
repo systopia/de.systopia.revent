@@ -21,7 +21,7 @@
             <td>
                 <div class="crm-section">
                     {* title form element*}
-                    {capture assign=title}title_{$group.name}_{$field.name}_0{/capture}
+                    {capture assign=title}title__{$group.name}__{$field.name}__0{/capture}
                     {$form.$title.label}
                     {$form.$title.html}
                 </div>
@@ -29,7 +29,7 @@
             <td>
                 <div class="crm-section">
                     {* description form element*}
-                    {capture assign=description}description_{$group.name}_{$field.name}_0{/capture}
+                    {capture assign=description}description__{$group.name}__{$field.name}__0{/capture}
                     {$form.$description.label}
                     {$form.$description.html}
                 </div>
@@ -37,7 +37,7 @@
             <td>
                 <div class="crm-section">
                     {* required form element*}
-                    {capture assign=required}required_{$group.name}_{$field.name}_0{/capture}
+                    {capture assign=required}required__{$group.name}__{$field.name}__0{/capture}
                     {$form.$required.label}
                     {$form.$required.html}
                 </div>
@@ -45,7 +45,7 @@
             <td>
                 <div class="crm-section">
                     {* weight form element*}
-                    {capture assign=weight}weight_{$group.name}_{$field.name}_0{/capture}
+                    {capture assign=weight}weight__{$group.name}__{$field.name}__0{/capture}
                     {$form.$weight.label}
                     {$form.$weight.html}
                 </div>
@@ -56,7 +56,7 @@
                 <td>
                     <div class="crm-section">
                         {* title form element*}
-                        {capture assign=title}title_{$group.name}_{$field.name}_{$language}{/capture}
+                        {capture assign=title}title__{$group.name}__{$field.name}__{$language}{/capture}
                         {$form.$title.label}
                         {$form.$title.html}
                     </div>
@@ -64,7 +64,7 @@
                 <td>
                     <div class="crm-section">
                         {* description form element*}
-                        {capture assign=description}description_{$group.name}_{$field.name}_{$language}{/capture}
+                        {capture assign=description}description__{$group.name}__{$field.name}__{$language}{/capture}
                         {$form.$description.label}
                         {$form.$description.html}
                     </div>
@@ -72,7 +72,7 @@
                 <td>
                     <div class="crm-section">
                         {* required form element*}
-                        {capture assign=required}required_{$group.name}_{$field.name}_{$language}{/capture}
+                        {capture assign=required}required__{$group.name}__{$field.name}__{$language}{/capture}
                         {$form.$required.label}
                         {$form.$required.html}
                     </div>
@@ -80,7 +80,7 @@
                 <td>
                     <div class="crm-section">
                         {* weight form element*}
-                        {capture assign=weight}weight_{$group.name}_{$field.name}_{$language}{/capture}
+                        {capture assign=weight}weight__{$group.name}__{$field.name}__{$language}{/capture}
                         {$form.$weight.label}
                         {$form.$weight.html}
                     </div>

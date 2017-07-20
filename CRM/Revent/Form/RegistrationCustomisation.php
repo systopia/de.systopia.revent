@@ -22,6 +22,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
   protected $registrationRenderer = NULL;
   protected $default_data = NULL;
+  protected $data = NULL;
+  // FixME: testing
+  protected $data_orig = NULL;
 
   public function buildQuickForm() {
     // get event ID
@@ -35,6 +38,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     // load currently customised data
     $this->registrationRenderer = new CRM_Revent_RegistrationFields(array('id' => $event_id));
     $data = $this->registrationRenderer->renderEventRegistrationForm();
+
+    // FixMe: temp
+    $this->data_orig = $data;
 
     // sort after group weight
     usort($data['groups'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
@@ -68,7 +74,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       } // for loop fields
     } // for loop groups
 
-
+    // save the data structure
+    $this->data= $data;
 
     // assign the whole groups array to the template form
     $this->assign('groups', $data['groups']);
@@ -94,16 +101,53 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   }
 
 
-
+  /**
+   * post processing function
+   */
   public function postProcess() {
     $values = $this->exportValues();
 
-    // TODO: extract from values
     $groups = array();
     $fields = array();
 
+    $pattern = "/(?<type>[A-Za-z]*)__(?<group>[A-Za-z0-9-._]*)__(?<field>[A-Za-z_.]*)__(?<language>[a-z0]{1,2})$/";
+    $matches = array();
+    // iterate values, then build group and fields array
+    foreach ($values as $name => $value) {
+      // if we don't have a match, continue
+      if (!preg_match($pattern, $name, $matches)) {
+        continue;
+      }
+      $type = $matches['type'];
+      $group = $matches['group'];
+      $field = $matches['field'];
+      $language = $matches['language'];
+      // if language is 0, then this is the default value for the type,
+      // otherwise only set the language specific field
+      if ($language == "0") {
+        // FALSE is en empty value somehow ...
+        if ($value == "") {
+          $fields[$field][$type] = "0";
+        } else {
+          $fields[$field][$type] = $value;
+        }
+
+      }
+      $fields[$field]['group'] = $group;
+      $fields[$field]['name'] = $field;
+      if (isset($this->data['fields'][$field][$type . "_" . $language])) {
+        $fields[$field][$type . "_" . $language] = $value;
+      }
+    }
+
+    foreach ($this->data['groups'] as $group) {
+      unset($group['fields']);
+      $groups[] = $group;
+    }
+
+    // FIXME: this needs to be done, but isn't working properly for now.
     // pass on to the
-    $data = $this->registrationRenderer->updateCustomisation($groups, $fields);
+//    $data = $this->registrationRenderer->updateCustomisation($groups, $fields);
     parent::postProcess();
   }
 
@@ -131,22 +175,22 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     private function createFormElements($group_title, $field_title, $language = 0) {
       $this->add(
         'text',
-        "title_{$group_title}_{$field_title}_{$language}",
+        "title__{$group_title}__{$field_title}__{$language}",
         'title'
       );
       $this->add(
         'text',
-        "description_{$group_title}_{$field_title}_{$language}",
+        "description__{$group_title}__{$field_title}__{$language}",
         'description'
       );
       $this->add(
         'advcheckbox',
-        "required_{$group_title}_{$field_title}_{$language}",
+        "required__{$group_title}__{$field_title}__{$language}",
         'required'
       );
       $this->add(
         'text',
-        "weight_{$group_title}_{$field_title}_{$language}",
+        "weight__{$group_title}__{$field_title}__{$language}",
         'weight'
       );
     }
@@ -154,20 +198,19 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     private function createDefaultFormValues($value, $group_title, $field_title, $language = 0) {
 
       if ($language == "0") {
-        $this->default_data["title_{$value['group']}_{$value['name']}_0"] = $value['name'];
+        $this->default_data["title__{$value['group']}__{$value['name']}__0"] = $value['title'];
         if (isset($value['description'])) {
-          $this->default_data["description_{$value['group']}_{$value['name']}_0"] = $value['name'];
+          $this->default_data["description__{$value['group']}__{$value['name']}__0"] = $value['name'];
         }
-        $this->default_data["required_{$value['group']}_{$value['name']}_0"] = $value['required'];
-        $this->default_data["weight_{$value['group']}_{$value['name']}_0"] = $value['weight'];
+        $this->default_data["required__{$value['group']}__{$value['name']}__0"] = $value['required'];
+        $this->default_data["weight__{$value['group']}__{$value['name']}__0"] = $value['weight'];
       } else {
-        $this->default_data["title_{$value['group']}_{$value['name']}_{$language}"] = $value["title_{$language}"];
-        $t = "title_{$value['group']}_{$value['name']}_{$language}";
+        $this->default_data["title__{$value['group']}__{$value['name']}__{$language}"] = $value["title_{$language}"];
         if (isset($value["description_{$language}"])) {
-          $this->default_data["description_{$value['group']}_{$value['name']}_{$language}"] = $value['name'];
+          $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = $value['name'];
         }
-        $this->default_data["required_{$value['group']}_{$value['name']}_{$language}"] = $value['required'];
-        $this->default_data["weight_{$value['group']}_{$value['name']}_{$language}"] = $value['weight'];
+        $this->default_data["required__{$value['group']}__{$value['name']}__{$language}"] = $value['required'];
+        $this->default_data["weight__{$value['group']}__{$value['name']}__{$language}"] = $value['weight'];
       }
 
     }
