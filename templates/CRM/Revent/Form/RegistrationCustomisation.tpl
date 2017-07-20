@@ -15,9 +15,16 @@
 
 
 {foreach from=$groups item=group}
+    <p><strong>{$group.name}</strong></p>
     <table>
     {foreach from=$group.fields item=field}
-        <tr class="line_{$group}_{$field}_0">
+        <tr>
+            <td><p><i><b>{$field.name}</b></i></p></td>
+        </tr>
+        <tr>
+            <td><b>default</b></td>
+        </tr>
+        <tr class="line_{$group.name}_{$field.name}_0">
             <td>
                 <div class="crm-section">
                     {* title form element*}
@@ -52,7 +59,10 @@
             </td>
         </tr>
         {foreach from=$field.languages item=language}
-            <tr class="line_{$group}_{$field}_{$language}">
+            <tr>
+                <td><b>{$language}</b></td>
+            </tr>
+            <tr class="line_{$group.name}_{$field.name}_{$language}">
                 <td>
                     <div class="crm-section">
                         {* title form element*}
