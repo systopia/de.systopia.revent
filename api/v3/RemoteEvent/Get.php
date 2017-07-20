@@ -47,7 +47,7 @@ function civicrm_api3_remote_event_get($params) {
     $event['civicrm_link'] = CRM_Utils_System::url('civicrm/event/info', "reset=1&id={$event_id}", true);
   }
 
-  return civicrm_api3_create_success($result);
+  return $result;
 }
 
 /**

@@ -380,6 +380,11 @@ class CRM_Revent_CustomData {
     $customgroups_used = array();
     foreach ($data as $key => $value) {
       if (preg_match('/^(?P<group_name>\w+)[.](?P<field_name>\w+)$/', $key, $match)) {
+        if ($match['group_name'] == 'options') {
+          // exclude API options
+          continue;
+        }
+
         if (empty($customgroups) || in_array($match['group_name'], $customgroups)) {
           $customgroups_used[$match['group_name']] = 1;
         }
