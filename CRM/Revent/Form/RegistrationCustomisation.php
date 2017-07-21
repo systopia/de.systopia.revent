@@ -110,7 +110,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $groups = array();
     $fields = array();
 
-    $pattern = "/(?<type>[A-Za-z]*)__(?<group>[A-Za-z0-9-._]*)__(?<field>[A-Za-z_.]*)__(?<language>[a-z0]{1,2})$/";
+    $pattern = "/(?<type>[A-Za-z]+)__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<language>[a-z0]{1,2})$/";
     $matches = array();
     // iterate values, then build group and fields array
     foreach ($values as $name => $value) {
@@ -118,25 +118,21 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       if (!preg_match($pattern, $name, $matches)) {
         continue;
       }
-      $type = $matches['type'];
-      $group = $matches['group'];
-      $field = $matches['field'];
+      $type     = $matches['type'];
+      $group    = $matches['group'];
+      $field    = $matches['field'];
       $language = $matches['language'];
+
       // if language is 0, then this is the default value for the type,
       // otherwise only set the language specific field
-      if ($language == "0") {
-        // FALSE is en empty value somehow ...
-        if ($value == "") {
-          $fields[$field][$type] = "0";
-        } else {
-          $fields[$field][$type] = $value;
+      if ($language === "0") {
+        $fields[$field][$type] = $value;
+      } else {
+        $fields[$field]['group'] = $group;
+        $fields[$field]['name'] = $field;
+        if (isset($this->data['fields'][$field][$type . "_" . $language])) {
+          $fields[$field][$type . "_" . $language] = $value;
         }
-
-      }
-      $fields[$field]['group'] = $group;
-      $fields[$field]['name'] = $field;
-      if (isset($this->data['fields'][$field][$type . "_" . $language])) {
-        $fields[$field][$type . "_" . $language] = $value;
       }
     }
 
@@ -145,9 +141,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       $groups[] = $group;
     }
 
-    // FIXME: this needs to be done, but isn't working properly for now.
-    // pass on to the
-//    $data = $this->registrationRenderer->updateCustomisation($groups, $fields);
+    // store it
+    $data = $this->registrationRenderer->updateCustomisation($groups, $fields);
     parent::postProcess();
   }
 
