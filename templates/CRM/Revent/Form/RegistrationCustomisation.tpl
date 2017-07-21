@@ -101,50 +101,6 @@
     </table>
 {/foreach} {* groups *}
 
-{*old stuff ...
-{foreach from=$line_numbers item=line_number_group}
-    <table>
-        {capture assign=field_lines}line_numbers_{$line_number_group}{/capture}
-        <p> Field lines: {$field_lines} , line Number: {$line_number_group}</p>
-        {foreach from=$$field_lines item=line_number_field}
-            <p> line_number Field : {$line_number_field} </p>
-            {capture assign=language_lines}{$field_lines}_{$line_number_field}{/capture}
-            <p> language lines : {$language_lines} </p>
-            {foreach from=$language_lines item=line_number_language}
-
-                {capture assign=title_field}title_{$line_number}_{$line_number_group}_{$line_number_language}{/capture}
-                {capture assign=description_field}description_{$line_number}_{$line_number_group}_{$line_number_language}{$line_number}{/capture}
-                {capture assign=required_field}required_{$line_number}_{$line_number_group}_{$line_number_language}{/capture}
-                {capture assign=weight_field}weight_{$line_number}_{$line_number_group}_{$line_number_language}{/capture}
-
-                <tr class="line-{$line_number_group}-field_{$line_number_field}-language_{$line_number_language}">
-                    <td>
-                        <div class="crm-section">
-                            {$form.$title_field.html}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="crm-section">
-                            {$form.$description_field.html}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="crm-section">
-                            {$form.$required_field.html}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="crm-section">
-                            {$form.$weight_field.html}
-                        </div>
-                    </td>
-                </tr>
-            {/foreach}
-        {/foreach}
-    </table>
-{/foreach}
-*}
-
 {* FOOTER *}
 <div class="crm-submit-buttons">
     {include file="CRM/common/formButtons.tpl" location="bottom"}
