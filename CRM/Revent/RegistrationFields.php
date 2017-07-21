@@ -96,22 +96,29 @@ class CRM_Revent_RegistrationFields {
     // first: render the default data without customisation
     $default_metadata = $this->renderEventRegistrationForm(FALSE);
 
-    // generate DIFFs
-    $new_custom_result = array('groups' => array(), 'fields' => array());
-    foreach ($new_custom_result as $field => &$new_custom_data) {
-      foreach ($default_metadata[$field] as $identifier => $default_group_data) {
-        $submitted_group_data = CRM_Utils_Array::value($identifier, $groups, array());
-        $new_custom_data[$identifier] = array();
-        $this->pushDiff($submitted_group_data, $default_group_data, $new_custom_data[$identifier]);
-      }
+    // diff groups
+    $groups_default = $this->indexArray($default_metadata['groups']);
+    $groups_submit  = $this->indexArray($groups);
+    $groups_diff    = array();
+    foreach ($groups_submit as $key => $group) {
+      $groups_diff[$key] = array();
+      $this->pushDiff($groups_default[$key], $groups_submit[$key], $groups_diff[$key]);
+    }
+
+    // diff fields
+    $fields_default = $default_metadata['fields'];
+    $fields_submit  = $fields;
+    $fields_diff    = array();
+    foreach ($fields_submit as $key => $field) {
+      $fields_diff[$key] = array();
+      $this->pushDiff($fields_default[$key], $fields_submit[$key], $fields_diff[$key]);
     }
 
     // store new serialised data
-    $new_custom_serialised = json_encode($new_custom_result);
-    error_log("CALCULATED " . $new_custom_serialised);
+    $new_custom_serialised = json_encode(array('groups' => $groups_diff, 'fields' => $fields_diff));
 
     $update = array(
-      'entiy_id' => $event['id'],
+      'entity_id' => $this->event['id'],
       'remote_event_registration.registration_customisations' => $new_custom_serialised
       );
 
@@ -130,13 +137,15 @@ class CRM_Revent_RegistrationFields {
     foreach ($customisation['groups'] as $group_name => $group_data) {
       foreach ($group_data as $key => $value) {
         $groups[$group_name][$key] = $value;
+        // error_log("OVERWRITE groups[$group_name][$key] with '$value'");
       }
     }
 
     // apply field data
     foreach ($customisation['fields'] as $field_name => $field_data) {
       foreach ($field_data as $key => $value) {
-        $groups[$field_name][$key] = $value;
+        $fields[$field_name][$key] = $value;
+        // error_log("OVERWRITE fields[$field_name][$key] with '$value'");
       }
     }
   }
@@ -488,22 +497,35 @@ class CRM_Revent_RegistrationFields {
   }
 
   /**
+   * turns a list array into an indexed one, using the $attribute as index
+   */
+  protected function indexArray($list, $attribute = 'name') {
+    $result = array();
+    foreach ($list as $entry) {
+      $result[$entry[$attribute]] = $entry;
+    }
+    return $result;
+  }
+
+  /**
    * compares the two array and pushes the diff
    */
   protected function pushDiff($default_data, $submitted_data, &$diff_target_data) {
+    if (empty($submitted_data) || empty($default_data)) return;
     $fields = array_keys($submitted_data + $default_data);
     foreach ($fields as $key) {
-      $default_value   = CRM_Utils_Array::value($key, $default_data,   '');
-      $submitted_value = CRM_Utils_Array::value($key, $submitted_data, '');
+      $default_value   = CRM_Utils_Array::value($key, $default_data);
+      $submitted_value = CRM_Utils_Array::value($key, $submitted_data);
 
-      if (is_array($default_value)) {
-        $diff_target_data[$key] = array();
-        $this->pushDiff($default_value, $submitted_value, $diff_target_data[$key]);
+      if ($submitted_value !== NULL) {
+        if (is_array($default_value)) {
+          $diff_target_data[$key] = array();
+          $this->pushDiff($default_value, $submitted_value, $diff_target_data[$key]);
 
-      } else {
-        $submitted_value = CRM_Utils_Array::value($key, $submitted_data, '');
-        if ($default_value != $submitted_value) {
-          $diff_target_data[$identifier][$key] = $submitted_value;
+        } else {
+          if ($default_value != $submitted_value) {
+            $diff_target_data[$key] = $submitted_value;
+          }
         }
       }
     }
