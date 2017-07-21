@@ -32,7 +32,7 @@ class CRM_Revent_RegistrationFields {
       'title'                                         => 1
       );
     CRM_Revent_CustomData::resolveCustomFields($event_identification);
-    $event_identification['return'] = implode(',', array_keys($event_fields_to_load));
+    //$event_identification['return'] = implode(',', array_keys($event_fields_to_load));
     $this->event = civicrm_api3('Event', 'getsingle', $event_identification);
     CRM_Revent_CustomData::labelCustomFields($this->event, 3);
   }
