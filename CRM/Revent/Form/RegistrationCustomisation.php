@@ -24,7 +24,6 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   protected $default_data = NULL;
   protected $data = NULL;
   // FixME: testing
-  protected $data_orig = NULL;
 
   public function buildQuickForm() {
     // get event ID
@@ -38,9 +37,6 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     // load currently customised data
     $this->registrationRenderer = new CRM_Revent_RegistrationFields(array('id' => $event_id));
     $data = $this->registrationRenderer->renderEventRegistrationForm();
-
-    // FixMe: temp
-    $this->data_orig = $data;
 
     // sort after group weight
     usort($data['groups'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
@@ -128,28 +124,41 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $fields = array();
 
     $pattern = "/(?<type>[A-Za-z]+)__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<language>[a-z0]{1,2})$/";
+    $option_pattern = "/option__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<count>[0-9]{1,2})__(?<language>[a-z0]{1,2})$/";
     $matches = array();
     // iterate values, then build group and fields array
     foreach ($values as $name => $value) {
-      // if we don't have a match, continue
-      if (!preg_match($pattern, $name, $matches)) {
-        continue;
-      }
-      $type     = $matches['type'];
-      $group    = $matches['group'];
-      $field    = $matches['field'];
-      $language = $matches['language'];
 
-      // if language is 0, then this is the default value for the type,
-      // otherwise only set the language specific field
-      if ($language === "0") {
-        $fields[$field][$type] = $value;
-      } else {
-        $fields[$field]['group'] = $group;
-        $fields[$field]['name'] = $field;
-        if (isset($this->data['fields'][$field][$type . "_" . $language])) {
-          $fields[$field][$type . "_" . $language] = $value;
+      if (preg_match($option_pattern, $name, $matches)) {
+        if (!isset($fields[$matches['field']])) {
+          $fields[$matches['field']] = array();
         }
+        if (!isset($fields[$matches['field']]["options_{$matches['language']}"])) {
+          $fields[$matches['field']]["options_{$matches['language']}"] = array();
+        }
+        $fields[$matches['field']]["options_{$matches['language']}"][] = $value;
+
+      } elseif (preg_match($pattern, $name, $matches)) {
+
+        $type     = $matches['type'];
+        $group    = $matches['group'];
+        $field    = $matches['field'];
+        $language = $matches['language'];
+
+        // if language is 0, then this is the default value for the type,
+        // otherwise only set the language specific field
+        if ($language === "0") {
+          // we don't need to do anything here, but might for future releases
+          $fields[$field][$type] = $value;
+        } else {
+          $fields[$field]['group'] = $group;
+          $fields[$field]['name'] = $field;
+          if (isset($this->data['fields'][$field][$type . "_" . $language])) {
+            $fields[$field][$type . "_" . $language] = $value;
+          }
+        }
+      } else {
+        continue;
       }
     }
 
