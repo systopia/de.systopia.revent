@@ -20,10 +20,10 @@
  */
 class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
-  protected $registrationRenderer = NULL;
-  protected $default_data = NULL;
-  protected $data = NULL;
-  // FixME: testing
+  protected $registrationRenderer   = NULL;
+  protected $default_data           = NULL;
+  protected $data                   = NULL;
+  protected $replacement_index      = NULL;
 
   public function buildQuickForm() {
     // get event ID
@@ -70,6 +70,19 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
               $fld["options_{$lang}"] = $fld['options'];
             }
           }
+        }
+      }
+    }
+
+    // some group names contain a '.', which messes with the quickform api or something else.
+    // replace them with _, and store them locally, to be mapped afterwards
+    foreach ($data['groups'] as &$g) {
+      foreach ($g['fields'] as &$f) {
+        if (strpos($f['name'], '.')) {
+          // we need to replace this, and map it locally
+          $replacement_name = str_replace('.', '_', $f['name']);
+          $this->replacement_index[$replacement_name] = $f['name'];
+          $f['name'] = $replacement_name;
         }
       }
     }
@@ -171,6 +184,12 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       } else {
         continue;
       }
+    }
+
+    foreach($this->replacement_index as $replacement_name => $replacement_value) {
+      $fields[$replacement_value] = $fields[$replacement_name];
+      $fields[$replacement_value]['name'] = $replacement_value;
+      unset($fields[$replacement_name]);
     }
 
     foreach ($this->data['groups'] as $group) {
