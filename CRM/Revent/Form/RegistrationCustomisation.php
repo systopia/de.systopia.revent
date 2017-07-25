@@ -62,6 +62,13 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       usort($group['fields'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
     }
 
+    // remove spaces in options
+    foreach ($data['groups'] as &$grp) {
+      foreach ($grp['fields'] as &$fld) {
+        $fld['option_count'] = range(1, count($fld['options']));
+      }
+    }
+
     // data is now sorted. create forms now for all groups
     foreach($data['groups'] as $indexed_group) {
       foreach ($indexed_group['fields'] as $indexed_field) {
@@ -70,6 +77,13 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         foreach ($indexed_field['languages'] as $indexed_language) {
           $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_language);
           $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], $indexed_language);
+          if (isset($indexed_field["options_{$indexed_language}"])) {
+            $i = 1;
+            foreach ($indexed_field["options_{$indexed_language}"] as $option) {
+              $this->createFormElementOptions($indexed_group['name'], $indexed_field['name'], $i, $indexed_language, $option);
+              $i++;
+            }
+          }
         } // for loop over field languages
       } // for loop fields
     } // for loop groups
@@ -188,6 +202,15 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         "weight__{$group_title}__{$field_title}__{$language}",
         'weight'
       );
+    }
+
+    private function createFormElementOptions($group_title, $field_title, $option, $language,  $default_value) {
+      $this->add(
+        'text',
+        "option__{$group_title}__{$field_title}__{$option}__{$language}",
+        'option'
+      );
+      $this->default_data["option__{$group_title}__{$field_title}__{$option}__{$language}"] = $default_value;
     }
 
     private function createDefaultFormValues($value, $group_title, $field_title, $language = 0) {
