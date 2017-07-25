@@ -160,7 +160,11 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         } else {
           $fields[$field]['group'] = $group;
           $fields[$field]['name'] = $field;
-          if (isset($this->data['fields'][$field][$type . "_" . $language])) {
+          // handle 'description' specially, because this is not a required field,
+          // but can be added nonetheless
+          if ($type == 'description') {
+            $fields[$field][$type . "_" . $language] = $value;
+          } elseif (isset($this->data['fields'][$field][$type . "_" . $language])) {
             $fields[$field][$type . "_" . $language] = $value;
           }
         }
