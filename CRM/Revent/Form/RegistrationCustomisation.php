@@ -62,7 +62,14 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     foreach ($data['groups'] as &$grp) {
       foreach ($grp['fields'] as &$fld) {
         if (isset($fld['options'])) {
+          // create a counter array for the template
           $fld['option_count'] = range(1, count($fld['options']));
+          // check if options are available for languages, otherwise copy the default value to the groups
+          foreach ($fld['languages'] as $lang) {
+            if (empty($fld["options_{$lang}"])) {
+              $fld["options_{$lang}"] = $fld['options'];
+            }
+          }
         }
       }
     }
@@ -230,14 +237,14 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       if ($language == "0") {
         $this->default_data["title__{$value['group']}__{$value['name']}__0"] = $value['title'];
         if (isset($value['description'])) {
-          $this->default_data["description__{$value['group']}__{$value['name']}__0"] = $value['name'];
+          $this->default_data["description__{$value['group']}__{$value['name']}__0"] = $value['description'];
         }
         $this->default_data["required__{$value['group']}__{$value['name']}__0"] = $value['required'];
         $this->default_data["weight__{$value['group']}__{$value['name']}__0"] = $value['weight'];
       } else {
         $this->default_data["title__{$value['group']}__{$value['name']}__{$language}"] = $value["title_{$language}"];
         if (isset($value["description_{$language}"])) {
-          $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = $value['name'];
+          $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = $value['description'];
         } else {
           $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = "";
         }
