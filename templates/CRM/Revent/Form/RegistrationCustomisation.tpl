@@ -12,8 +12,6 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
-
-
 {foreach from=$groups item=group}
     <div class="crm-accordion-wrapper crm-accordion_title-accordion crm-accordion-processed"
          id="registration_customisation">
@@ -21,8 +19,8 @@
             {$group.name}
         </div>
         <div class="crm-accordion-body">
-            <table class="form-layout-compressed">
-                {foreach from=$group.fields item=field}
+            {foreach from=$group.fields item=field}
+                <table class="form-layout-compressed">
                     <tr>
                         <td><i><b>{$field.name}</b></i></td>
                     </tr>
@@ -47,14 +45,12 @@
                                 {assign var="option_condition" value="yes"}
                                 <td>
                                     <div class="crm-section">
-                                        {* required form element*}
                                         {capture assign=required}required__{$group.name}__{$field.name}__{$language}{/capture}
                                         {$form.$required.label} {$form.$required.html}
                                     </div>
                                 </td>
                                 <td>
                                     <div class="crm-section">
-                                        {* weight form element*}
                                         {capture assign=weight}weight__{$group.name}__{$field.name}__{$language}{/capture}
                                         {$form.$weight.label} {$form.$weight.html}
                                     </div>
@@ -62,25 +58,26 @@
                             {/if}
                         </tr>
                     {/foreach} {* languages *}
-
-                    {* get number of options for this field, then create the form elements for each language*}
+                </table>
+                {* get number of options for this field, then create the form elements for each language*}
+                <tr>
                     <td><i><b>{$field.name} Options</b></i></td>
+                </tr>
+                <table class="form-layout-compressed">
                     {foreach from=$field.option_count item=option}
-                        <table class="form-layout-compressed">
-                            <tr>
-                                {foreach from=$field.languages item=language}
-                                    <td>
-                                        <div class="crm-section">
-                                            {capture assign=opt}option__{$group.name}__{$field.name}__{$option}__{$language}{/capture}
-                                            {$form.$opt.html} {$language}
-                                        </div>
-                                    </td>
-                                {/foreach} {* languages *}
-                            </tr>
-                        </table>
+                        <tr>
+                            {foreach from=$field.languages item=language}
+                                <td>
+                                    <div>
+                                        {capture assign=opt}option__{$group.name}__{$field.name}__{$option}__{$language}{/capture}
+                                        {$form.$opt.html} {$language}
+                                    </div>
+                                </td>
+                            {/foreach} {* languages *}
+                        </tr>
                     {/foreach} {* options *}
-                {/foreach} {* fields *}
-            </table>
+                </table>
+            {/foreach} {* fields *}
         </div>
     </div>
 {/foreach} {* groups *}

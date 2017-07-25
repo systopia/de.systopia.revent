@@ -62,19 +62,22 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       usort($group['fields'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
     }
 
-    // remove spaces in options
+    // add arrays for option counts
     foreach ($data['groups'] as &$grp) {
       foreach ($grp['fields'] as &$fld) {
-        $fld['option_count'] = range(1, count($fld['options']));
+        if (isset($fld['options'])) {
+          $fld['option_count'] = range(1, count($fld['options']));
+        }
       }
     }
 
     // data is now sorted. create forms now for all groups
     foreach($data['groups'] as $indexed_group) {
       foreach ($indexed_group['fields'] as $indexed_field) {
-        $this->createFormElements($indexed_group['name'], $indexed_field['name']);
-        $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], 0);
+//        $this->createFormElements($indexed_group['name'], $indexed_field['name']);
+//        $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], 0);
         foreach ($indexed_field['languages'] as $indexed_language) {
+//          if (!isset($indexed_field['name']))
           $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_language);
           $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], $indexed_language);
           if (isset($indexed_field["options_{$indexed_language}"])) {
@@ -179,7 +182,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
      *
      * @param $groupIndex
      * @param $fieldIndex
-     * @param $languageIndex (1 = default language, always available)
+     * @param $languageIndex (0 = default language, always available)
      */
     private function createFormElements($group_title, $field_title, $language = 0) {
       $this->add(
@@ -226,6 +229,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         $this->default_data["title__{$value['group']}__{$value['name']}__{$language}"] = $value["title_{$language}"];
         if (isset($value["description_{$language}"])) {
           $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = $value['name'];
+        } else {
+          $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = "";
         }
         $this->default_data["required__{$value['group']}__{$value['name']}__{$language}"] = $value['required'];
         $this->default_data["weight__{$value['group']}__{$value['name']}__{$language}"] = $value['weight'];
