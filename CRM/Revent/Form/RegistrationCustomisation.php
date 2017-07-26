@@ -267,7 +267,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       } else {
         $this->default_data["title__{$value['group']}__{$value['name']}__{$language}"] = $value["title_{$language}"];
         if (isset($value["description_{$language}"])) {
-          $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = $value['description'];
+          $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = $value["description_{$language}"];
         } else {
           $this->default_data["description__{$value['group']}__{$value['name']}__{$language}"] = "";
         }
