@@ -2,7 +2,8 @@
 /*-------------------------------------------------------+
 | SYSTOPIA REMOTE EVENT REGISTRATION                     |
 | Copyright (C) 2017 SYSTOPIA                            |
-| Author: B. Endres (endres@systopia.de)                 |
+| Author: B. Endres  (endres@systopia.de)                |
+| Author: P. Batroff (batroff@systopia.de)               |
 +--------------------------------------------------------+
 | This program is released as free software under the    |
 | Affero GPL license. You can redistribute it and/or     |
@@ -237,12 +238,12 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       $this->add(
         'advcheckbox',
         "required__{$group_title}__{$field_title}__{$language}",
-        'required'
+        ts('required')
       );
       $this->add(
         'text',
         "weight__{$group_title}__{$field_title}__{$language}",
-        'weight'
+        ts('weight')
       );
     }
 

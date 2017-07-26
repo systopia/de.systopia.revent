@@ -152,3 +152,25 @@ function revent_civicrm_angularModules(&$angularModules) {
 function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _revent_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
+
+/**
+ * Implements hook_civicrm_buildForm()
+ * @param $formName
+ * @param $form
+ */
+function revent_civicrm_buildForm($formName, &$form) {
+  switch ($formName) {
+    case 'CRM_Custom_Form_CustomDataByType':
+      require_once 'CRM/Revent/EventRegistrationIntegration.php';
+      // TODO check eventId parameter! We need eventId here!
+      if (!empty($form->_eventId)) {
+        $regIntegration = new CRM_Revent_EventRegistrationIntegration($formName, $form, $form->_eventId);
+      } else {
+        $regIntegration = new CRM_Revent_EventRegistrationIntegration($formName, $form);
+      }
+      $regIntegration ->buildFormHook();
+      break;
+    default:
+      break;
+  }
+}
