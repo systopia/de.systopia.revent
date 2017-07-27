@@ -23,7 +23,7 @@
             {foreach from=$group.fields item=field}
                 <table class="form-layout-compressed">
                     <tr>
-                        <td><i><b>{$field.name}</b></i></td>
+                        <td><i><b>{$field.title}</b></i></td>
                     </tr>
                     {assign var="option_condition" value="no"}
                     {foreach from=$field.languages item=language}
@@ -32,14 +32,16 @@
                                 <div class="crm-section">
                                     {* title form element*}
                                     {capture assign=title}title__{$group.name}__{$field.name}__{$language}{/capture}
-                                    {$form.$title.html} {$language}
+                                    Titel
+                                    {$form.$title.html} <i>{$language}</i>
                                 </div>
                             </td>
                             <td>
                                 <div class="crm-section">
                                     {* description form element*}
                                     {capture assign=description}description__{$group.name}__{$field.name}__{$language}{/capture}
-                                    {$form.$description.html} {$language}
+                                    Beschreibung
+                                    {$form.$description.html} <i>{$language}</i>
                                 </div>
                             </td>
                             {if $option_condition eq "no"}
@@ -61,23 +63,25 @@
                     {/foreach} {* languages *}
                 </table>
                 {* get number of options for this field, then create the form elements for each language*}
-                <tr>
-                    <td><i><b>{$field.name} Options</b></i></td>
-                </tr>
-                <table class="form-layout-compressed">
-                    {foreach from=$field.option_count item=option}
-                        <tr>
-                            {foreach from=$field.languages item=language}
-                                <td>
-                                    <div>
-                                        {capture assign=opt}option__{$group.name}__{$field.name}__{$option}__{$language}{/capture}
-                                        {$form.$opt.html} {$language}
-                                    </div>
-                                </td>
-                            {/foreach} {* languages *}
-                        </tr>
-                    {/foreach} {* options *}
-                </table>
+                {if count($field.option_count) gt 0}
+                    <tr>
+                        <td><i><b>{$field.title} Options</b></i></td>
+                    </tr>
+                    <table class="form-layout-compressed">
+                        {foreach from=$field.option_count item=option}
+                            <tr>
+                                {foreach from=$field.languages item=language}
+                                    <td>
+                                        <div>
+                                            {capture assign=opt}option__{$group.name}__{$field.name}__{$option}__{$language}{/capture}
+                                            {$form.$opt.html} <i>{$language}</i>
+                                        </div>
+                                    </td>
+                                {/foreach} {* languages *}
+                            </tr>
+                        {/foreach} {* options *}
+                    </table>
+                {/if}
             {/foreach} {* fields *}
         </div>
     </div>
