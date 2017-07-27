@@ -228,22 +228,31 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       $this->add(
         'text',
         "title__{$group_title}__{$field_title}__{$language}",
-        'title'
+        ts('title', array('domain' => 'de.systopia.revent')),
+        array(
+          'class' => 'huge'
+        )
       );
       $this->add(
         'text',
         "description__{$group_title}__{$field_title}__{$language}",
-        'description'
+        ts('description', array('domain' => 'de.systopia.revent')),
+        array(
+          'class' => 'huge'
+        )
       );
       $this->add(
         'advcheckbox',
         "required__{$group_title}__{$field_title}__{$language}",
-        ts('required')
+        ts('Required', array('domain' => 'de.systopia.revent'))
       );
       $this->add(
         'text',
         "weight__{$group_title}__{$field_title}__{$language}",
-        ts('weight')
+        ts('Position', array('domain' => 'de.systopia.revent')),
+        array(
+          'size' => '2'
+        )
       );
     }
 
@@ -251,7 +260,10 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       $this->add(
         'text',
         "option__{$group_title}__{$field_title}__{$option}__{$language}",
-        'option'
+        ts('option', array('domain' => 'de.systopia.revent')),
+        array(
+          'class' => 'huge'
+        )
       );
       $this->default_data["option__{$group_title}__{$field_title}__{$option}__{$language}"] = $default_value;
     }
