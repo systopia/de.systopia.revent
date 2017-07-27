@@ -27,9 +27,7 @@ class CRM_Revent_EventRegistrationIntegration {
   public function __construct($formName = NULL, &$form = NULL, $eid = NULL) {
     $this->form = $form;
     $this->formName = $formName;
-    if ($eid != NULL) {
-      $this->eid = $eid;
-    }
+    $this->eid = $form->_entityId;
   }
 
   public function buildFormHook() {
@@ -38,6 +36,35 @@ class CRM_Revent_EventRegistrationIntegration {
     //      --> assign this to form then
     // - create link to registration customisation page and assign it in form
 
+    // get customisation id
+    $customisation_field = civicrm_api3('CustomField', 'getsingle', array(
+      'sequential' => 1,
+      'label' => "Registration Customisations",
+    ));
+    if ($customisation_field['is_error']) {
+      error_log("Couldn't find custom ID for label 'Registration Customisation'. This shouldn't happen. Check if all configuration files are installed.");
+      return;
+    }
+    $this->form->assign("registration_customisation_field", "custom_{$customisation_field['id']}_");
+
+    // get field choice id
+    $registration_field = civicrm_api3('CustomField', 'getsingle', array(
+      'sequential' => 1,
+      'label' => "Registration Fields",
+    ));
+    if ($registration_field['is_error']) {
+      error_log("Couldn't find custom ID for label 'Registration Customisation'. This shouldn't happen. Check if all configuration files are installed.");
+      return;
+    }
+    $this->form->assign("registration_fields", "custom_{$registration_field['id']}_");
+
+
+    $args = array(
+      'eid'     => $this->eid,
+      'reset'   =>  '1',
+    );
+    $registration_customisation_link = CRM_Utils_System::url("civicrm/revent/customisation", $args, TRUE);
+    $this->form->assign("form_link", $registration_customisation_link);
 
     // add template path for these fields
     CRM_Core_Region::instance('page-body')->add(array(

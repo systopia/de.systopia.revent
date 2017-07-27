@@ -20,3 +20,21 @@
     --> get name variable
     --> add link (probably in table)
 *}
+
+<div id="registration_form_link">
+    <a href={$form_link} target="_blank">registration customisation edit</a>
+</div>
+
+
+<script type="text/javascript">
+    // get variables
+    var customizations_field = "{$registration_customisation_field}";
+    var group_selector = "{$registration_fields}";
+
+    {literal}
+
+    cj("label[for^='" + customizations_field + "']").parent().parent().hide();
+    cj("#registration_form_link").wrap('<tr id="registration_form_link_tr"><td colspan="2">');
+    cj("#registration_form_link_tr").insertAfter(cj("label[for^='" + group_selector +"']").parent().parent());
+</script>
+{/literal}

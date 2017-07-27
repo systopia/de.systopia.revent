@@ -162,12 +162,7 @@ function revent_civicrm_buildForm($formName, &$form) {
   switch ($formName) {
     case 'CRM_Custom_Form_CustomDataByType':
       require_once 'CRM/Revent/EventRegistrationIntegration.php';
-      // TODO check eventId parameter! We need eventId here!
-      if (!empty($form->_eventId)) {
-        $regIntegration = new CRM_Revent_EventRegistrationIntegration($formName, $form, $form->_eventId);
-      } else {
-        $regIntegration = new CRM_Revent_EventRegistrationIntegration($formName, $form);
-      }
+      $regIntegration = new CRM_Revent_EventRegistrationIntegration($formName, $form);
       $regIntegration ->buildFormHook();
       break;
     default:
