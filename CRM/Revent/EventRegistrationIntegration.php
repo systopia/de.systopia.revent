@@ -37,6 +37,11 @@ class CRM_Revent_EventRegistrationIntegration {
   }
 
   public function buildFormHook() {
+
+    if (empty($this->eid)) {
+      // nothing to do here
+      return;
+    }
     // get customisation id
     $customisation_field = civicrm_api3('CustomField', 'getsingle', array(
       'sequential' => 1,
