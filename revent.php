@@ -152,3 +152,39 @@ function revent_civicrm_angularModules(&$angularModules) {
 function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _revent_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
+
+/**
+ * Implements hook_civicrm_buildForm()
+ * @param $formName
+ * @param $form
+ */
+function revent_civicrm_buildForm($formName, &$form) {
+  switch ($formName) {
+    case 'CRM_Custom_Form_CustomDataByType':
+      require_once 'CRM/Revent/EventRegistrationIntegration.php';
+      $regIntegration = new CRM_Revent_EventRegistrationIntegration($formName, $form);
+      $regIntegration ->buildFormHook();
+      break;
+    default:
+      break;
+  }
+}
+
+/**
+ * implements hook_civicrm_pageRun( &$page )
+ * @param $page
+ */
+function revent_civicrm_pageRun( &$page ) {
+  $name = $page->getVar('_name');
+  $eid = $page->getVar('_id');
+  if (empty($name) || empty($eid)) {
+    error_log("Couldn't determine eventId or page name. Aborting");
+    return;
+  }
+  if ($name == "CRM_Event_Page_EventInfo") {
+    // FixME? seems dirty
+    $tmpform = "";
+    $regIntegration = new CRM_Revent_EventRegistrationIntegration(NULL, $tmpform, $eid, $page);
+    $regIntegration->pageRunHook();
+  }
+}
