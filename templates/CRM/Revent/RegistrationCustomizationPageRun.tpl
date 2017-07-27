@@ -13,31 +13,24 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
-
-{* TODO: get link and custom group name
-    --> hide Registration Customisation td in table
-        e.g. [custom_field-row custom_19_4-row]
-    --> get name variable
-    --> add link (probably in table)
-*}
-
 <div id="registration_form_link">
     <a href={$form_link} target="_blank">registration customisation edit</a>
 </div>
 
 
 <script type="text/javascript">
-    // get variables
-    var customizations_field = "{$registration_customisation_field}";
-    var group_selector = "{$registration_fields}";
 
     {literal}
 
-    cj("label[for^='" + customizations_field + "']").parent().parent().hide();
+    cj('*').filter(function() {
+        return cj(this).text() === 'Registration Customisations';
+    }).closest('table').hide();
+
     cj("#registration_form_link").wrap('<tr id="registration_form_link_tr"><td colspan="2">');
-    cj("#registration_form_link_tr").insertAfter(cj("label[for^='" + group_selector +"']").parent().parent());
 
+    cj("#registration_form_link_tr").insertAfter(cj('*').filter(function() {
+        return cj(this).text() === 'Registration Fields';
+    }).closest('table'));
 
-//    cj(":contains('Registration Customisations')").last().closest('table')
 </script>
 {/literal}

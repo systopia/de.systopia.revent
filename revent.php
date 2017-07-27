@@ -169,3 +169,22 @@ function revent_civicrm_buildForm($formName, &$form) {
       break;
   }
 }
+
+/**
+ * implements hook_civicrm_pageRun( &$page )
+ * @param $page
+ */
+function revent_civicrm_pageRun( &$page ) {
+  $name = $page->getVar('_name');
+  $eid = $page->getVar('_id');
+  if (empty($name) || empty($eid)) {
+    error_log("Couldn't determine eventId or page name. Aborting");
+    return;
+  }
+  if ($name == "CRM_Event_Page_EventInfo") {
+    // FixME? seems dirty
+    $tmpform = "";
+    $regIntegration = new CRM_Revent_EventRegistrationIntegration(NULL, $tmpform, $eid, $page);
+    $regIntegration->pageRunHook();
+  }
+}

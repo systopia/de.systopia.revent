@@ -20,22 +20,23 @@ class CRM_Revent_EventRegistrationIntegration {
   private $formName       = NULL;
   private $form           = NULL;
   private $eid            = NULL;
+  private $page           = NULL;
 
   /**
    * CRM_Uimods_UserClearance constructor.
    */
-  public function __construct($formName = NULL, &$form = NULL, $eid = NULL) {
+  public function __construct($formName = NULL, &$form = NULL, $eid = NULL, &$page = NULL) {
     $this->form = $form;
     $this->formName = $formName;
-    $this->eid = $form->_entityId;
+    if (empty($eid)) {
+      $this->eid = $form->_entityId;
+    } else {
+      $this->eid = $eid;
+    }
+    $this->page = $page;
   }
 
   public function buildFormHook() {
-    // TODO:
-    // - get custom group name for Registration Customisation (e.g. custom_14_4)
-    //      --> assign this to form then
-    // - create link to registration customisation page and assign it in form
-
     // get customisation id
     $customisation_field = civicrm_api3('CustomField', 'getsingle', array(
       'sequential' => 1,
@@ -69,6 +70,20 @@ class CRM_Revent_EventRegistrationIntegration {
     // add template path for these fields
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/EventRegistrationIntegration.tpl"
+    ));
+  }
+
+  public function pageRunHook() {
+
+    $args = array(
+      'eid'     => $this->eid,
+      'reset'   =>  '1',
+    );
+    $registration_customisation_link = CRM_Utils_System::url("civicrm/revent/customisation", $args, TRUE);
+    $this->page->assign("form_link", $registration_customisation_link);
+
+    CRM_Core_Region::instance('page-body')->add(array(
+      'template' => "CRM/Revent/RegistrationCustomizationPageRun.tpl"
     ));
   }
 
