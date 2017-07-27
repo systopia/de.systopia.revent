@@ -14,60 +14,64 @@
 +-------------------------------------------------------*}
 
 {foreach from=$groups item=group}
-    <div class="crm-accordion-wrapper crm-accordion_title-accordion crm-accordion-processed"
+    <div class="crm-accordion-wrapper crm-accordion_title-accordion crm-accordion-processed crm-form-block"
          id="registration_customisation">
         <div class="crm-accordion-header">
-            {$group.name}
+            {$group.title}
         </div>
-        <div class="crm-accordion-body">
+        <div class="crm-accordion-body crm-form-block">
             {foreach from=$group.fields item=field}
-                <table class="form-layout-compressed">
-                    <tr>
-                        <td><i><b>{$field.title}</b></i></td>
-                    </tr>
-                    {assign var="option_condition" value="no"}
-                    {foreach from=$field.languages item=language}
-                        <tr class="line_{$group.name}_{$field.name}_{$language}">
-                            <td>
-                                <div class="crm-section">
-                                    {* title form element*}
-                                    {capture assign=title}title__{$group.name}__{$field.name}__{$language}{/capture}
-                                    Titel
-                                    {$form.$title.html} <i>{$language}</i>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="crm-section">
-                                    {* description form element*}
-                                    {capture assign=description}description__{$group.name}__{$field.name}__{$language}{/capture}
-                                    Beschreibung
-                                    {$form.$description.html} <i>{$language}</i>
-                                </div>
-                            </td>
-                            {if $option_condition eq "no"}
-                                {assign var="option_condition" value="yes"}
-                                <td>
-                                    <div class="crm-section">
-                                        {capture assign=required}required__{$group.name}__{$field.name}__{$language}{/capture}
-                                        {$form.$required.label} {$form.$required.html}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="crm-section">
-                                        {capture assign=weight}weight__{$group.name}__{$field.name}__{$language}{/capture}
-                                        {$form.$weight.label} {$form.$weight.html}
-                                    </div>
-                                </td>
-                            {/if}
+                <div class="crm-form-block crm-">
+                    <table class="form-layout-compressed">
+                        <tr>
+                            <td><i><b>{$field.title}</b></i></td>
                         </tr>
-                    {/foreach} {* languages *}
-                </table>
+                        {assign var="option_condition" value="no"}
+                        {foreach from=$field.languages item=language}
+                            <tr class="line_{$group.name}_{$field.name}_{$language}">
+                                <td>
+                                    <div class="crm-section">
+                                        {* title form element*}
+                                        {capture assign=title}title__{$group.name}__{$field.name}__{$language}{/capture}
+                                        Titel <i>({$language})</i>
+                                        {$form.$title.html}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="crm-section">
+                                        {* description form element*}
+                                        {capture assign=description}description__{$group.name}__{$field.name}__{$language}{/capture}
+                                        Beschreibung <i>({$language})</i>
+                                        {$form.$description.html}
+                                    </div>
+                                </td>
+                                {if $option_condition eq "no"}
+                                    {assign var="option_condition" value="yes"}
+                                    <td>
+                                        <div class="crm-section">
+                                            {capture assign=required}required__{$group.name}__{$field.name}__{$language}{/capture}
+                                            {$form.$required.label} {$form.$required.html}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="crm-section">
+                                            {capture assign=weight}weight__{$group.name}__{$field.name}__{$language}{/capture}
+                                            {$form.$weight.label} {$form.$weight.html}
+                                        </div>
+                                    </td>
+                                {/if}
+                            </tr>
+                        {/foreach} {* languages *}
+                    </table>
+                </div>
                 {* get number of options for this field, then create the form elements for each language*}
                 {if count($field.option_count) gt 0}
                     <tr>
-                        <td><i><b>{$field.title} Options</b></i></td>
+                        <div style="text-indent:80px;">
+                            <td><i><b>{$field.title} Options</b></i></td>
+                        </div>
                     </tr>
-                    <table class="form-layout-compressed">
+                    <table class="form-layout-compressed" style="text-indent:80px;">
                         {foreach from=$field.option_count item=option}
                             <tr>
                                 {foreach from=$field.languages item=language}
