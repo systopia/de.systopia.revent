@@ -46,6 +46,11 @@ class CRM_Revent_RegistrationFields {
     $rendered_fields = array();
     $rendered_groups = array();
 
+    if (empty($this->event['remote_event_registration.registration_fields'])) {
+      error_log("no registration fields available, aborting");
+      return array();
+    }
+
     // step 1: render all groups
     $groups = $this->event['remote_event_registration.registration_fields'];
     foreach ($groups as $group_id) {
@@ -130,7 +135,12 @@ class CRM_Revent_RegistrationFields {
    * Update the customisation data
    */
   protected function applyCustomisation(&$groups, &$fields) {
-    $customisation_raw = $this->event['remote_event_registration.registration_customisations'];
+    if (isset($this->event['remote_event_registration.registration_customisations'])) {
+      $customisation_raw = $this->event['remote_event_registration.registration_customisations'];
+    } else {
+      // nothing to do here, we don't have customizations
+      return;
+    }
     $customisation = json_decode($customisation_raw, TRUE);
 
     // apply group data

@@ -39,6 +39,11 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $this->registrationRenderer = new CRM_Revent_RegistrationFields(array('id' => $event_id));
     $data = $this->registrationRenderer->renderEventRegistrationForm();
 
+    if (empty($data['fields']) || empty($data['groups'])) {
+      // nothing to do here for us, call parent render and quit
+      parent::buildQuickForm();
+      return;
+    }
     // sort after group weight
     usort($data['groups'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
     // put fields to corrosponding sorted groups

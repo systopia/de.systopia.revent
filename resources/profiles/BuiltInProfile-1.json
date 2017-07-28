@@ -1,7 +1,7 @@
 {
   "title": "Adressdaten",
   "name": "BuiltInProfile-1",
-  "weight": -10,
+  "weight": 3,
   "fields": {
     "job_title": {
       "group": "BuiltInProfile-1",
