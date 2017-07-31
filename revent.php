@@ -181,7 +181,7 @@ function revent_civicrm_pageRun( &$page ) {
   $name = $page->getVar('_name');
   $eid = $page->getVar('_id');
   if (empty($name) || empty($eid)) {
-    error_log("Couldn't determine eventId or page name. Aborting");
+    // EVERY TIME? error_log("Couldn't determine eventId or page name. Aborting");
     return;
   }
   if ($name == "CRM_Event_Page_EventInfo") {

@@ -43,16 +43,25 @@ class CRM_Revent_RegistrationFieldSynchronisation {
 
     // first: iterate through wanted entries
     foreach ($desired_list as $key => $value) {
+      $value['is_active'] = 1; // all fields found are active
+
       if (isset($current_list[$key])) {
-        // enable the entry if not enabled
         $current_value = $current_list[$key];
-        if (!$current_value['is_active']) {
+        unset($current_list[$key]); // already exists
+        // see if there is a difference
+        if (   $current_value['label']     != $value['label']
+            || $current_value['weight']    != $value['weight']
+            || $current_value['is_active'] != $value['is_active']) {
+
+          // an update is required:
           civicrm_api3('OptionValue', 'create', array(
             'id'        => $current_value['id'],
-            'is_active' => 1));
+            'label'     => $value['label'],
+            'weight'    => $value['weight'],
+            'is_active' => $value['is_active']));
         }
-        unset($current_list[$key]);
       } else {
+        // create a new one
         $value['option_group_id'] = 'remote_registration_fields';
         civicrm_api3('OptionValue', 'create', $value);
       }
