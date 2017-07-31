@@ -21,7 +21,7 @@ require_once 'revent.civix.php';
 function revent_civicrm_post($op, $objectName, $objectId, &$objectRef) {
   if ($objectName == 'CustomGroup') {
     if ($op == 'create' || $op == 'edit' || $op == 'delete') {
-      CRM_Revent_RegistrationFields::synchroniseFields();
+      CRM_Revent_RegistrationFieldSynchronisation::synchroniseFields();
     }
   }
 }
@@ -87,7 +87,7 @@ function revent_civicrm_enable() {
   $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_remote_event_registration.json');
 
   require_once 'CRM/Revent/RegistrationFields.php';
-  CRM_Revent_RegistrationFields::synchroniseFields();
+  CRM_Revent_RegistrationFieldSynchronisation::synchroniseFields();
 }
 
 /**
