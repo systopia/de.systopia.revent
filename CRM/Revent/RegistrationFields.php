@@ -143,18 +143,20 @@ class CRM_Revent_RegistrationFields {
     $customisation = json_decode($customisation_raw, TRUE);
 
     // apply group data
-    foreach ($customisation['groups'] as $group_name => $group_data) {
-      foreach ($group_data as $key => $value) {
-        $groups[$group_name][$key] = $value;
-        // error_log("OVERWRITE groups[$group_name][$key] with '$value'");
+    foreach ($groups as $group_name => $group_data) {
+      if (is_array($customisation['groups'][$group_name])) {
+        foreach ($customisation['groups'][$group_name] as $key => $value) {
+          $groups[$group_name][$key] = $value;
+        }
       }
     }
 
     // apply field data
-    foreach ($customisation['fields'] as $field_name => $field_data) {
-      foreach ($field_data as $key => $value) {
-        $fields[$field_name][$key] = $value;
-        // error_log("OVERWRITE fields[$field_name][$key] with '$value'");
+    foreach ($fields as $field_name => $field_data) {
+      if (is_array($customisation['fields'][$field_name])) {
+        foreach ($customisation['fields'][$field_name] as $key => $value) {
+          $fields[$field_name][$key] = $value;
+        }
       }
     }
   }
