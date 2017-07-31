@@ -144,7 +144,7 @@ class CRM_Revent_RegistrationFields {
 
     // apply group data
     foreach ($groups as $group_name => $group_data) {
-      if (is_array($customisation['groups'][$group_name])) {
+      if (isset($customisation['groups'][$group_name]) && is_array($customisation['groups'][$group_name])) {
         foreach ($customisation['groups'][$group_name] as $key => $value) {
           $groups[$group_name][$key] = $value;
         }
@@ -153,7 +153,7 @@ class CRM_Revent_RegistrationFields {
 
     // apply field data
     foreach ($fields as $field_name => $field_data) {
-      if (is_array($customisation['fields'][$field_name])) {
+      if (isset($customisation['fields'][$field_name]) && is_array($customisation['fields'][$field_name])) {
         foreach ($customisation['fields'][$field_name] as $key => $value) {
           $fields[$field_name][$key] = $value;
         }
