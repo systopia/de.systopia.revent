@@ -33,6 +33,8 @@ function civicrm_api3_remote_registration_register($params) {
     return civicrm_api3_create_error("You have to provide either 'event_id' or 'event_external_identifier'");
   }
 
+  // run the search
+  CRM_Revent_CustomData::resolveCustomFields($event_search);
   $event = civicrm_api3('Event', 'get', $event_search + array(
     'options.limit' => 2,
     'return'        => 'id'));
