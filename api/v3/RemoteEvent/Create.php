@@ -70,7 +70,7 @@ function _civicrm_api3_remote_event_create_spec(&$params) {
   $params['start_date'] = array(
     'name'         => 'start_date',
     'api.required' => 1,
-    'type'         => CRM_Utils_Type::T_DATE,
+    'type'         => CRM_Utils_Type::T_TIMESTAMP,
     'title'        => 'Remote Event start date',
   );
   $params['title'] = array(
