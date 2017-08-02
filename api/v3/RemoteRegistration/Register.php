@@ -50,7 +50,19 @@ function civicrm_api3_remote_registration_register($params) {
 
   // create participant
   CRM_Revent_CustomData::resolveCustomFields($params);
-  return civicrm_api3('Participant', 'create', $params);
+  $participant = civicrm_api3('Participant', 'create', $params);
+
+  // get all participant data
+  $participant = civicrm_api3('Participant', 'getsingle', array(
+    'id' => $participant['id']));
+
+  // add contact hash
+  $contact_data = civicrm_api3('Contact', 'getsingle', array(
+    'id'     => $participant['contact_id'],
+    'return' => 'hash'));
+  $participant['contact_hash'] = $contact_data['hash'];
+
+  return $participant;
 }
 
 /**
