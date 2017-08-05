@@ -18,6 +18,8 @@
  * Get an event based on the give data
  */
 function civicrm_api3_remote_group_unsubscribe($params) {
+  CRM_Revent_CustomData::unREST($params);
+
   // copied from civicrm_api3_mailing_event_unsubscribe_create
   $job   = $params['job_id'];
   $queue = $params['event_queue_id'];

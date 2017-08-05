@@ -14,7 +14,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('CUSTOM_DATA_HELPER_VERSION', '0.3.5.dev');
+define('CUSTOM_DATA_HELPER_VERSION', '0.3.6.dev');
 define('CUSTOM_DATA_HELPER_LOG_LEVEL', 1);
 
 // log levels
@@ -481,9 +481,9 @@ class CRM_Revent_CustomData {
   }
 
   /**
-   * Get the internal name of a custom gruop
+   * Get a mapping: custom_group_id => custom_group_name
    */
-  public static function getGroupName($custom_group_id) {
+  public static function getGroup2Name() {
     if (self::$custom_group2name === NULL) {
       // load groups
       $group_search = civicrm_api3('CustomGroup', 'get', array(
@@ -496,6 +496,45 @@ class CRM_Revent_CustomData {
       }
     }
 
-    return self::$custom_group2name[$custom_group_id];
+    return self::$custom_group2name;
+  }
+
+  /**
+   * Get the internal name of a custom gruop
+   */
+  public static function getGroupName($custom_group_id) {
+    $group2name = self::getGroup2Name();
+    return $group2name[$custom_group_id];
+  }
+
+  /**
+   * If an API call is received via REST, the notation
+   * used by this tool:
+   *   "<custom_group_name>.<custom_field_name>"
+   * can be mangled to
+   *   "<custom_group_name>_<custom_field_name>"
+   *
+   * This function reverses this in the array itself
+   *
+   * @todo make it more efficient?
+   *
+   * @param $params      the parameter array as used by the API
+   * @param $group_names list of group names to process. Default is: all
+   */
+  public static function unREST(&$params, $group_names = NULL) {
+    if ($group_names == NULL || !is_array($group_names)) {
+      $groups = self::getGroup2Name();
+      $group_names = array_values($groups);
+    }
+
+    // look for all group names in all variables
+    foreach ($group_names as $group_name) {
+      foreach (array_keys($params) as $key) {
+        $new_key = preg_replace("#^{$group_name}_#", "{$group_name}.", $key);
+        if ($new_key != $key) {
+          $params[$new_key] = $params[$key];
+        }
+      }
+    }
   }
 }
