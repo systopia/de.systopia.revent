@@ -18,6 +18,7 @@
  * List all eligible groups
  */
 function civicrm_api3_remote_group_list($params) {
+  CRM_Revent_APIProcessor::preProcess($params);
   $result = array();
 
   // TODO: restrict to eligible groups

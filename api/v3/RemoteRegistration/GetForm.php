@@ -19,6 +19,8 @@
  *  the given event
  */
 function civicrm_api3_remote_registration_get_form($params) {
+  CRM_Revent_APIProcessor::preProcess($params);
+
   // first: load the  event
   $event_search = array();
   if (!empty($params['event_id'])) {

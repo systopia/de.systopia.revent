@@ -18,7 +18,8 @@
  * Create/update a Remote Event with the provided data
  */
 function civicrm_api3_remote_event_create($params) {
-  CRM_Revent_CustomData::unREST($params);
+  CRM_Revent_APIProcessor::preProcess($params);
+
   $params['remote_event_connection.external_identifier'] = $params['external_identifier'];
   unset($params['external_identifier']);
 
