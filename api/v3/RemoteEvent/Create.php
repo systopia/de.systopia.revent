@@ -89,13 +89,13 @@ function _civicrm_api3_remote_event_create_spec(&$params) {
   );
   $params['remote_event_connection.edit_link'] = array(
     'name'         => 'remote_event_connection.edit_link',
-    'api.required' => 1,
+    'api.required' => 0,
     'type'         => CRM_Utils_Type::T_STRING,
     'title'        => 'Remote Event Edit Link',
   );
   $params['remote_event_connection.registration_link'] = array(
     'name'         => 'remote_event_connection.registration_link',
-    'api.required' => 1,
+    'api.required' => 0,
     'type'         => CRM_Utils_Type::T_STRING,
     'title'        => 'Remote Event Registration Link',
   );
