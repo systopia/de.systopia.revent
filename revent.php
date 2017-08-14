@@ -3,6 +3,7 @@
 | SYSTOPIA REMOTE EVENT REGISTRATION                     |
 | Copyright (C) 2017 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
+| Author: P. Batroff (batroff@systopia.de)               |
 +--------------------------------------------------------+
 | This program is released as free software under the    |
 | Affero GPL license. You can redistribute it and/or     |
@@ -167,6 +168,10 @@ function revent_civicrm_buildForm($formName, &$form) {
       require_once 'CRM/Revent/EventRegistrationIntegration.php';
       $regIntegration = new CRM_Revent_EventRegistrationIntegration($formName, $form);
       $regIntegration ->buildFormHook();
+      break;
+    case 'CRM_Event_Form_ManageEvent_EventInfo':
+      require_once 'CRM/Revent/EventManagementForm.php';
+      CRM_Uimods_EventManagementForm::buildFormHook();
       break;
     default:
       break;
