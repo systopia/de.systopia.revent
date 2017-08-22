@@ -163,6 +163,7 @@ function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * @param $form
  */
 function revent_civicrm_buildForm($formName, &$form) {
+  error_log("debug Form: {$formName}");
   switch ($formName) {
     case 'CRM_Custom_Form_CustomDataByType':
       require_once 'CRM/Revent/EventRegistrationIntegration.php';
@@ -171,7 +172,11 @@ function revent_civicrm_buildForm($formName, &$form) {
       break;
     case 'CRM_Event_Form_ManageEvent_EventInfo':
       require_once 'CRM/Revent/EventManagementForm.php';
-      CRM_Uimods_EventManagementForm::buildFormHook();
+      CRM_Revent_EventManagementForm::buildFormHook();
+      break;
+    case 'CRM_Event_Form_Search':
+      require_once 'CRM/Revent/EventDashboardForm.php';
+      CRM_Revent_EventDashboardForm::buildFormHook();
       break;
     default:
       break;
@@ -185,6 +190,8 @@ function revent_civicrm_buildForm($formName, &$form) {
 function revent_civicrm_pageRun( &$page ) {
   $name = $page->getVar('_name');
   $eid = $page->getVar('_id');
+  error_log("debug page: {$name}");
+
   if (empty($name) || empty($eid)) {
     // EVERY TIME? error_log("Couldn't determine eventId or page name. Aborting");
     return;
@@ -194,5 +201,22 @@ function revent_civicrm_pageRun( &$page ) {
     $tmpform = "";
     $regIntegration = new CRM_Revent_EventRegistrationIntegration(NULL, $tmpform, $eid, $page);
     $regIntegration->pageRunHook();
+  }
+}
+
+/**
+ * @param $op
+ * @param $objectName
+ * @param $objectId
+ * @param $links
+ * @param $mask
+ * @param $values
+ */
+function revent_civicrm_links($op, $objectName, $objectId, &$links, &$mask, &$values) {
+  error_log("Debug links, Op: " . $op . "; Object Name: " . $objectName . "; ObjectId: {$objectId}");
+  if ($op == 'participant.selector.row' && $objectName == 'Participant') {
+//    $links[] = array(
+//      'name' => ts('')
+//    );
   }
 }
