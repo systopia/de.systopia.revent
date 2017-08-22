@@ -28,7 +28,7 @@ function civicrm_api3_remote_event_create($params) {
     $event_types = civicrm_api3('OptionValue', 'get', array(
       'option_group_id' => 'event_type',
       'return'          => 'id',
-      'options.limit'   => 2));
+      'option.limit'    => 2));
     if ($event_types['id']) {
       $params['event_type_id'] = $event_types['id'];
     }
@@ -45,7 +45,7 @@ function civicrm_api3_remote_event_create($params) {
     $existing_query = array(
       'remote_event_connection.external_identifier' => $params['remote_event_connection.external_identifier'],
       'return'                                      => 'id',
-      'options.limit'                               => 2);
+      'option.limit'                                => 2);
     CRM_Revent_CustomData::resolveCustomFields($existing_query);
     $existing_event = civicrm_api3('Event', 'get', $existing_query);
     if (!empty($existing_event['id'])) {

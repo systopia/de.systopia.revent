@@ -38,8 +38,8 @@ function civicrm_api3_remote_registration_register($params) {
   // run the search
   CRM_Revent_CustomData::resolveCustomFields($event_search);
   $event = civicrm_api3('Event', 'get', $event_search + array(
-    'options.limit' => 2,
-    'return'        => 'id'));
+    'option.limit' => 2,
+    'return'       => 'id'));
   if ($event['id']) {
     $params['event_id'] = $event['id'];
   } else {

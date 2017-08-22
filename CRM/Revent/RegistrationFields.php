@@ -355,7 +355,7 @@ class CRM_Revent_RegistrationFields {
     $options = array();
     $option_query = civicrm_api3('OptionValue', 'get', array(
       'option_group_id' => $custom_field['option_group_id'],
-      'options.limit'   => 0,
+      'option.limit'    => 0,
       'is_active'       => 1,
       'return'          => 'value,label'));
     foreach ($option_query['values'] as $option_value) {

@@ -22,8 +22,7 @@ function civicrm_api3_remote_group_list($params) {
   $result = array();
 
   // TODO: restrict to eligible groups
-  $result = civicrm_api3('Group', 'get', array(
-    'options.limit' => 0));
+  $result = civicrm_api3('Group', 'get', array('option.limit' => 0));
   $groups = $result['values'];
 
   // replace custom fields with labels
