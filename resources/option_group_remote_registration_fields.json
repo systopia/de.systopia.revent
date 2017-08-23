@@ -5,14 +5,5 @@
   "title": "Registration FieldSets",
   "name": "remote_registration_fields",
   "_values": [
-    {
-      "_lookup": ["name"],
-      "_translate": ["label"],
-      "name": "simple_profile",
-      "label": "Simple Profile",
-      "filter": "0",
-      "is_reserved": "0",
-      "is_active": "1"
-    }
   ]
 }

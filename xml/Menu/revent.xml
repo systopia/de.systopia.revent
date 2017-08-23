@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/revent/customisation</path>
     <page_callback>CRM_Revent_Form_RegistrationCustomisation</page_callback>
-    <title>RegistrationCustomisation</title>
+    <title>Registration Customisation</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>

@@ -27,6 +27,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   protected $replacement_index      = NULL;
 
   public function buildQuickForm() {
+    CRM_Utils_System::setTitle(ts('Registration Customisation', array('domain' => 'de.systopia.revent')));
+
     // get event ID
     $event_id = CRM_Utils_Request::retrieve('eid', 'Positive', $this);
     if (!$event_id) {
@@ -123,7 +125,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $this->addButtons(array(
       array(
         'type' => 'submit',
-        'name' => ts('Submit'),
+        'name' => ts('Submit', array('domain' => 'de.systopia.revent')),
         'isDefault' => TRUE,
       ),
     ));

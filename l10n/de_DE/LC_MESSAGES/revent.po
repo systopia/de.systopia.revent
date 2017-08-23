@@ -1,0 +1,89 @@
+# Copyright CiviCRM LLC (c) 2004-2015
+# This file is distributed under the same license as the CiviCRM package.
+# If you contribute heavily to a translation and deem your work copyrightable,
+# make sure you license it to CiviCRM LLC under Academic Free License 3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: de.systopia.revent\n"
+"POT-Creation-Date: 2017-08-23 14:43+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
+"Language-Team: SYSTOPIA <info@systopia.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: resources/custom_group_remote_event_connection.json
+msgid "Remote Event Connection"
+msgstr "Verbindung zur Webseite"
+
+#: resources/custom_group_remote_event_connection.json
+msgid "External Identifier"
+msgstr "Externe ID"
+
+#: resources/custom_group_remote_event_connection.json
+msgid "Edit Link"
+msgstr "Bearbeitungslink"
+
+#: resources/custom_group_remote_event_connection.json
+msgid "Registration Link"
+msgstr "Anmeldelink"
+
+#: resources/option_group_remote_registration_fields.json
+msgid "Registration FieldSets"
+msgstr "Anmeldeprofile"
+
+#: resources/custom_group_remote_event_registration.json
+msgid "Remote Event Registration"
+msgstr "Onlineanmeldung"
+
+#: resources/custom_group_remote_event_registration.json
+msgid "Registration Fields"
+msgstr "Anmeldeprofile"
+
+#: resources/custom_group_remote_event_registration.json
+msgid "Online Registration Enabled"
+msgstr "Online-Anmeldung"
+
+#: resources/custom_group_remote_event_registration.json
+msgid "Requires Manual Approval"
+msgstr "Manuelle Freigabe erforderlich"
+
+#: resources/custom_group_remote_event_registration.json
+msgid "Registration Customisations"
+msgstr "Anpassungen der Anmeldemaske"
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "Registration Customisation"
+msgstr "Konfiguration Anmeldungsmaske"
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "Submit"
+msgstr "Speichern"
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "title"
+msgstr ""
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "description"
+msgstr ""
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "Required"
+msgstr "Pflicht"
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "Position"
+msgstr "Position"
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "option"
+msgstr ""
+
+#: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
+msgid "Description"
+msgstr "Beschreibung"
+

@@ -41,7 +41,7 @@
                                 <div class="crm-section">
                                     {* description form element*}
                                     {capture assign=description}description__{$group.name}__{$field.name}__{$language}{/capture}
-                                    Beschreibung <i>({$language})</i>
+                                    {ts domain='de.systopia.revent'}Description{/ts} <i>({$language})</i>
                                     {$form.$description.html}
                                 </div>
                             </td>
