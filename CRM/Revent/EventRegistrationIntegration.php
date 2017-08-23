@@ -42,28 +42,15 @@ class CRM_Revent_EventRegistrationIntegration {
       // nothing to do here
       return;
     }
-    // get customisation id
-    $customisation_field = civicrm_api3('CustomField', 'getsingle', array(
-      'sequential' => 1,
-      'label' => "Registration Customisations",
-    ));
-    if ($customisation_field['is_error']) {
-      error_log("Couldn't find custom ID for label 'Registration Customisation'. This shouldn't happen. Check if all configuration files are installed.");
+    // get custom fields
+    $registration_customisation_key = CRM_Revent_CustomData::getCustomFieldKey('remote_event_registration', 'registration_customisations');
+    $registration_fields_key        = CRM_Revent_CustomData::getCustomFieldKey('remote_event_registration', 'registration_fields');
+    if (!$registration_customisation_key || !$registration_fields_key) {
+      error_log("Couldn't find custom fields for registration. This shouldn't happen. Check if all configuration files are installed.");
       return;
     }
-    $this->form->assign("registration_customisation_field", "custom_{$customisation_field['id']}_");
-
-    // get field choice id
-    $registration_field = civicrm_api3('CustomField', 'getsingle', array(
-      'sequential' => 1,
-      'label' => "Registration Fields",
-    ));
-    if ($registration_field['is_error']) {
-      error_log("Couldn't find custom ID for label 'Registration Customisation'. This shouldn't happen. Check if all configuration files are installed.");
-      return;
-    }
-    $this->form->assign("registration_fields", "custom_{$registration_field['id']}_");
-
+    $this->form->assign("registration_customisation_field", "{$registration_customisation_key}_");
+    $this->form->assign("registration_fields", "{$registration_fields_key}_");
 
     $args = array(
       'eid'     => $this->eid,
