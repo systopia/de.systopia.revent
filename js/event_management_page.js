@@ -14,22 +14,22 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-
-var eventIDs = [];
-// iterate over all entries and collect Event-IDs
-cj(".crm-event-id").each(function(){
-    eventIDs.push(cj(this).val("crm-event-id").html());
+// get event IDs
+var idArray = [];
+cj("tr[id^='event-']").each(function(){
+    var pattern = /^event-([0-9].*)/;
+    var tmp = pattern.exec(cj(this).attr("id"));
+    idArray.push(tmp[1]);
 });
 
-for (i = 0; i < eventIDs.length; ++i) {
-    // hide some menu entries
-    cj("ul#panel_info_" + eventIDs[i] + " li a").each(function(){
+// iterate over Events and hide/do stuff
+for (var i = 0; i < idArray.length; ++i) {
+    cj("#panel_info_" + idArray[i] + " li a").each(function() {
         if (cj(this).attr('title') != "Informationen und Einstellungen" && cj(this).attr('title') != 'Erinnerungen planen') {
             cj(this).hide();
         }
     });
-    // add menu entry for
-    var url = "__URL__?eid=" + eventIDs[i] + "&reset=1";
-    var link_entry = '<li><a title="Registration Customisation" class="action-item crm-hover-button no-popup enabled" href="' + url + '" >Registration Customisation</a> </li>'
-    cj("ul#panel_info_" + eventIDs[i]).append(link_entry);
+    var url = "__URL__?eid=" + idArray[i] + "&reset=1";
+    var link_entry = '<li><a title="Registration Customisation" class="action-item crm-hover-button enabled" href="' + url + '" >Registration Customisation</a> </li>'
+    cj("ul#panel_info_" + idArray[i]).append(link_entry);
 }

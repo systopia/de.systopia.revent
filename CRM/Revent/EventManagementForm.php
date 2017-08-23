@@ -28,4 +28,13 @@ class CRM_Revent_EventManagementForm {
     ));
   }
 
+  public static function handleEventPageHook() {
+
+    $script = file_get_contents(__DIR__ . '/../../js/event_management_page.js');
+    $base_url = CRM_Utils_System::url('civicrm/revent/customisation');
+    $script = str_replace('__URL__', $base_url, $script);
+    CRM_Core_Region::instance('page-footer')->add(array(
+      'script' => $script,
+    ));
+  }
 }

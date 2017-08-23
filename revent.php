@@ -192,15 +192,23 @@ function revent_civicrm_pageRun( &$page ) {
   $eid = $page->getVar('_id');
   error_log("debug page: {$name}");
 
-  if (empty($name) || empty($eid)) {
-    // EVERY TIME? error_log("Couldn't determine eventId or page name. Aborting");
-    return;
-  }
-  if ($name == "CRM_Event_Page_EventInfo") {
-    // FixME? seems dirty
-    $tmpform = "";
-    $regIntegration = new CRM_Revent_EventRegistrationIntegration(NULL, $tmpform, $eid, $page);
-    $regIntegration->pageRunHook();
+  switch ($name) {
+    case "CRM_Event_Page_EventInfo":
+      if (empty($name) || empty($eid)) {
+        // EVERY TIME? error_log("Couldn't determine eventId or page name. Aborting");
+        return;
+      }
+      // FixME? seems dirty
+      $tmpform = "";
+      $regIntegration = new CRM_Revent_EventRegistrationIntegration(NULL, $tmpform, $eid, $page);
+      $regIntegration->pageRunHook();
+      break;
+    case "CRM_Event_Page_ManageEvent":
+      require_once 'CRM/Revent/EventManagementForm.php';
+      CRM_Revent_EventManagementForm::handleEventPageHook();
+      break;
+    default:
+      break;
   }
 }
 
@@ -211,10 +219,13 @@ function revent_civicrm_pageRun( &$page ) {
  * @param $links
  * @param $mask
  * @param $values
+ *
+ * // TODO: delete this, currently only for debugging processes
  */
 function revent_civicrm_links($op, $objectName, $objectId, &$links, &$mask, &$values) {
-  error_log("Debug links, Op: " . $op . "; Object Name: " . $objectName . "; ObjectId: {$objectId}");
-  if ($op == 'participant.selector.row' && $objectName == 'Participant') {
+//  error_log("Debug links, Op: " . $op . "; Object Name: " . $objectName . "; ObjectId: {$objectId}");
+  if ($op == 'event.manage.list' && $objectName == 'Event') {
+//    error_log("PBADEBUG: " . json_encode($links));
 //    $links[] = array(
 //      'name' => ts('')
 //    );
