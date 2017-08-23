@@ -23,12 +23,14 @@
     {literal}
 
     cj('*').filter(function() {
+      // TODO: Phil: this probably won't work any more!
         return cj(this).text() === 'Registration Customisations';
     }).closest('table').hide();
 
     cj("#registration_form_link").wrap('<tr id="registration_form_link_tr"><td colspan="2">');
 
     cj("#registration_form_link_tr").insertAfter(cj('*').filter(function() {
+      // TODO: Phil: this probably won't work any more!
         return cj(this).text() === 'Registration Fields';
     }).closest('table'));
 
