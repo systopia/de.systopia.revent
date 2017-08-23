@@ -20,7 +20,7 @@
  * @see https://wiki.civicrm.org/confluence/display/CRMDOC/QuickForm+Reference
  */
 class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
-
+  
   protected $registrationRenderer   = NULL;
   protected $default_data           = NULL;
   protected $data                   = NULL;
@@ -32,7 +32,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     // get event ID
     $event_id = CRM_Utils_Request::retrieve('eid', 'Positive', $this);
     if (!$event_id) {
-      CRM_Core_Error::fatal("No event ID (eid) given.");
+      CRM_Core_Error::fatal(ts('No event ID (eid) given.', array('domain' => 'de.systopia.revent')));
     } else {
       $this->add('hidden', 'eid', $event_id);
     }
@@ -98,11 +98,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     // data is now sorted. create forms now for all groups
     foreach($data['groups'] as $indexed_group) {
       foreach ($indexed_group['fields'] as $indexed_field) {
-//        $this->createFormElements($indexed_group['name'], $indexed_field['name']);
-//        $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], 0);
         foreach ($indexed_field['languages'] as $indexed_language) {
-//          if (!isset($indexed_field['name']))
-          $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_language);
+          $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_field['maxlength'], $indexed_language);
           $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], $indexed_language);
           if (isset($indexed_field["options_{$indexed_language}"])) {
             $i = 1;
@@ -224,20 +221,23 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       return $a['weight'] - $b['weight'];
     }
 
-    /**
-     * creates form elements indexed by group, field and language
-     *
-     * @param $groupIndex
-     * @param $fieldIndex
-     * @param $languageIndex (0 = default language, always available)
-     */
-    private function createFormElements($group_title, $field_title, $language = 0) {
+  /**
+   * creates form elements indexed by group, field and language
+   *
+   * @param $group_title
+   * @param $field_title
+   * @param $maxlength_title
+   * @param int $language = 0
+   * @param int $maxlength_description = 1000
+   */
+    private function createFormElements($group_title, $field_title, $maxlength_title, $language = 0, $maxlength_description = 1000) {
       $this->add(
         'text',
         "title__{$group_title}__{$field_title}__{$language}",
         ts('title', array('domain' => 'de.systopia.revent')),
         array(
-          'class' => 'huge'
+          'class'     => 'huge',
+          'maxlength' => $maxlength_title
         )
       );
       $this->add(
@@ -245,7 +245,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         "description__{$group_title}__{$field_title}__{$language}",
         ts('description', array('domain' => 'de.systopia.revent')),
         array(
-          'class' => 'huge'
+          'class'     => 'huge',
+          'maxlength' => $maxlength_description
         )
       );
       $this->add(
@@ -263,6 +264,14 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       );
     }
 
+  /**
+   * creates the option fields for the form elements
+   * @param $group_title
+   * @param $field_title
+   * @param $option
+   * @param $language
+   * @param $default_value
+   */
     private function createFormElementOptions($group_title, $field_title, $option, $language,  $default_value) {
       $this->add(
         'text',
@@ -275,6 +284,14 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       $this->default_data["option__{$group_title}__{$field_title}__{$option}__{$language}"] = $default_value;
     }
 
+  /**
+   * creates default values for the form
+   *
+   * @param $value
+   * @param $group_title
+   * @param $field_title
+   * @param int $language
+   */
     private function createDefaultFormValues($value, $group_title, $field_title, $language = 0) {
 
       if ($language == "0") {

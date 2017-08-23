@@ -12,8 +12,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: resources/custom_group_remote_event_connection.json
 msgid "Remote Event Connection"
@@ -65,11 +65,11 @@ msgstr "Speichern"
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "title"
-msgstr ""
+msgstr "Titel"
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "Required"
@@ -81,9 +81,8 @@ msgstr "Position"
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "option"
-msgstr ""
+msgstr "Option"
 
 #: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
 msgid "Description"
 msgstr "Beschreibung"
-
