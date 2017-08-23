@@ -163,7 +163,6 @@ function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * @param $form
  */
 function revent_civicrm_buildForm($formName, &$form) {
-  error_log("debug Form: {$formName}");
   switch ($formName) {
     case 'CRM_Custom_Form_CustomDataByType':
       require_once 'CRM/Revent/EventRegistrationIntegration.php';
@@ -190,12 +189,10 @@ function revent_civicrm_buildForm($formName, &$form) {
 function revent_civicrm_pageRun( &$page ) {
   $name = $page->getVar('_name');
   $eid = $page->getVar('_id');
-  error_log("debug page: {$name}");
 
   switch ($name) {
     case "CRM_Event_Page_EventInfo":
       if (empty($name) || empty($eid)) {
-        // EVERY TIME? error_log("Couldn't determine eventId or page name. Aborting");
         return;
       }
       // FixME? seems dirty
@@ -209,25 +206,5 @@ function revent_civicrm_pageRun( &$page ) {
       break;
     default:
       break;
-  }
-}
-
-/**
- * @param $op
- * @param $objectName
- * @param $objectId
- * @param $links
- * @param $mask
- * @param $values
- *
- * // TODO: delete this, currently only for debugging processes
- */
-function revent_civicrm_links($op, $objectName, $objectId, &$links, &$mask, &$values) {
-//  error_log("Debug links, Op: " . $op . "; Object Name: " . $objectName . "; ObjectId: {$objectId}");
-  if ($op == 'event.manage.list' && $objectName == 'Event') {
-//    error_log("PBADEBUG: " . json_encode($links));
-//    $links[] = array(
-//      'name' => ts('')
-//    );
   }
 }
