@@ -34,9 +34,8 @@ cj(".crm-clear-link").each(function(){
 });
 
 // hide fields
-// cj(".crm-event-manage-eventinfo-form-block-summary").hide();
+cj("label[for='participant_listing_id']").parent().parent().hide()
 cj(".crm-event-manage-eventinfo-form-block-description").hide();
-// cj(".crm-event-manage-eventinfo-form-block-max_participants").hide();
 cj(".crm-event-manage-eventinfo-form-block-is_map").hide();
 cj(".crm-event-manage-eventinfo-form-block-is_public").hide();
 cj(".crm-event-manage-eventinfo-form-block-is_share").hide();

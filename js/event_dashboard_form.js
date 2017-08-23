@@ -28,7 +28,6 @@ for (i = 0; i < eventIDs.length; ++i) {
             cj(this).hide();
         }
     });
-
     // add menu entry for
     var url = "__URL__?eid=" + eventIDs[i] + "&reset=1";
     var link_entry = '<li><a title="Registration Customisation" clas="action-item crm-hover-button no-popup enabled" href="' + url + '" >Registration Customisation</a> </li>'
