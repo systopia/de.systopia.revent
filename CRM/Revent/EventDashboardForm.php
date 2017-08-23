@@ -16,21 +16,15 @@
 +--------------------------------------------------------*/
 
 /**
- * Changes the Event Management form
+ * Changes the Event Dashboard
  */
-class CRM_Revent_EventManagementForm {
+class CRM_Revent_EventDashboardForm {
 
+  /**
+   * hook callback; injects JS code
+   */
   public static function buildFormHook() {
-
-    $script = file_get_contents(__DIR__ . '/../../js/event_management_form.js');
-    CRM_Core_Region::instance('page-footer')->add(array(
-      'script' => $script,
-    ));
-  }
-
-  public static function handleEventPageHook() {
-
-    $script = file_get_contents(__DIR__ . '/../../js/event_management_page.js');
+    $script = file_get_contents(__DIR__ . '/../../js/event_dashboard_form.js');
     $base_url = CRM_Utils_System::url('civicrm/revent/customisation');
     $script = str_replace('__URL__', $base_url, $script);
     CRM_Core_Region::instance('page-footer')->add(array(

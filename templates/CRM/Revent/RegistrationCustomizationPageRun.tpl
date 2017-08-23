@@ -20,6 +20,7 @@
 
 <script type="text/javascript">
 
+    var link = "{$form_link}";
     {literal}
 
     cj('*').filter(function() {
@@ -33,6 +34,17 @@
       // TODO: Phil: this probably won't work any more!
         return cj(this).text() === 'Registration Fields';
     }).closest('table'));
+
+    // work on menu link list; hide some entries, add registration customisation
+    cj(".crm-event-links-list-inner ul li a").each(function(){
+        if ( cj(this).html() != "Informationen und Einstellungen" && cj(this).html() != 'Erinnerungen planen') {
+            cj(this).parent().hide();
+        }
+    });
+
+    var link_entry = '<li><a href="' + link + '" >Registration Customisation</a> </li>'
+    cj(".crm-event-links-list-inner ul").append(link_entry);
+
 
 </script>
 {/literal}

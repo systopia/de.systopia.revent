@@ -171,7 +171,11 @@ function revent_civicrm_buildForm($formName, &$form) {
       break;
     case 'CRM_Event_Form_ManageEvent_EventInfo':
       require_once 'CRM/Revent/EventManagementForm.php';
-      CRM_Uimods_EventManagementForm::buildFormHook();
+      CRM_Revent_EventManagementForm::buildFormHook();
+      break;
+    case 'CRM_Event_Form_Search':
+      require_once 'CRM/Revent/EventDashboardForm.php';
+      CRM_Revent_EventDashboardForm::buildFormHook();
       break;
     default:
       break;
@@ -185,14 +189,22 @@ function revent_civicrm_buildForm($formName, &$form) {
 function revent_civicrm_pageRun( &$page ) {
   $name = $page->getVar('_name');
   $eid = $page->getVar('_id');
-  if (empty($name) || empty($eid)) {
-    // EVERY TIME? error_log("Couldn't determine eventId or page name. Aborting");
-    return;
-  }
-  if ($name == "CRM_Event_Page_EventInfo") {
-    // FixME? seems dirty
-    $tmpform = "";
-    $regIntegration = new CRM_Revent_EventRegistrationIntegration(NULL, $tmpform, $eid, $page);
-    $regIntegration->pageRunHook();
+
+  switch ($name) {
+    case "CRM_Event_Page_EventInfo":
+      if (empty($name) || empty($eid)) {
+        return;
+      }
+      // FixME? seems dirty
+      $tmpform = "";
+      $regIntegration = new CRM_Revent_EventRegistrationIntegration(NULL, $tmpform, $eid, $page);
+      $regIntegration->pageRunHook();
+      break;
+    case "CRM_Event_Page_ManageEvent":
+      require_once 'CRM/Revent/EventManagementForm.php';
+      CRM_Revent_EventManagementForm::handleEventPageHook();
+      break;
+    default:
+      break;
   }
 }
