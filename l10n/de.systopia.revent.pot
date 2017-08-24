@@ -82,3 +82,7 @@ msgstr ""
 #: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
 msgid "Description"
 msgstr ""
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "No event ID (eid) given."
+msgstr ""
