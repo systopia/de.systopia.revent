@@ -14,7 +14,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('CUSTOM_DATA_HELPER_VERSION', '0.3.6.dev');
+define('CUSTOM_DATA_HELPER_VERSION', '0.3.7.dev');
 define('CUSTOM_DATA_HELPER_LOG_LEVEL', 1);
 
 // log levels
@@ -380,7 +380,7 @@ class CRM_Revent_CustomData {
     $customgroups_used = array();
     foreach ($data as $key => $value) {
       if (preg_match('/^(?P<group_name>\w+)[.](?P<field_name>\w+)$/', $key, $match)) {
-        if ($match['group_name'] == 'options') {
+        if ($match['group_name'] == 'option' || $match['group_name'] == 'options') {
           // exclude API options
           continue;
         }
