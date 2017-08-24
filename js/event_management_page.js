@@ -22,10 +22,13 @@ cj("tr[id^='event-']").each(function(){
     idArray.push(tmp[1]);
 });
 
+var pattern_1 = /civicrm\/event\/manage\/settings/;
+var pattern_2 = /civicrm\/event\/manage\/reminder/;
+
 // iterate over Events and hide/do stuff
 for (var i = 0; i < idArray.length; ++i) {
     cj("#panel_info_" + idArray[i] + " li a").each(function() {
-        if (cj(this).attr('title') != "Informationen und Einstellungen" && cj(this).attr('title') != 'Erinnerungen planen') {
+        if (!pattern_1.test(cj(this).attr("href")) && !pattern_2.test(cj(this).attr("href"))) {
             cj(this).hide();
         }
     });

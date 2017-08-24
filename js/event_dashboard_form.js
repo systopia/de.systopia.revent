@@ -21,10 +21,13 @@ cj(".crm-event-id").each(function(){
     eventIDs.push(cj(this).val("crm-event-id").html());
 });
 
+var pattern_1 = /civicrm\/event\/manage\/settings/;
+var pattern_2 = /civicrm\/event\/manage\/reminder/;
+// noinspection JSAnnotator
 for (i = 0; i < eventIDs.length; ++i) {
     // hide some menu entries
     cj("ul#panel_info_" + eventIDs[i] + " li a").each(function(){
-        if (cj(this).attr('title') != "Informationen und Einstellungen" && cj(this).attr('title') != 'Erinnerungen planen') {
+        if (!pattern_1.test(cj(this).attr("href")) && !pattern_2.test(cj(this).attr("href"))) {
             cj(this).hide();
         }
     });
