@@ -18,7 +18,7 @@
  * Get an event based on the give data
  */
 function civicrm_api3_remote_group_unsubscribe($params) {
-  CRM_Revent_APIProcessor::preProcess($params);
+  CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.unsubscribe');
 
   // copied from civicrm_api3_mailing_event_unsubscribe_create
   $job   = $params['job_id'];

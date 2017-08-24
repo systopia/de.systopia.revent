@@ -19,7 +19,7 @@
  *  the given event
  */
 function civicrm_api3_remote_registration_register($params) {
-  CRM_Revent_APIProcessor::preProcess($params);
+  CRM_Revent_APIProcessor::preProcess($params, 'RemoteRegistration.register');
 
   // first: load the  event
   $event_search = array();

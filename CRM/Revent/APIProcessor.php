@@ -14,13 +14,20 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+define('LOG_ALL_CALLS', '1');
+
 
 class CRM_Revent_APIProcessor {
 
   /**
    * common preprocessing of all API calls
    */
-  public static function preProcess(&$params) {
+  public static function preProcess(&$params, $log_id = NULL) {
+
+    if ($log_id && LOG_ALL_CALLS) {
+      CRM_Core_Error::debug_log_message("{$log_id}: " . json_encode($params));
+    }
+
     // resolve REST fields
     CRM_Revent_CustomData::unREST($params);
 

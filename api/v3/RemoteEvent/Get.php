@@ -18,7 +18,7 @@
  * Get an event based on the give data
  */
 function civicrm_api3_remote_event_get($params) {
-  CRM_Revent_APIProcessor::preProcess($params);
+  CRM_Revent_APIProcessor::preProcess($params, 'RemoteEvent.get');
   $result = array();
 
   if (!empty($params['id'])) {
