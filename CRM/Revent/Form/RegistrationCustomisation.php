@@ -20,7 +20,7 @@
  * @see https://wiki.civicrm.org/confluence/display/CRMDOC/QuickForm+Reference
  */
 class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
-  
+
   protected $registrationRenderer   = NULL;
   protected $default_data           = NULL;
   protected $data                   = NULL;

@@ -33,7 +33,7 @@
                                 <div class="crm-section">
                                     {* title form element*}
                                     {capture assign=title}title__{$group.name}__{$field.name}__{$language}{/capture}
-                                    Titel <i>({$language})</i>
+                                    Titel <i>({$language}, {$field.type})</i>
                                     {$form.$title.html}
                                 </div>
                             </td>
