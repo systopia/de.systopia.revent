@@ -28,6 +28,7 @@ function civicrm_api3_remote_event_create($params) {
     $event_types = civicrm_api3('OptionValue', 'get', array(
       'option_group_id' => 'event_type',
       'return'          => 'id',
+      'label'           => $params['event_type'],
       'option.limit'    => 2));
     if ($event_types['id']) {
       $params['event_type_id'] = $event_types['id'];
