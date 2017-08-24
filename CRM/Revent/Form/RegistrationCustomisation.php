@@ -24,7 +24,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   protected $registrationRenderer   = NULL;
   protected $default_data           = NULL;
   protected $data                   = NULL;
-  protected $replacement_index      = NULL;
+  protected $replacement_index      = array();
 
   public function buildQuickForm() {
     CRM_Utils_System::setTitle(ts('Registration Customisation', array('domain' => 'de.systopia.revent')));
