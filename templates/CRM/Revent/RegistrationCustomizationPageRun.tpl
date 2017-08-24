@@ -21,23 +21,26 @@
 <script type="text/javascript">
 
     var link = "{$form_link}";
+    var reg_customization_label          = "{$reg_customization_label}";
+    var reg_customisation_fields_label   = "{$reg_customisation_fields_label}";
     {literal}
 
     cj('*').filter(function() {
-      // TODO: Phil: this probably won't work any more!
-        return cj(this).text() === 'Registration Customisations';
+        return cj(this).text() === reg_customization_label;
     }).closest('table').hide();
 
     cj("#registration_form_link").wrap('<tr id="registration_form_link_tr"><td colspan="2">');
 
     cj("#registration_form_link_tr").insertAfter(cj('*').filter(function() {
-      // TODO: Phil: this probably won't work any more!
-        return cj(this).text() === 'Registration Fields';
+        return cj(this).text() === reg_customisation_fields_label;
     }).closest('table'));
 
     // work on menu link list; hide some entries, add registration customisation
+    var pattern_1 = /civicrm\/event\/manage\/settings/;
+    var pattern_2 = /civicrm\/event\/manage\/reminder/;
+
     cj(".crm-event-links-list-inner ul li a").each(function(){
-        if ( cj(this).html() != "Informationen und Einstellungen" && cj(this).html() != 'Erinnerungen planen') {
+        if (!pattern_1.test(cj(this).attr("href")) && !pattern_2.test(cj(this).attr("href"))) {
             cj(this).parent().hide();
         }
     });

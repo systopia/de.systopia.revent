@@ -74,6 +74,12 @@ class CRM_Revent_EventRegistrationIntegration {
     $registration_customisation_link = CRM_Utils_System::url("civicrm/revent/customisation", $args, TRUE);
     $this->page->assign("form_link", $registration_customisation_link);
 
+    $registration_customisation = CRM_Revent_CustomData::getCustomField('remote_event_registration', 'registration_customisations');
+    $registration_fields        = CRM_Revent_CustomData::getCustomField('remote_event_registration', 'registration_fields');
+
+    $this->page->assign("reg_customization_label", $registration_customisation['label']);
+    $this->page->assign("reg_customisation_fields_label", $registration_fields['label']);
+
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/RegistrationCustomizationPageRun.tpl"
     ));
