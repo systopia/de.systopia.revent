@@ -49,8 +49,7 @@ class CRM_Revent_EventRegistrationIntegration {
       error_log("Couldn't find custom fields for registration. This shouldn't happen. Check if all configuration files are installed.");
       return;
     }
-    $this->form->assign("registration_customisation_field", "{$registration_customisation_key}_");
-    $this->form->assign("registration_fields", "{$registration_fields_key}_");
+    $this->form->assign("registration_customisation_field", "{$registration_customisation_key}");
 
     $args = array(
       'eid'     => $this->eid,
