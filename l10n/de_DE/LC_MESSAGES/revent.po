@@ -100,7 +100,7 @@ msgstr "Land"
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "Registration Customisation"
-msgstr "Konfiguration Anmeldungsmaske"
+msgstr "Onlineanmeldung anpassen"
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "Submit"
@@ -133,4 +133,3 @@ msgstr "Beschreibung"
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "No event ID (eid) given."
 msgstr "Fehler! Keine Event-ID übermittelt."
-
