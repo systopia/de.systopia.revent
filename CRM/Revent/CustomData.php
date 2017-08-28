@@ -14,7 +14,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('CUSTOM_DATA_HELPER_VERSION', '0.3.7.dev');
+define('CUSTOM_DATA_HELPER_VERSION', '0.3.8.dev');
 define('CUSTOM_DATA_HELPER_LOG_LEVEL', 1);
 
 // log levels
@@ -293,8 +293,10 @@ class CRM_Revent_CustomData {
        foreach ($required_fields as $required_field) {
           if (isset($requested_data[$required_field])) {
             $update_query[$required_field] = $requested_data[$required_field];
-          } else {
+          } elseif (isset($current_data[$required_field])) {
             $update_query[$required_field] = $current_data[$required_field];
+          } else {
+            // nothing we can do...
           }
        }
 
