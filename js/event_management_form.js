@@ -41,3 +41,16 @@ cj(".crm-event-manage-eventinfo-form-block-is_public").hide();
 cj(".crm-event-manage-eventinfo-form-block-is_share").hide();
 cj(".crm-event-manage-eventinfo-form-block-is_active").hide();
 cj("td.description").hide();
+
+function revent_hide_wrench() {
+
+    cj(".custom-group-remote_event_registration .crm-i").parent().hide();
+}
+
+cj(document).ready(function () {
+    // call adjustment once
+    revent_hide_wrench();
+
+    // inject data dependency
+    cj(document).bind("ajaxComplete", revent_hide_wrench);
+});
