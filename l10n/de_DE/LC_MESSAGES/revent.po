@@ -55,6 +55,49 @@ msgstr "Manuelle Freigabe erforderlich"
 msgid "Registration Customisations"
 msgstr "Anpassungen der Anmeldemaske"
 
+#: resources/custom_group_registration_billing_address.json
+msgid "Billing Address"
+msgstr "Rechnungsadresse"
+
+#: resources/custom_group_registration_business_address.json
+msgid "Business Address"
+msgstr "Geschäftliche Adresse"
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Organisation Name (row 1)"
+msgstr "Organisationsname"
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Organisation Name (row 2)"
+msgstr "Organisationsname 2. Zeile"
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Street Address"
+msgstr "Straße Hausnummer"
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Supplemental Address"
+msgstr "Adresszusatz"
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Postal Code"
+msgstr "PLZ"
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "City"
+msgstr "Ort"
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Country"
+msgstr "Land"
+
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "Registration Customisation"
 msgstr "Konfiguration Anmeldungsmaske"

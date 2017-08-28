@@ -51,6 +51,50 @@ msgstr ""
 msgid "Registration Customisations"
 msgstr ""
 
+#: resources/custom_group_registration_billing_address.json
+msgid "Billing Address"
+msgstr ""
+
+#: resources/custom_group_registration_business_address.json
+msgid "Business Address"
+msgstr ""
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Organisation Name (row 1)"
+msgstr ""
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Organisation Name (row 2)"
+msgstr ""
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Street Address"
+msgstr ""
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Supplemental Address"
+msgstr ""
+
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Postal Code"
+msgstr ""
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "City"
+msgstr ""
+
+#: resources/custom_group_registration_billing_address.json
+#: resources/custom_group_registration_business_address.json
+msgid "Country"
+msgstr ""
+
 #: CRM/Revent/Form/RegistrationCustomisation.php
 msgid "Registration Customisation"
 msgstr ""
