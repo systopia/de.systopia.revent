@@ -208,3 +208,25 @@ function revent_civicrm_pageRun( &$page ) {
       break;
   }
 }
+
+
+/**
+ * Define custom (Drupal) permissions
+ */
+function revent_civicrm_permission(&$permissions) {
+  $permissions['access RemoteEvent']    = 'access Remote Event API';
+}
+
+/**
+ * Set permissions for runner/engine API call
+ */
+function revent_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+  $permissions['remote_event']['create']            = array('access RemoteEvent');
+  $permissions['remote_event']['get']               = array('access RemoteEvent');
+  $permissions['remote_group']['list']              = array('access RemoteEvent');
+  $permissions['remote_group']['subscribe']         = array('access RemoteEvent');
+  $permissions['remote_group']['unsubscribe']       = array('access RemoteEvent');
+  $permissions['remote_registration']['get_form']   = array('access RemoteEvent');
+  $permissions['remote_registration']['register']   = array('access RemoteEvent');
+  $permissions['remote_registration']['unregister'] = array('access RemoteEvent');
+}
