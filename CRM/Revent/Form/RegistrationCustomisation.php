@@ -24,6 +24,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   protected $registrationRenderer   = NULL;
   protected $default_data           = NULL;
   protected $data                   = NULL;
+  protected $event_id               = NULL;
   protected $replacement_index      = array();
 
   public function buildQuickForm() {
@@ -35,6 +36,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       CRM_Core_Error::fatal(ts('No event ID (eid) given.', array('domain' => 'de.systopia.revent')));
     } else {
       $this->add('hidden', 'eid', $event_id);
+      $this->event_id = $event_id;
     }
 
     // load currently customised data
@@ -204,6 +206,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
     // store it
     $data = $this->registrationRenderer->updateCustomisation($groups, $fields);
+    CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/event/info',
+      "id={$this->event_id}&reset=1"));
     parent::postProcess();
   }
 
