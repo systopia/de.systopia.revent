@@ -185,6 +185,28 @@ class CRM_Revent_RegistrationFields {
   }
 
   /**
+   * Return the custom group IDs active with this event
+   *
+   * @return array currently active group IDs for this event
+   */
+  public function getActiveGroups() {
+    $active_groups = array();
+
+    $group_entries = $this->event['remote_event_registration.registration_fields'];
+    foreach ($group_entries as $group_entry) {
+      // we only need the custom group IDs here
+      if (substr($group_entry, 0, 12) == 'CustomGroup-') {
+        $group_id = (int) substr($group_entry, 12);
+        if ($group_id) {
+          $active_groups[] = $group_id;
+        }
+      }
+    }
+
+    return $active_groups;
+  }
+
+  /**
    * render the metadata of the group itself
    */
   protected function renderGroupMetadata($custom_group_id) {
@@ -380,7 +402,6 @@ class CRM_Revent_RegistrationFields {
       }
     }
   }
-
 
   /***************************************************
    *                         HELPER                  *
