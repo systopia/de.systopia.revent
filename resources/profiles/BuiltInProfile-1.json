@@ -3,16 +3,6 @@
   "name": "BuiltInProfile-1",
   "weight": 3,
   "fields": {
-    "job_title": {
-      "group": "BuiltInProfile-1",
-      "title": "Funktion",
-      "maxlength": "128",
-      "required": 1,
-      "name": "job_title",
-      "type": "textfield",
-      "verification": "string",
-      "weight": "1"
-    },
     "street_address": {
       "group": "BuiltInProfile-1",
       "title": "Straße",
