@@ -15,8 +15,7 @@
 
 
 /**
- * Generate a JSON representation of the registration form for
- *  the given event
+ * Register a contact for the given event
  */
 function civicrm_api3_remote_registration_register($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteRegistration.register');
