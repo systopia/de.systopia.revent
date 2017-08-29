@@ -38,6 +38,14 @@ class CRM_Revent_RegistrationProcessor {
     // resolve custom fields
     CRM_Revent_CustomData::resolveCustomFields($data);
 
+    // set the default role if none is set
+    if (empty($data['role_id'])) {
+      $event = $this->getEvent();
+      if (!empty($event['default_role_id'])) {
+        $data['role_id'] = $event['default_role_id'];
+      }
+    }
+
     if ($this->doesEventNeedRegistrationApproval()) {
       // error_log("NEEDS APPROVAL");
       $data['participant_status_id'] = $this->getApprovalPendingStatusID();
