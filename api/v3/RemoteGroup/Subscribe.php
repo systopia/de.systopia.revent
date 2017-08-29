@@ -17,7 +17,7 @@
 /**
  * Get an event based on the give data
  */
-function civicrm_api3_remote_group_suscribe($params) {
+function civicrm_api3_remote_group_subscribe($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.subscribe');
 
   // resolve/create contact
@@ -37,7 +37,7 @@ function civicrm_api3_remote_group_suscribe($params) {
 /**
  * Schedule a Contract modification
  */
-function _civicrm_api3_remote_group_suscribe_spec(&$params) {
+function _civicrm_api3_remote_group_subscribe_spec(&$params) {
   $params['group_ids'] = array(
     'name'         => 'group_ids',
     'api.required' => 1,
