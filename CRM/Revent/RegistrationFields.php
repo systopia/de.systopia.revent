@@ -13,7 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('REVENT_SCHEMA_VERSION',  '0.2.dev');
+define('REVENT_SCHEMA_VERSION',  '0.3.dev');
 
 /**
  * Provides functions for the registration field selection
@@ -311,6 +311,7 @@ class CRM_Revent_RegistrationFields {
 
       case 'Autocomplete-Select':
       case 'Select':
+      case 'Select Country':
         $metadata['type'] = 'select';
         $metadata['options'] = $this->getOptions($custom_field);
         break;
@@ -349,6 +350,7 @@ class CRM_Revent_RegistrationFields {
         break;
 
       case 'Int':
+      case 'Country':
         $metadata['validation'] = 'int';
         break;
 
@@ -369,6 +371,11 @@ class CRM_Revent_RegistrationFields {
    * Get options as a key/name map
    */
   protected function getOptions($custom_field) {
+    // special treatment for countries
+    if ($custom_field['html_type'] == 'Select Country') {
+      return CRM_Core_PseudoConstant::country();
+    }
+
     if (empty($custom_field['option_group_id'])) {
       // return a generic map
       return array( '0' => 'No', '1' => 'Yes');
