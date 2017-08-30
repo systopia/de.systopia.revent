@@ -21,9 +21,17 @@
     {literal}
 
     function revent_custom_data_mods() {
-        for (var i=0;i<group_ids.length;i++) {
-            console.log(group_ids[i]);
-        }
+        console.log("group_ids: " + group_ids);
+
+        cj("[id^='custom_group_']").each(function() {
+            var pattern = /custom_group_([0-9]*?)_/;
+            var custom_group_id = parseInt(pattern.exec(cj(this).attr("id"))[1]);
+
+            if (cj.inArray(custom_group_id, group_ids) === -1) {
+                // is not in array of valid custom groups, we shall hide it now
+                cj(this).prev().hide();
+            }
+        })
     }
 
     cj(document).ready(function () {
