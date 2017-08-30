@@ -186,6 +186,13 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
             $fields[$field][$type . "_" . $language] = $value;
           } elseif (isset($this->data['fields'][$field][$type . "_" . $language])) {
             $fields[$field][$type . "_" . $language] = $value;
+          } elseif($type === "required" || $type === "weight") {
+            // if type == required, then the value will be empty. We need to set 0 for this
+            if ($type === "required" && empty($value) && !isset($fields[$field][$type])) {
+              $fields[$field][$type] = "0";
+            } elseif (!isset($fields[$field][$type])) {
+              $fields[$field][$type] = $value;
+            }
           }
         }
       } else {
