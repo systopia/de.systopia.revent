@@ -13,7 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('REVENT_SCHEMA_VERSION',  '0.3.dev');
+define('REVENT_SCHEMA_VERSION',  '0.4.dev');
 
 /**
  * Provides functions for the registration field selection
