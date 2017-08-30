@@ -17,7 +17,7 @@
       "group": "BuiltInProfile-1",
       "title": "Addresszusatz",
       "maxlength": "96",
-      "required": 1,
+      "required": 0,
       "name": "supplemental_address_1",
       "type": "textfield",
       "verification": "string",

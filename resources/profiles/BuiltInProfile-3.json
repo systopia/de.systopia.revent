@@ -7,7 +7,7 @@
       "group": "BuiltInProfile-3",
       "title": "Anrede",
       "maxlength": "10",
-      "required": 1,
+      "required": 0,
       "name": "prefix_id",
       "type": "select",
       "options": "individual_prefix",
