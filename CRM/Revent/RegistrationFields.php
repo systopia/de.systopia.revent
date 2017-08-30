@@ -173,8 +173,14 @@ class CRM_Revent_RegistrationFields {
     foreach ($fields as &$metadata) {
       // resolve custom group
       if (isset($metadata['options']) && !is_array($metadata['options'])) {
-        $metadata['option_group_id'] = $metadata['options'];
-        $metadata['options'] = $this->getOptions($metadata);
+        if ($metadata['options'] == 'country_list') {
+          // TODO: move to config
+          $metadata['options'] = CRM_Core_PseudoConstant::country();
+
+        } else {
+          $metadata['option_group_id'] = $metadata['options'];
+          $metadata['options'] = $this->getOptions($metadata);
+        }
       }
 
       // add localisation
@@ -372,7 +378,8 @@ class CRM_Revent_RegistrationFields {
    */
   protected function getOptions($custom_field) {
     // special treatment for countries
-    if ($custom_field['html_type'] == 'Select Country') {
+    if (isset($custom_field['html_type']) && $custom_field['html_type'] == 'Select Country') {
+      // TODO: move to config
       return CRM_Core_PseudoConstant::country();
     }
 
@@ -397,7 +404,8 @@ class CRM_Revent_RegistrationFields {
    * Add a localisation extra data
    */
   protected function renderLocalisation(&$metadata) {
-    // FIXM: this is probably not enough...
+    // FIXME: this is probably not enough...
+    // TODO: move to config
     $languages = array('de', 'en');
     foreach ($languages as $language) {
       // do some simple fields

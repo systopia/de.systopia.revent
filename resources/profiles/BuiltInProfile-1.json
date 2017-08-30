@@ -50,7 +50,7 @@
       "required": 1,
       "name": "country_id",
       "type": "select",
-      "options": {"1082": "Deutschland"},
+      "options": "country_list",
       "weight": "7"
     }
   }
