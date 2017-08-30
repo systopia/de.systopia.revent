@@ -45,12 +45,13 @@ function civicrm_api3_remote_registration_register($params) {
     return civicrm_api3_create_error("Cannot identify event with parameters: " . json_encode($event_search));
   }
 
+  // create a processor
+  $processor = new CRM_Revent_RegistrationProcessor($params['event_id']);
+
   // then: resolve the contact
-  $contact = civicrm_api3('Contact', 'getorcreate', $params);
-  $params['contact_id'] = $contact['id'];
+  $params['contact_id'] = $processor->resolveContact($params);
 
   // register
-  $processor = new CRM_Revent_RegistrationProcessor($params['event_id']);
   $participant = $processor->registerContact($params);
 
   // add contact hash

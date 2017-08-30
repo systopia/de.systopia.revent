@@ -84,7 +84,9 @@ class CRM_Revent_RegistrationFieldSynchronisation {
   public static function getActiveFieldSets() {
     $query = civicrm_api3('CustomGroup', 'get', array(
       'extends'         => 'Participant',
+      'option.limit'    => 0,
       'is_active'       => 1,
+      'is_reserved'     => 0,  // don't include reserved field sets
       'return'          => 'title,weight,id,name'
     ));
 

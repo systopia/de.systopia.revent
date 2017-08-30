@@ -200,6 +200,14 @@ class CRM_Revent_RegistrationFields {
         if ($group_id) {
           $active_groups[] = $group_id;
         }
+
+      // exception: if the address profile is selected,
+      //    the registration address should also be shown
+      } elseif ($group_entry == 'BuiltInProfile-1') {
+        $ra_group = civicrm_api3('CustomGroup', 'get', array('name' => 'registration_address'));
+        if (!empty($ra_group['id'])) {
+          $active_groups[] = $ra_group['id'];
+        }
       }
     }
 

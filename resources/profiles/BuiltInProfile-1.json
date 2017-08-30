@@ -3,6 +3,15 @@
   "name": "BuiltInProfile-1",
   "weight": 3,
   "fields": {
+    "location_type_id": {
+      "group": "BuiltInProfile-1",
+      "title": "Adressart",
+      "type": "select",
+      "options": {"6": "privat", "8": "geschäftlich"},
+      "required": 1,
+      "name": "location_type_id",
+      "weight": "1"
+    },
     "street_address": {
       "group": "BuiltInProfile-1",
       "title": "Straße",
