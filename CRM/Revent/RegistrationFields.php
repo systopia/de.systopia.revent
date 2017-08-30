@@ -378,7 +378,7 @@ class CRM_Revent_RegistrationFields {
 
     if (empty($custom_field['option_group_id'])) {
       // return a generic map
-      return array( '0' => 'No', '1' => 'Yes');
+      return array( '1' => 'Yes', '0' => 'No' );
     }
 
     $options = array();
