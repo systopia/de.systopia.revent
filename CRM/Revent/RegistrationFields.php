@@ -165,6 +165,7 @@ class CRM_Revent_RegistrationFields {
                 $merged[$custom_key] = $custom_value;
               }
             }
+            $fields[$field_name][$key] = $merged;
           } else {
             $fields[$field_name][$key] = $value;
           }
