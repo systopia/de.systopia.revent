@@ -18,6 +18,8 @@
  */
 class CRM_Revent_RegistrationProcessor {
 
+  protected static $address_attributes = array('location_type_id', 'street_address', 'supplemental_address_1', 'postal_code', 'city', 'country_id');
+
   /** the associated event */
   protected $event_id = NULL;
 
@@ -29,6 +31,26 @@ class CRM_Revent_RegistrationProcessor {
 
   public function __construct($event_id) {
     $this->event_id = $event_id;
+  }
+
+  /**
+   * Resolve the contact - using XCM
+   */
+  public function resolveContact($params) {
+    // HBS-5627: business addresses should NOT be passed on to XCM
+    $location_type_id = CRM_Utils_Array::value('location_type_id', $params);
+    if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
+      foreach (self::$address_attributes as $attribute_name) {
+        if (isset($params[$attribute_name])) {
+          unset($params[$attribute_name]);
+        }
+      }
+    }
+
+
+    // simply call XCM
+    $contact = civicrm_api3('Contact', 'getorcreate', $params);
+    return $contact['id'];
   }
 
   /**
@@ -76,6 +98,16 @@ class CRM_Revent_RegistrationProcessor {
         // all seems to be good
         // error_log("ALL GOOD");
         $data['participant_status_id'] = $this->getRegisteredStatusID();
+      }
+    }
+
+    // store address data as registration address (HBS-5627)
+    $location_type_id = CRM_Utils_Array::value('location_type_id', $data);
+    if ($location_type_id) {
+      // there is some address data coming
+      $data['registration_address.is_business'] = ($location_type_id == CRM_Revent_Config::getBusinessLocationType());
+      foreach (self::$address_attributes as $attribute_name) {
+        $data["registration_address.{$attribute_name}"] = CRM_Utils_Array::value($attribute_name, $data);
       }
     }
 
