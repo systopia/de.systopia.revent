@@ -157,13 +157,21 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     foreach ($values as $name => $value) {
 
       if (preg_match($option_pattern, $name, $matches)) {
-        if (!isset($fields[$matches['field']])) {
-          $fields[$matches['field']] = array();
+        $field    = $matches['field'];
+        $language = $matches['language'];
+
+        // Check if we did replacements for the field name. If so, overwrite them
+        if (isset($this->replacement_index[$field])) {
+          $field = $this->replacement_index[$field];
         }
-        if (!isset($fields[$matches['field']]["options_{$matches['language']}"])) {
-          $fields[$matches['field']]["options_{$matches['language']}"] = array();
+
+        if (!isset($fields[$field])) {
+          $fields[$field] = array();
         }
-        $fields[$matches['field']]["options_{$matches['language']}"][] = $value;
+        if (!isset($fields[$field]["options_{$language}"])) {
+          $fields[$field]["options_{$language}"] = array();
+        }
+        $fields[$field]["options_{$language}"][] = $value;
 
       } elseif (preg_match($pattern, $name, $matches)) {
 
@@ -171,6 +179,11 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         $group    = $matches['group'];
         $field    = $matches['field'];
         $language = $matches['language'];
+
+        // Check if we did replacements for the field name. If so, overwrite them
+        if (isset($this->replacement_index[$field])) {
+          $field = $this->replacement_index[$field];
+        }
 
         // if language is 0, then this is the default value for the type,
         // otherwise only set the language specific field
@@ -198,12 +211,6 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       } else {
         continue;
       }
-    }
-
-    foreach($this->replacement_index as $replacement_name => $replacement_value) {
-      $fields[$replacement_value] = $fields[$replacement_name];
-      $fields[$replacement_value]['name'] = $replacement_value;
-      unset($fields[$replacement_name]);
     }
 
     foreach ($this->data['groups'] as $group) {
