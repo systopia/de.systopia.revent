@@ -155,7 +155,20 @@ class CRM_Revent_RegistrationFields {
     foreach ($fields as $field_name => $field_data) {
       if (isset($customisation['fields'][$field_name]) && is_array($customisation['fields'][$field_name])) {
         foreach ($customisation['fields'][$field_name] as $key => $value) {
-          $fields[$field_name][$key] = $value;
+          if (is_array($value)) {
+            // merge arrays
+            $merged = $fields[$field_name][$key];
+            foreach ($value as $custom_key => $custom_value) {
+              if ($custom_value === NULL || $custom_value === '') {
+                unset($merged[$custom_key]);
+              } else {
+                $merged[$custom_key] = $custom_value;
+              }
+            }
+            $fields[$field_name][$key] = $merged;
+          } else {
+            $fields[$field_name][$key] = $value;
+          }
         }
       }
     }

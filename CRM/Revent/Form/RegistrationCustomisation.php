@@ -104,10 +104,14 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
           $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_field['maxlength'], $indexed_language);
           $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], $indexed_language);
           if (isset($indexed_field["options_{$indexed_language}"])) {
-            $i = 1;
-            foreach ($indexed_field["options_{$indexed_language}"] as $option) {
-              $this->createFormElementOptions($indexed_group['name'], $indexed_field['name'], $i, $indexed_language, $option);
-              $i++;
+            // iterate over options field, but create form elements for options_{language}
+            foreach ($indexed_field["options"] as $key => $option) {
+              if (isset($indexed_field["options_{$indexed_language}"][$key])) {
+                $opt = $indexed_field["options_{$indexed_language}"][$key];
+              } else {
+                $opt = "";
+              }
+              $this->createFormElementOptions($indexed_group['name'], $indexed_field['name'], $key, $indexed_language, $opt);
             }
           }
         } // for loop over field languages
@@ -151,7 +155,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $fields = array();
 
     $pattern = "/(?<type>[A-Za-z]+)__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<language>[a-z0]{1,2})$/";
-    $option_pattern = "/option__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<count>[0-9]*?)__(?<language>[a-z0]{1,2})$/";
+    $option_pattern = "/option__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<index>[0-9]*?)__(?<language>[a-z0]{1,2})$/";
     $matches = array();
     // iterate values, then build group and fields array
     foreach ($values as $name => $value) {
@@ -159,6 +163,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       if (preg_match($option_pattern, $name, $matches)) {
         $field    = $matches['field'];
         $language = $matches['language'];
+        $index    = $matches['index'];
 
         // Check if we did replacements for the field name. If so, overwrite them
         if (isset($this->replacement_index[$field])) {
@@ -171,7 +176,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         if (!isset($fields[$field]["options_{$language}"])) {
           $fields[$field]["options_{$language}"] = array();
         }
-        $fields[$field]["options_{$language}"][] = $value;
+        $fields[$field]["options_{$language}"][$index] = $value;
 
       } elseif (preg_match($pattern, $name, $matches)) {
 

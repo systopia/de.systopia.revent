@@ -71,12 +71,12 @@
                             </div>
                         </tr>
                         <table class="form-layout-compressed" style="text-indent:80px;">
-                            {foreach from=$field.option_count item=option}
+                            {foreach from=$field.options item=option key=key}
                                 <tr>
                                     {foreach from=$field.languages item=language}
                                         <td>
                                             <div>
-                                                {capture assign=opt}option__{$group.name}__{$field.name}__{$option}__{$language}{/capture}
+                                                {capture assign=opt}option__{$group.name}__{$field.name}__{$key}__{$language}{/capture}
                                                 {$form.$opt.html} <i>{$language}</i>
                                             </div>
                                         </td>
