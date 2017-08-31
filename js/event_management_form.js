@@ -33,6 +33,9 @@ cj(".crm-clear-link").each(function(){
     cj(this).hide()
 });
 
+// uncheck social media checkbox (#5451)
+cj("#is_share").prop("checked", false);
+
 // hide fields
 cj("label[for='participant_listing_id']").parent().parent().hide()
 cj(".crm-event-manage-eventinfo-form-block-description").hide();
