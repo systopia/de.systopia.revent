@@ -45,7 +45,8 @@ cj("td.description").hide();
 function revent_hide_wrench() {
 
     cj(".custom-group-remote_event_registration .crm-i").parent().hide();
-    cj("#max_participants").removeAttr("onchange");
+    // #5621 currently disabled; checkbox is needed, message maybe as well
+    // cj("#max_participants").removeAttr("onchange");
 
 }
 
