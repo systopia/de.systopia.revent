@@ -165,7 +165,6 @@ function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * @param $form
  */
 function revent_civicrm_buildForm($formName, &$form) {
-  error_log("form: {$formName}");
   switch ($formName) {
     case 'CRM_Custom_Form_CustomDataByType':
       require_once 'CRM/Revent/EventRegistrationIntegration.php';
@@ -196,7 +195,6 @@ function revent_civicrm_buildForm($formName, &$form) {
 function revent_civicrm_pageRun( &$page ) {
   $name = $page->getVar('_name');
   $eid = $page->getVar('_id');
-  error_log("page: {$name}");
   switch ($name) {
     case "CRM_Event_Page_EventInfo":
       if (empty($name) || empty($eid)) {
