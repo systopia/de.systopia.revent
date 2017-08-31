@@ -45,6 +45,8 @@ cj("td.description").hide();
 function revent_hide_wrench() {
 
     cj(".custom-group-remote_event_registration .crm-i").parent().hide();
+    cj("#max_participants").removeAttr("onchange");
+
 }
 
 cj(document).ready(function () {
