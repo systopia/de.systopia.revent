@@ -14,7 +14,7 @@
 +-------------------------------------------------------*}
 
 <div id="registration_form_link">
-    <a href={$form_link} target="_blank">registration customisation edit</a>
+    <a href={$form_link} target="_blank">{$registration_form_link_label}</a>
 </div>
 
 
@@ -23,6 +23,9 @@
     var link = "{$form_link}";
     var reg_customization_label          = "{$reg_customization_label}";
     var reg_customisation_fields_label   = "{$reg_customisation_fields_label}";
+
+    var reg_customization_link_label     = "{$registration_customisation}";
+
     {literal}
 
     cj('*').filter(function() {
@@ -45,7 +48,7 @@
         }
     });
 
-    var link_entry = '<li><a href="' + link + '" >Registration Customisation</a> </li>'
+    var link_entry = '<li><a href="' + link + '" >' + reg_customization_link_label + '</a> </li>';
     cj(".crm-event-links-list-inner ul").append(link_entry);
 
 

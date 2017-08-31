@@ -79,6 +79,9 @@ class CRM_Revent_EventRegistrationIntegration {
     $this->page->assign("reg_customization_label", $registration_customisation['label']);
     $this->page->assign("reg_customisation_fields_label", $registration_fields['label']);
 
+    $this->page->assign("registration_form_link_label", ts('registration customisation edit', array('domain' => 'de.systopia.revent')));
+    $this->page->assign("registration_customisation", ts('Registration Customisation', array('domain' => 'de.systopia.revent')));
+
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/RegistrationCustomizationPageRun.tpl"
     ));
