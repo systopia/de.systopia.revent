@@ -27,6 +27,7 @@ class CRM_Revent_EventDashboardForm {
     $script = file_get_contents(__DIR__ . '/../../js/event_dashboard_form.js');
     $base_url = CRM_Utils_System::url('civicrm/revent/customisation');
     $script = str_replace('__URL__', $base_url, $script);
+    $script = str_replace('__Registration-Customisation__', ts('Registration Customisation', array('domain' => 'de.systopia.revent')), $script);
     CRM_Core_Region::instance('page-footer')->add(array(
       'script' => $script,
     ));

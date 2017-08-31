@@ -33,6 +33,6 @@ for (var i = 0; i < idArray.length; ++i) {
         }
     });
     var url = "__URL__?eid=" + idArray[i] + "&reset=1";
-    var link_entry = '<li><a title="Registration Customisation" class="action-item crm-hover-button enabled" href="' + url + '" >Registration Customisation</a> </li>'
+    var link_entry = '<li><a title="__Registration-Customisation__" class="action-item crm-hover-button enabled" href="' + url + '" >__Registration-Customisation__</a> </li>'
     cj("ul#panel_info_" + idArray[i]).append(link_entry);
 }
