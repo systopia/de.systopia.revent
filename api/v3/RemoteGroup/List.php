@@ -28,11 +28,33 @@ function civicrm_api3_remote_group_list($params) {
   // replace custom fields with labels
   CRM_Revent_CustomData::labelCustomFields($groups, 2);
 
-  // TODO: add profiles (random for now)
-  $profiles = array('email', 'email_name', 'email_name_postal');
+  // do some filtering / processing
   foreach ($groups as &$group) {
-    $random_index = array_rand($profiles);
-    $group['profile'] = $profiles[$random_index];
+    // set profile
+    $profile_type = CRM_Utils_Array::value('group_fields.profile_type', $group, '');
+    switch ($profile_type) {
+      default:
+      case '1':
+        $group['profile'] = 'email';
+        break;
+
+      case '2':
+        $group['profile'] = 'email_name';
+        break;
+
+      case '3':
+        $group['profile'] = 'email_name_postal';
+        break;
+    }
+
+    // remove clutter
+    if (isset($group['where_clause']))  unset($group['where_clause']);
+    if (isset($group['where_tables']))  unset($group['where_tables']);
+    if (isset($group['select_tables'])) unset($group['select_tables']);
+    if (isset($group['visibility']))    unset($group['visibility']);
+    if (isset($group['created_id']))    unset($group['created_id']);
+    if (isset($group['modified_id']))   unset($group['modified_id']);
+    if (isset($group['is_reserved']))   unset($group['is_reserved']);
   }
 
   return civicrm_api3_create_success($groups);
