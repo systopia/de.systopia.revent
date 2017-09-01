@@ -10,7 +10,27 @@
       "options": {"6": "privat", "8": "geschäftlich"},
       "required": 1,
       "name": "location_type_id",
-      "weight": "1"
+      "weight": "10"
+    },
+    "organisation_name_1": {
+      "group": "BuiltInProfile-1",
+      "title": "Organisationsname (Zeile 1)",
+      "maxlength": "128",
+      "required": 1,
+      "name": "organisation_name_1",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "20"
+    },
+    "organisation_name_2": {
+      "group": "BuiltInProfile-1",
+      "title": "Organisationsname (Zeile 2)",
+      "maxlength": "128",
+      "required": 1,
+      "name": "organisation_name_2",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "30"
     },
     "street_address": {
       "group": "BuiltInProfile-1",
@@ -20,7 +40,7 @@
       "name": "street_address",
       "type": "textfield",
       "verification": "string",
-      "weight": "2"
+      "weight": "40"
     },
     "supplemental_address_1": {
       "group": "BuiltInProfile-1",
@@ -30,7 +50,7 @@
       "name": "supplemental_address_1",
       "type": "textfield",
       "verification": "string",
-      "weight": "3"
+      "weight": "50"
     },
     "postal_code": {
       "group": "BuiltInProfile-1",
@@ -40,7 +60,7 @@
       "name": "postal_code",
       "type": "textfield",
       "verification": "string",
-      "weight": "5"
+      "weight": "60"
     },
     "city": {
       "group": "BuiltInProfile-1",
@@ -50,7 +70,7 @@
       "name": "city",
       "type": "textfield",
       "verification": "string",
-      "weight": "6"
+      "weight": "70"
     },
     "country_id": {
       "group": "BuiltInProfile-1",
@@ -60,7 +80,7 @@
       "name": "country_id",
       "type": "select",
       "options": "country_list",
-      "weight": "7"
+      "weight": "80"
     }
   }
 }

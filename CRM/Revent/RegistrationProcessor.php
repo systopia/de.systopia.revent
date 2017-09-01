@@ -18,7 +18,7 @@
  */
 class CRM_Revent_RegistrationProcessor {
 
-  protected static $address_attributes = array('location_type_id', 'street_address', 'supplemental_address_1', 'postal_code', 'city', 'country_id');
+  protected static $address_attributes = array('location_type_id', 'street_address', 'supplemental_address_1', 'postal_code', 'city', 'country_id', 'organisation_name_1', 'organisation_name_2');
 
   /** the associated event */
   protected $event_id = NULL;
@@ -107,7 +107,7 @@ class CRM_Revent_RegistrationProcessor {
       // there is some address data coming
       $data['registration_address.is_business'] = ($location_type_id == CRM_Revent_Config::getBusinessLocationType());
       foreach (self::$address_attributes as $attribute_name) {
-        $data["registration_address.{$attribute_name}"] = CRM_Utils_Array::value($attribute_name, $data);
+        $data["registration_address.{$attribute_name}"] = CRM_Utils_Array::value($attribute_name, $data, '');
       }
     }
 
