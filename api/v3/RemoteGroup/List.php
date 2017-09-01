@@ -55,6 +55,18 @@ function civicrm_api3_remote_group_list($params) {
     if (isset($group['created_id']))    unset($group['created_id']);
     if (isset($group['modified_id']))   unset($group['modified_id']);
     if (isset($group['is_reserved']))   unset($group['is_reserved']);
+
+    if (!empty($group['group_fields.display_section'])) {
+      try {
+        $group['group_fields.display_section_label'] = civicrm_api3('OptionValue', 'getvalue', array(
+          'option_group_id' => 'display_section',
+          'value'           => $group['group_fields.display_section'],
+          'return'          => 'label'));
+      } catch (Exception $e) {
+        // not found, no problem
+        $group['group_fields.display_section_label'] = 'Error';
+      }
+    }
   }
 
   return civicrm_api3_create_success($groups);
