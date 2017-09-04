@@ -13,7 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('REVENT_SCHEMA_VERSION',  '0.4.dev');
+define('REVENT_SCHEMA_VERSION',  '0.5.dev');
 
 /**
  * Provides functions for the registration field selection
@@ -326,7 +326,6 @@ class CRM_Revent_RegistrationFields {
         $this->renderValidation($custom_field, $metadata);
         break;
 
-      case 'Radio':
       case 'Multi-Select':
         $metadata['type'] = 'checkboxes';
         $metadata['options'] = $this->getOptions($custom_field);
@@ -336,7 +335,7 @@ class CRM_Revent_RegistrationFields {
         $metadata['type'] = 'date';
         break;
 
-      case 'Autocomplete-Select':
+      case 'Radio':
       case 'Select':
       case 'Select Country':
         $metadata['type'] = 'select';
@@ -355,6 +354,7 @@ class CRM_Revent_RegistrationFields {
 
       default:
       case 'File':
+      case 'Autocomplete-Select':
         $metadata['type'] = 'error';
     }
   }
