@@ -14,8 +14,10 @@
 +-------------------------------------------------------*}
 
 {capture assign=introduction}{$introduction}{/capture}
+{capture assign=warning}{$warning}{/capture}
 
 <p>{$introduction}</p>
+<p><span style="color:#FF0000;"><strong>{$warning}</strong></span></p>
 
 <p>
     <div class="crm-section">

@@ -50,10 +50,11 @@ class CRM_Revent_Form_RegistrationCustomisationImport extends CRM_Core_Form{
     }
 
     $this->assign("introduction", ts("Please choose an Event from the list. The registration customisations and groups will then be imported to this event.", array('domain' => 'de.systopia.revent')));
+    $this->assign("warning", ts("Attention! If an event is chosen here it will overwrite all previously configured customisations!", array('domain' => 'de.systopia.revent')));
 
     $this->add('select',
       "events",
-      'events',
+      ts("Events"),
       $this->eventLabel2id,
       True,
       array('class' => 'crm-select2')
