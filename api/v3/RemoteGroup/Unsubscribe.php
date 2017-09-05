@@ -59,35 +59,9 @@ function _civicrm_api3_remote_group_unsubscribe_spec(&$params) {
     'title' => 'Mailing Queue ID',
     'type' => CRM_Utils_Type::T_INT,
   );
-}
-
-
-
-
-
-
-
-
-/**
- * Unsubscribe from mailing group.
- *
- * @param array $params
- *   Array per getfields metadata.
- *
- * @return array
- *   Api result array
- */
-function civicrm_api3_mailing_event_unsubscribe_create($params) {
-
-}
-
-/**
- * Adjust Metadata for Create action.
- *
- * The metadata is used for setting defaults, documentation & validation.
- *
- * @param array $params
- *   Array of parameters determined by getfields.
- */
-function _civicrm_api3_mailing_event_unsubscribe_create_spec(&$params) {
+  $params['org_unsubscribe'] = array(
+    'api.default' => 0,
+    'title'       => 'Opt-Out?',
+    'type'        => CRM_Utils_Type::T_INT,
+  );
 }
