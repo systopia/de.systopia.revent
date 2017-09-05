@@ -57,9 +57,6 @@ class CRM_Revent_RegistrationProcessor {
    * Main registration processor
    */
   public function registerContact($data) {
-    // resolve custom fields
-    CRM_Revent_CustomData::resolveCustomFields($data);
-
     // set the default role if none is set
     if (empty($data['role_id'])) {
       $event = $this->getEvent();
@@ -112,6 +109,7 @@ class CRM_Revent_RegistrationProcessor {
     }
 
     // create participant
+    CRM_Revent_CustomData::resolveCustomFields($data);
     $participant = civicrm_api3('Participant', 'create', $data);
 
     // get all participant data
