@@ -102,7 +102,7 @@ class CRM_Revent_RegistrationProcessor {
     $location_type_id = CRM_Utils_Array::value('location_type_id', $data);
     if ($location_type_id) {
       // there is some address data coming
-      $data['registration_address.is_business'] = ($location_type_id == CRM_Revent_Config::getBusinessLocationType());
+      $data['registration_address.is_business'] = ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) ? '1' : '0';
       foreach (self::$address_attributes as $attribute_name) {
         $data["registration_address.{$attribute_name}"] = CRM_Utils_Array::value($attribute_name, $data, '');
       }
