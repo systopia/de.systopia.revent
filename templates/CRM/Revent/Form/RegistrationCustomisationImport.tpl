@@ -19,7 +19,6 @@
 
 <p>
     <div class="crm-section">
-        <p> test .. ?</p>
         {$form.events.label}
         {$form.events.html}
     </div>

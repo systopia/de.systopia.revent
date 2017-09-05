@@ -73,6 +73,10 @@ class CRM_Revent_EventRegistrationIntegration {
     $registration_customisation_link = CRM_Utils_System::url("civicrm/revent/customisation", $args, TRUE);
     $this->page->assign("form_link", $registration_customisation_link);
 
+    // Registration Customisation Import links
+    $registration_customisation_import_link = CRM_Utils_System::url("civicrm/revent/customisation_import", $args, TRUE);
+    $this->page->assign("import_form_link", $registration_customisation_import_link);
+
     $registration_customisation = CRM_Revent_CustomData::getCustomField('remote_event_registration', 'registration_customisations');
     $registration_fields        = CRM_Revent_CustomData::getCustomField('remote_event_registration', 'registration_fields');
 
@@ -81,6 +85,9 @@ class CRM_Revent_EventRegistrationIntegration {
 
     $this->page->assign("registration_form_link_label", ts('registration customisation edit', array('domain' => 'de.systopia.revent')));
     $this->page->assign("registration_customisation", ts('Registration Customisation', array('domain' => 'de.systopia.revent')));
+
+    // registration import menu entry
+    $this->page->assign("registration_customisation_import", ts('Import Customisation from other Event', array('domain' => 'de.systopia.revent')));
 
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/RegistrationCustomizationPageRun.tpl"

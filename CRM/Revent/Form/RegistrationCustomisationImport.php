@@ -49,7 +49,7 @@ class CRM_Revent_Form_RegistrationCustomisationImport extends CRM_Core_Form{
       $this->eventLabel2id[$event['id']] = $event['event_title'];
     }
 
-    $this->assign("introduction", ts("__HELP INTRODUCTION TEXT__", array('domain' => 'de.systopia.revent')));
+    $this->assign("introduction", ts("introduction text", array('domain' => 'de.systopia.revent')));
 
     $this->add('select',
       "events",
@@ -77,12 +77,6 @@ class CRM_Revent_Form_RegistrationCustomisationImport extends CRM_Core_Form{
     // get form values
     $values = $this->exportValues();
 
-//     load currently customised data
-//    $other_event_registration_renderer = new CRM_Revent_RegistrationFields(array('id' => $values['events']));
-//    $data = $other_event_registration_renderer->renderEventRegistrationForm();
-//
-//    $import_event_registration_renderer = new CRM_Revent_RegistrationFields(array('id' => $this->event_id));
-
     // get custom fields
     $custom_group_customisations = CRM_Revent_CustomData::getCustomFieldKey("remote_event_registration", "registration_customisations");
     $custom_group_fields = CRM_Revent_CustomData::getCustomFieldKey("remote_event_registration", "registration_fields");
@@ -101,10 +95,6 @@ class CRM_Revent_Form_RegistrationCustomisationImport extends CRM_Core_Form{
       $custom_group_fields         => $event[$custom_group_fields],
     ));
 
-
-//    $updated_event_data = $import_event_registration_renderer->updateCustomisation($data['groups'], $data['fields']);
-    CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/event/info',
-      "id={$this->event_id}&reset=1"));
     parent::postProcess();
   }
 }

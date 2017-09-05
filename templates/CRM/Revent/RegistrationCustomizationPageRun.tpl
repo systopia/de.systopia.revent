@@ -20,11 +20,14 @@
 
 <script type="text/javascript">
 
-    var link = "{$form_link}";
-    var reg_customization_label          = "{$reg_customization_label}";
-    var reg_customisation_fields_label   = "{$reg_customisation_fields_label}";
+    var link                                = "{$form_link}";
+    var reg_customization_label             = "{$reg_customization_label}";
+    var reg_customisation_fields_label      = "{$reg_customisation_fields_label}";
 
-    var reg_customization_link_label     = "{$registration_customisation}";
+    var reg_customization_label             = "{$registration_customisation_import}";
+    var import_link                         = "{$import_form_link}";
+
+    var reg_customization_link_label        = "{$registration_customisation}";
 
     {literal}
 
@@ -51,6 +54,8 @@
     var link_entry = '<li><a href="' + link + '" >' + reg_customization_link_label + '</a> </li>';
     cj(".crm-event-links-list-inner ul").append(link_entry);
 
+    var link_import_entry = '<li><a class="crm-popup" href="' + import_link + '" >' + reg_customization_label + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(link_import_entry);
 
 </script>
 {/literal}
