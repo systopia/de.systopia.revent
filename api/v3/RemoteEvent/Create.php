@@ -22,14 +22,16 @@ function civicrm_api3_remote_event_create($params) {
 
   $params['remote_event_connection.external_identifier'] = $params['external_identifier'];
   unset($params['external_identifier']);
+  $params['check_permissions'] = 0;
 
   // resolve event type
   if (!empty($params['event_type'])) {
     $event_types = civicrm_api3('OptionValue', 'get', array(
-      'option_group_id' => 'event_type',
-      'return'          => 'id,value',
-      'label'           => $params['event_type'],
-      'option.limit'    => 2));
+      'check_permissions' => 0,
+      'option_group_id'   => 'event_type',
+      'return'            => 'id,value',
+      'label'             => $params['event_type'],
+      'option.limit'      => 2));
     if ($event_types['count'] == 1) {
       $event = reset($event_types['values']);
       $params['event_type_id'] = $event['value'];
@@ -45,6 +47,7 @@ function civicrm_api3_remote_event_create($params) {
   // see if the group already exists
   if (!empty($params['remote_event_connection.external_identifier'])) {
     $existing_query = array(
+      'check_permissions'                           => 0,
       'remote_event_connection.external_identifier' => $params['remote_event_connection.external_identifier'],
       'return'                                      => 'id',
       'option.limit'                                => 2);
@@ -58,7 +61,9 @@ function civicrm_api3_remote_event_create($params) {
   CRM_Revent_CustomData::resolveCustomFields($params);
 
   $result = civicrm_api3('Event', 'create', $params);
-  return civicrm_api3('RemoteEvent', 'get', array('id' => $result['id']));
+  return civicrm_api3('RemoteEvent', 'get', array(
+    'check_permissions' => 0,
+    'id'                => $result['id']));
 }
 
 /**

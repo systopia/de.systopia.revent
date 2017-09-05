@@ -22,9 +22,10 @@ function civicrm_api3_remote_registration_unregister($params) {
 
   // find the participant
   $participant_search = civicrm_api3('Participant', 'get', array(
-    'id'           => $params['participant_id'],
-    'return'       => 'id,participant_status_id',
-    'option.limit' => 0));
+    'check_permissions' => 0,
+    'id'                => $params['participant_id'],
+    'return'            => 'id,participant_status_id',
+    'option.limit'      => 0));
   if (empty($participant_search['id'])) {
     return civicrm_api3_create_error("Couln't find registration [{$params['participant_id']}]");
   }
@@ -33,11 +34,14 @@ function civicrm_api3_remote_registration_unregister($params) {
 
   // set status to 'Cancelled'
   civicrm_api3('Participant', 'create', array(
+    'check_permissions'     => 0,
     'id'                    => $params['participant_id'],
     'participant_status_id' => 4, // 'Cancelled'
   ));
 
-  return civicrm_api3('Participant', 'getsingle', array('id' => $params['participant_id']));
+  return civicrm_api3('Participant', 'getsingle', array(
+    'check_permissions' => 0,
+    'id'                => $params['participant_id']));
 }
 
 /**

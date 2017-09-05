@@ -21,14 +21,16 @@ function civicrm_api3_remote_group_subscribe($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.subscribe');
 
   // resolve/create contact
+  $params['check_permissions'] = 0;
   $contact = civicrm_api3('Contact', 'getorcreate', $params);
 
   // register for each group
   $group_ids = explode(',', $params['group_ids']);
   foreach ($group_ids as $group_id) {
     civicrm_api3('GroupContact', 'create', array(
-      'contact_id' => $contact['id'],
-      'group_id'   => $group_id));
+      'check_permissions' => 0,
+      'contact_id'        => $contact['id'],
+      'group_id'          => $group_id));
   }
 
   return civicrm_api3_create_success($contact);

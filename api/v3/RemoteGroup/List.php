@@ -22,7 +22,9 @@ function civicrm_api3_remote_group_list($params) {
   $result = array();
 
   // TODO: restrict to eligible groups
-  $result = civicrm_api3('Group', 'get', array('option.limit' => 0));
+  $result = civicrm_api3('Group', 'get', array(
+    'check_permissions' => 0,
+    'option.limit'      => 0));
   $groups = $result['values'];
 
   // replace custom fields with labels
@@ -59,9 +61,10 @@ function civicrm_api3_remote_group_list($params) {
     if (!empty($group['group_fields.display_section'])) {
       try {
         $group['group_fields.display_section_label'] = civicrm_api3('OptionValue', 'getvalue', array(
-          'option_group_id' => 'display_section',
-          'value'           => $group['group_fields.display_section'],
-          'return'          => 'label'));
+          'check_permissions' => 0,
+          'option_group_id'   => 'display_section',
+          'value'             => $group['group_fields.display_section'],
+          'return'            => 'label'));
       } catch (Exception $e) {
         // not found, no problem
         $group['group_fields.display_section_label'] = 'Error';

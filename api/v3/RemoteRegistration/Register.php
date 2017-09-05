@@ -37,8 +37,9 @@ function civicrm_api3_remote_registration_register($params) {
   // run the search
   CRM_Revent_CustomData::resolveCustomFields($event_search);
   $event = civicrm_api3('Event', 'get', $event_search + array(
-    'option.limit' => 2,
-    'return'       => 'id'));
+    'check_permissions' => 0,
+    'option.limit'      => 2,
+    'return'            => 'id'));
   if ($event['id']) {
     $params['event_id'] = $event['id'];
   } else {
@@ -56,8 +57,9 @@ function civicrm_api3_remote_registration_register($params) {
 
   // add contact hash
   $contact_data = civicrm_api3('Contact', 'getsingle', array(
-    'id'     => $participant['contact_id'],
-    'return' => 'hash'));
+    'check_permissions' => 0,
+    'id'                => $participant['contact_id'],
+    'return'            => 'hash'));
   $participant['contact_hash'] = $contact_data['hash'];
 
   return $participant;
