@@ -22,4 +22,20 @@ class CRM_Revent_Config {
   public static function getBusinessLocationType() {
     return 8;
   }
+
+  /**
+   * get the activity type id for the
+   */
+  public static function getCheckBusinessActivityType() {
+    $query = civicrm_api3('OptionValue', 'get', array(
+      'option_group_id' => 'activity_type',
+      'name'            => 'Geschaeftliche Adresse pruefen',
+      'return'          => 'id,value'));
+    if ($query['count'] != 1) {
+      throw new Exception("Activity type 'Geschaeftliche Adresse pruefen' not found!", 1);
+    } else {
+      $value = reset($query['values']);
+      return $value['value'];
+    }
+  }
 }

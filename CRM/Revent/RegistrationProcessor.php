@@ -112,6 +112,25 @@ class CRM_Revent_RegistrationProcessor {
     CRM_Revent_CustomData::resolveCustomFields($data);
     $participant = civicrm_api3('Participant', 'create', $data);
 
+    // create activity for business addresses
+    if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
+      // compile the details
+      $smarty = CRM_Core_Smarty::singleton();
+      $smarty->assign('data', $data);
+      $smarty->assign('contact_id', $data['contact_id']);
+      $smarty->assign('participant_id', $participant['id']);
+      $details = $smarty->fetch('Activity/CheckAddress.tpl');
+
+      // create the activity
+      civicrm_api3('Activity', 'create', array(
+        'target_contact_id' => $data['contact_id'],
+        'subject'           => '',
+        'status_id'         => 1, // Scheduled
+        'details'           => $details,
+        'activity_type_id'  => CRM_Revent_Config::getCheckBusinessActivityType(),
+        ));
+    }
+
     // get all participant data
     return civicrm_api3('Participant', 'getsingle', array('id' => $participant['id']));
   }
