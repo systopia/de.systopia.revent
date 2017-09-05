@@ -36,7 +36,7 @@ for (var i = 0; i < idArray.length; ++i) {
     var link_entry = '<li><a title="__Registration-Customisation__" class="action-item crm-hover-button enabled" href="' + url + '" >__Registration-Customisation__</a> </li>'
 
     var import_url = "__URL-import__?eid=" + idArray[i] + "&reset=1";
-    var import_link_entry = '<li><a title="__Registration-Customisation-Import__" class="action-item crm-hover-button crm-popup enabled" href="' + import_url + '" >__Registration-Customisation-Import__</a> </li>'
+    var import_link_entry = '<li><a title="__Registration-Customisation-import__" class="action-item crm-hover-button crm-popup enabled" href="' + import_url + '" >__Registration-Customisation-import__</a> </li>'
 
     cj("ul#panel_info_" + idArray[i]).append(link_entry);
     cj("ul#panel_info_" + idArray[i]).append(import_link_entry);
