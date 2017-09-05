@@ -20,24 +20,9 @@
 function civicrm_api3_remote_group_unsubscribe($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.unsubscribe');
 
-  // copied from civicrm_api3_mailing_event_unsubscribe_create
-  $job   = $params['job_id'];
-  $queue = $params['event_queue_id'];
-  $hash  = $params['hash'];
-
-  if (empty($params['org_unsubscribe'])) {
-    // UNSUBSCRIBE FROM GROUPS
-    $groups = CRM_Mailing_Event_BAO_Unsubscribe::unsub_from_mailing($job, $queue, $hash);
-    return civicrm_api3_create_success($params);
-
-  } else {
-    // UNSUBSCRIBE FROM DOMAIN (OPT-OUT)
-    $unsubs = CRM_Mailing_Event_BAO_Unsubscribe::unsub_from_domain($job, $queue, $hash);
-    if (!$unsubs) {
-      return civicrm_api3_create_error('Domain Queue event could not be found');
-    }
-    return civicrm_api3_create_success($params);
-  }
+  // just relay to MailingEventUnsubscribe.create
+  $params['check_permissions'] = 0;
+  return civicrm_api3('MailingEventUnsubscribe', 'create', $params);
 }
 
 /**
