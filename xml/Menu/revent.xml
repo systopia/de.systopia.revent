@@ -6,4 +6,10 @@
     <title>Registration Customisation</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/revent/customisation_import</path>
+    <page_callback>CRM_Revent_Form_RegistrationCustomisationImport</page_callback>
+    <title>Import Customisation from other Event</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

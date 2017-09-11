@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.revent\n"
-"POT-Creation-Date: 2017-08-23 14:43+0200\n"
+"POT-Creation-Date: 2017-09-05 16:27+0200\n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,10 +79,15 @@ msgstr ""
 msgid "Supplemental Address"
 msgstr ""
 
-
 #: resources/custom_group_registration_billing_address.json
 #: resources/custom_group_registration_business_address.json
 msgid "Postal Code"
+msgstr ""
+
+#: CRM/Revent/EventDashboardForm.php CRM/Revent/EventManagementForm.php
+#: CRM/Revent/EventRegistrationIntegration.php
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "Registration Customisation"
 msgstr ""
 
 #: resources/custom_group_registration_billing_address.json
@@ -90,16 +95,28 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+#: CRM/Revent/EventDashboardForm.php CRM/Revent/EventManagementForm.php
+#: CRM/Revent/EventRegistrationIntegration.php
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid "Import Customisation from other Event"
+msgstr ""
+
 #: resources/custom_group_registration_billing_address.json
 #: resources/custom_group_registration_business_address.json
 msgid "Country"
 msgstr ""
 
-#: CRM/Revent/Form/RegistrationCustomisation.php
-msgid "Registration Customisation"
+#: CRM/Revent/EventRegistrationIntegration.php
+msgid "registration customisation edit"
 msgstr ""
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid "No event ID (eid) given."
+msgstr ""
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
 msgid "Submit"
 msgstr ""
 
@@ -123,10 +140,18 @@ msgstr ""
 msgid "option"
 msgstr ""
 
-#: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
-msgid "Description"
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid ""
+"Please choose an Event from the list. The registration customisations and "
+"groups will then be imported to this event."
 msgstr ""
 
-#: CRM/Revent/Form/RegistrationCustomisation.php
-msgid "No event ID (eid) given."
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid ""
+"Attention! If an event is chosen here it will overwrite all previously "
+"configured customisations!"
+msgstr ""
+
+#: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
+msgid "Description"
 msgstr ""

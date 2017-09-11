@@ -31,9 +31,14 @@ class CRM_Revent_EventManagementForm {
   public static function handleEventPageHook() {
 
     $script = file_get_contents(__DIR__ . '/../../js/event_management_page.js');
+
     $base_url = CRM_Utils_System::url('civicrm/revent/customisation');
     $script = str_replace('__URL__', $base_url, $script);
     $script = str_replace('__Registration-Customisation__', ts('Registration Customisation', array('domain' => 'de.systopia.revent')), $script);
+
+    $base_url_import = CRM_Utils_System::url('civicrm/revent/customisation_import');
+    $script = str_replace('__URL-import__', $base_url_import, $script);
+    $script = str_replace('__Registration-Customisation-import__', ts('Import Customisation from other Event', array('domain' => 'de.systopia.revent')), $script);
 
     CRM_Core_Region::instance('page-footer')->add(array(
       'script' => $script,

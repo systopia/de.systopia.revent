@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.revent\n"
-"POT-Creation-Date: 2017-08-23 14:43+0200\n"
+"POT-Creation-Date: 2017-09-05 16:29+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Bjoern Endres <Bjoern.Endres@didonai.com>\n"
 "Language-Team: SYSTOPIA <info@systopia.de>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
 #: resources/custom_group_remote_event_connection.json
@@ -88,21 +88,39 @@ msgstr "Adresszusatz"
 msgid "Postal Code"
 msgstr "PLZ"
 
+#: CRM/Revent/EventDashboardForm.php CRM/Revent/EventManagementForm.php
+#: CRM/Revent/EventRegistrationIntegration.php
+#: CRM/Revent/Form/RegistrationCustomisation.php
+msgid "Registration Customisation"
+msgstr "Onlineanmeldung anpassen"
+
 #: resources/custom_group_registration_billing_address.json
 #: resources/custom_group_registration_business_address.json
 msgid "City"
 msgstr "Ort"
+
+#: CRM/Revent/EventDashboardForm.php CRM/Revent/EventManagementForm.php
+#: CRM/Revent/EventRegistrationIntegration.php
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid "Import Customisation from other Event"
+msgstr "Online Anmeldung importieren"
 
 #: resources/custom_group_registration_billing_address.json
 #: resources/custom_group_registration_business_address.json
 msgid "Country"
 msgstr "Land"
 
-#: CRM/Revent/Form/RegistrationCustomisation.php
-msgid "Registration Customisation"
+#: CRM/Revent/EventRegistrationIntegration.php
+msgid "registration customisation edit"
 msgstr "Onlineanmeldung anpassen"
 
 #: CRM/Revent/Form/RegistrationCustomisation.php
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid "No event ID (eid) given."
+msgstr "Fehler! Keine Event-ID übermittelt."
+
+#: CRM/Revent/Form/RegistrationCustomisation.php
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
 msgid "Submit"
 msgstr "Speichern"
 
@@ -126,10 +144,23 @@ msgstr "Position"
 msgid "option"
 msgstr "Option"
 
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid ""
+"Please choose an Event from the list. The registration customisations and "
+"groups will then be imported to this event."
+msgstr ""
+"Bitte wählen sie eine Veranstaltung von der unterstehenden Liste. Die "
+"Online Anmeldung Anpassungen und Gruppen werden dann für diese "
+"Veranstaltung importiert."
+
+#: CRM/Revent/Form/RegistrationCustomisationImport.php
+msgid ""
+"Attention! If an event is chosen here it will overwrite all previously "
+"configured customisations!"
+msgstr ""
+"Achtung! Wenn hier eine Veranstaltung ausgewählt wird werden alle vorher "
+"durchgeführten Anpassungen überschrieben!"
+
 #: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
 msgid "Description"
 msgstr "Beschreibung"
-
-#: CRM/Revent/Form/RegistrationCustomisation.php
-msgid "No event ID (eid) given."
-msgstr "Fehler! Keine Event-ID übermittelt."
