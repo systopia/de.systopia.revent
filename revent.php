@@ -187,6 +187,9 @@ function revent_civicrm_buildForm($formName, &$form) {
       }
       CRM_Revent_CustomDataForm_Mods::buildFormHook($formName, $form);
       break;
+    case 'CRM_Event_Form_ParticipantView':
+      CRM_Revent_ParticipantViewMods::buildFormHook($form);
+      break;
     default:
       break;
   }

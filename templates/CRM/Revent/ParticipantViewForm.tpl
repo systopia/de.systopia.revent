@@ -13,33 +13,35 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
+
 <script type="text/javascript">
     // get variables
 
-    var group_ids = {$active_group_ids};
+    var group_names = {$active_group_ids};
 
-    {literal}
+{literal}
 
-    function revent_custom_data_mods() {
-        cj("[id^='custom_group_']").each(function() {
-            var pattern = /custom_group_([0-9]*?)_/;
-            var custom_group_id = parseInt(pattern.exec(cj(this).attr("id"))[1]);
-
-            if (cj.inArray(custom_group_id, group_ids) === -1) {
-                // is not in array of valid custom groups, we shall hide it now
-                cj(this).prev().hide();
-            }
+    function revent_participant_view_mods() {
+        cj(".no-border").each(function() {
+            // hide all groups first
+            cj(this).hide();
         })
+        for (var i = 0; i < group_names.length; i++) {
+            // make active groups visible
+            var tmp_selector = "[id^='" + group_names[i] + "']";
+            cj(tmp_selector).parent().parent().parent().show();
+        }
+
     }
+
 
     cj(document).ready(function () {
         // call adjustment once
-        revent_custom_data_mods();
+        revent_participant_view_mods();
 
         // inject data dependency
-        cj(document).bind("ajaxComplete", revent_custom_data_mods);
+        cj(document).bind("ajaxComplete", revent_participant_view_mods);
     });
-
 
 </script>
 {/literal}
