@@ -145,22 +145,22 @@ msgid "option"
 msgstr "Option"
 
 #: CRM/Revent/Form/RegistrationCustomisationImport.php
-msgid ""
-"Please choose an Event from the list. The registration customisations and "
-"groups will then be imported to this event."
-msgstr ""
-"Bitte wählen sie eine Veranstaltung von der unterstehenden Liste. Die "
-"Online Anmeldung Anpassungen und Gruppen werden dann für diese "
-"Veranstaltung importiert."
+msgid "Please choose an Event from the list. The registration customisations and groups will then be imported to this event."
+msgstr "Bitte wählen sie eine Veranstaltung von der unterstehenden Liste. Die Online Anmeldung Anpassungen und Gruppen werden dann für diese Veranstaltung importiert."
 
 #: CRM/Revent/Form/RegistrationCustomisationImport.php
-msgid ""
-"Attention! If an event is chosen here it will overwrite all previously "
-"configured customisations!"
-msgstr ""
-"Achtung! Wenn hier eine Veranstaltung ausgewählt wird werden alle vorher "
-"durchgeführten Anpassungen überschrieben!"
+msgid "Attention! If an event is chosen here it will overwrite all previously configured customisations!"
+msgstr "Achtung! Wenn hier eine Veranstaltung ausgewählt wird werden alle vorher durchgeführten Anpassungen überschrieben!"
 
 #: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
 msgid "Description"
 msgstr "Beschreibung"
+
+#: CRM/Revent/RegistrationProcessor.php
+msgid "via Event Registration"
+msgstr "via Eventanmeldung"
+
+#: api/v3/RemoteGroup/Subscribe.php
+msgid "via Newsletter Subscription"
+msgstr "via Newsletter Abonnement"
+

@@ -31,6 +31,35 @@ function civicrm_api3_remote_group_subscribe($params) {
       'group_id'   => $group_id));
   }
 
+  // create activity for business addresses
+  $location_type_id = CRM_Utils_Array::value('location_type_id', $params);
+  if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
+    // resolve country_id
+    if (empty($params['country']) && !empty($params['country_id'])) {
+      $params['country'] = CRM_Core_PseudoConstant::country($params['country_id']);
+    }
+
+    // compile the details
+    $smarty = CRM_Core_Smarty::singleton();
+    $smarty->assign('data', $params);
+    $smarty->assign('contact_id', $contact['id']);
+    $details = $smarty->fetch('Activity/CheckAddress.tpl');
+
+    // create the activity
+    civicrm_api3('Activity', 'create', array(
+      'target_contact_id' => $contact['id'],
+      'subject'           => ts('via Newsletter Subscription', array('domain' => 'de.systopia.revent')),
+      'status_id'         => 1, // Scheduled
+      'details'           => $details,
+      'activity_type_id'  => CRM_Revent_Config::getCheckBusinessActivityType(),
+      ));
+  }
+
+  // remove opt-out flag
+  civicrm_api3('Contact', 'create', array(
+    'contact_id' => $contact['id'],
+    'is_opt_out' => 0));
+
   return civicrm_api3_create_success($contact);
 }
 

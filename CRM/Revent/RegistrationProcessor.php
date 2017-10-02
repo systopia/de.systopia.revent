@@ -124,7 +124,7 @@ class CRM_Revent_RegistrationProcessor {
       // create the activity
       civicrm_api3('Activity', 'create', array(
         'target_contact_id' => $data['contact_id'],
-        'subject'           => '',
+        'subject'           => ts('via Event Registration', array('domain' => 'de.systopia.revent')),
         'status_id'         => 1, // Scheduled
         'details'           => $details,
         'activity_type_id'  => CRM_Revent_Config::getCheckBusinessActivityType(),

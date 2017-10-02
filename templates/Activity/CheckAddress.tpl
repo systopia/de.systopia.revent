@@ -31,4 +31,6 @@
   </tr>
 </table>
 
+{if $participant_id}
 <p>Die zugehörige Registrierung befindet sich <a href="{crmURL p="civicrm/contact/view/participant" q="reset=1&id=`$participant_id`&cid=`$contact_id`&action=view"}">HIER<a>.</p>
+{/if}
