@@ -20,6 +20,19 @@
             {$group.title}
         </div>
         <div class="crm-accordion-body">
+            <div class="crm-block crm-form-block" style="margin-left: 4px; margin-right: 4px">
+                <table class="form-layout-compressed">
+                    {foreach from=$group.languages item=displayGroupLanguage}
+                        <tr>
+                            <td>
+                                {capture assign=displayTitle}group__display__{$group.name}__{$displayGroupLanguage}{/capture}
+                                Group Display Name <i>({$displayGroupLanguage}) </i>
+                                {$form.$displayTitle.html}
+                            </td>
+                        </tr>
+                    {/foreach} {* group iteration *}
+                </table>
+            </div>
             {foreach from=$group.fields item=field}
                 <div class="crm-block crm-form-block" style="margin-left: 4px; margin-right: 4px">
                     <table class="form-layout-compressed">

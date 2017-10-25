@@ -66,6 +66,11 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     // sort associated groups according to weight
     foreach ($data['groups'] as &$group) {
       usort($group['fields'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
+      // FixMe: Still static language supprt here (as above). Needs generic solution in future releases
+    }
+
+    foreach ($data['groups'] as &$display_grp) {
+      $display_grp['languages'] = array('de', 'en');
     }
 
     // add arrays for option counts
@@ -99,6 +104,13 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
     // data is now sorted. create forms now for all groups
     foreach($data['groups'] as $indexed_group) {
+      foreach ($indexed_group['languages'] as $display_lang) {
+        $def_value = "";
+        if (isset($indexed_group["display_name_{$display_lang}"])) {
+          $def_value = $indexed_group["display_name_{$display_lang}"];
+        }
+        $this->createGroupElements($indexed_group['name'], $display_lang, $def_value);
+      }
       foreach ($indexed_group['fields'] as $indexed_field) {
         foreach ($indexed_field['languages'] as $indexed_language) {
           $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_field['maxlength'], $indexed_language);
@@ -148,7 +160,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   /**
    * post processing function
    */
-  public function postProcess() {
+  public function postProcess($display_groups) {
     $values = $this->exportValues();
 
     $groups = array();
@@ -156,6 +168,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
     $pattern = "/(?<type>[A-Za-z]+)__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<language>[a-z0]{1,2})$/";
     $option_pattern = "/option__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<index>[0-9]*?)__(?<language>[a-z0]{1,2})$/";
+    $group_name_patter = "/group__display__(?<group>[A-Za-z0-9-._]+)__(?<language>[a-z0]{1,2})$/";
     $matches = array();
     // iterate values, then build group and fields array
     foreach ($values as $name => $value) {
@@ -213,6 +226,15 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
             }
           }
         }
+      } elseif (preg_match($group_name_patter, $name, $matches)) {
+        $group = $matches['group'];
+        $language = $matches['language'];
+        foreach ($this->data['groups'] as &$display_groups) {
+          if ($display_groups['name'] === $group) {
+            $display_groups["display_name_{$language}"] = $value;
+          }
+          $this->error("did some ");
+        }
       } else {
         continue;
       }
@@ -220,6 +242,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
     foreach ($this->data['groups'] as $group) {
       unset($group['fields']);
+      // cleanup additional language field in group array
+      unset($group['languages']);
       $groups[] = $group;
     }
 
@@ -242,6 +266,18 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
      */
     private static function compareHelper($a, $b) {
       return $a['weight'] - $b['weight'];
+    }
+
+    private function createGroupElements($group_title, $language, $default_value) {
+      $this->add(
+        'text',
+        "group__display__{$group_title}__{$language}",
+        ts('Group Display Name', array('domain' => 'de.systopia.revent')),
+        array(
+          'class'     => 'huge',
+        )
+      );
+      $this->default_data["group__display__{$group_title}__{$language}"] = $default_value;
     }
 
   /**
