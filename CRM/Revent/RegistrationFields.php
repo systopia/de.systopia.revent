@@ -143,10 +143,11 @@ class CRM_Revent_RegistrationFields {
     $customisation = json_decode($customisation_raw, TRUE);
 
     // apply group data
-    foreach ($groups as $group_name => $group_data) {
+    foreach ($groups as &$group_data) {
+      $group_name = $group_data['name'];
       if (isset($customisation['groups'][$group_name]) && is_array($customisation['groups'][$group_name])) {
         foreach ($customisation['groups'][$group_name] as $key => $value) {
-          $groups[$group_name][$key] = $value;
+          $group_data[$key] = $value;
         }
       }
     }
@@ -243,20 +244,24 @@ class CRM_Revent_RegistrationFields {
           $folder = dirname(__FILE__) . '/../../resources/profiles';
           $group_data = json_decode(file_get_contents("{$folder}/{$custom_group_id}.json"), TRUE);
 
-          return array(
+          $rendered_group = array(
             'name'   => $group_data['name'],
             'title'  => $group_data['title'],
             'weight' => $group_data['weight'],
             );
+          $this->renderLocalisation($rendered_group);
+          return $rendered_group;
 
         case 'CustomGroup':
         case 'OptionGroup': // legacy
           $custom_group = civicrm_api3('CustomGroup', 'getsingle', array('id' => $match['id']));
-          return array(
+          $rendered_group = array(
             'name'   => $custom_group['name'],
             'title'  => $custom_group['title'],
             'weight' => $custom_group['weight'],
             );
+          $this->renderLocalisation($rendered_group);
+          return $rendered_group;
 
         default:
           throw new Exception("Unknown field set type '{$match['type']}'!");
