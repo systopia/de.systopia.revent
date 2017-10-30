@@ -160,7 +160,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   /**
    * post processing function
    */
-  public function postProcess($display_groups) {
+  public function postProcess() {
     $values = $this->exportValues();
 
     $groups = array();
