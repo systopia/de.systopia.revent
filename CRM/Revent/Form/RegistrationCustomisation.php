@@ -105,9 +105,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     // data is now sorted. create forms now for all groups
     foreach($data['groups'] as $indexed_group) {
       foreach ($indexed_group['languages'] as $display_lang) {
-        $def_value = "";
-        if (isset($indexed_group["display_name_{$display_lang}"])) {
-          $def_value = $indexed_group["display_name_{$display_lang}"];
+        $def_value = $indexed_group['title'];
+        if (isset($indexed_group["title_{$display_lang}"])) {
+          $def_value = $indexed_group["title_{$display_lang}"];
         }
         $this->createGroupElements($indexed_group['name'], $display_lang, $def_value);
       }
@@ -231,9 +231,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         $language = $matches['language'];
         foreach ($this->data['groups'] as &$display_groups) {
           if ($display_groups['name'] === $group) {
-            $display_groups["display_name_{$language}"] = $value;
+            $display_groups["title_{$language}"] = $value;
           }
-          $this->error("did some ");
         }
       } else {
         continue;
