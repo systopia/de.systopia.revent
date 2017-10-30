@@ -229,9 +229,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       } elseif (preg_match($group_name_patter, $name, $matches)) {
         $group = $matches['group'];
         $language = $matches['language'];
-        foreach ($this->data['groups'] as &$display_groups) {
-          if ($display_groups['name'] === $group) {
-            $display_groups["title_{$language}"] = $value;
+        foreach ($this->data['groups'] as &$display_group) {
+          if ($display_group['name'] === $group) {
+            $display_group["title_{$language}"] = $value;
           }
         }
       } else {
