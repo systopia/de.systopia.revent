@@ -113,6 +113,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       }
       foreach ($indexed_group['fields'] as $indexed_field) {
         foreach ($indexed_field['languages'] as $indexed_language) {
+          if (!isset($indexed_field['maxlength'])) {
+            $indexed_field['maxlength'] = 128;
+          }
           $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_field['maxlength'], $indexed_language);
           $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], $indexed_language);
           if (isset($indexed_field["options_{$indexed_language}"])) {
