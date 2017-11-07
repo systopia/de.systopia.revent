@@ -175,8 +175,16 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $matches = array();
     // iterate values, then build group and fields array
     foreach ($values as $name => $value) {
-
-      if (preg_match($option_pattern, $name, $matches)) {
+      
+      if (preg_match($group_name_patter, $name, $matches)) {
+        $group = $matches['group'];
+        $language = $matches['language'];
+        foreach ($this->data['groups'] as &$display_group) {
+          if ($display_group['name'] === $group) {
+            $display_group["title_{$language}"] = $value;
+          }
+        }
+      } elseif (preg_match($option_pattern, $name, $matches)) {
         $field    = $matches['field'];
         $language = $matches['language'];
         $index    = $matches['index'];
@@ -227,14 +235,6 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
             } elseif (!isset($fields[$field][$type])) {
               $fields[$field][$type] = $value;
             }
-          }
-        }
-      } elseif (preg_match($group_name_patter, $name, $matches)) {
-        $group = $matches['group'];
-        $language = $matches['language'];
-        foreach ($this->data['groups'] as &$display_group) {
-          if ($display_group['name'] === $group) {
-            $display_group["title_{$language}"] = $value;
           }
         }
       } else {
