@@ -175,7 +175,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $matches = array();
     // iterate values, then build group and fields array
     foreach ($values as $name => $value) {
-      
+
       if (preg_match($group_name_patter, $name, $matches)) {
         $group = $matches['group'];
         $language = $matches['language'];
