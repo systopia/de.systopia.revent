@@ -13,7 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('REVENT_SCHEMA_VERSION',  '0.5.dev');
+define('REVENT_SCHEMA_VERSION',  '0.6.dev');
 
 /**
  * Provides functions for the registration field selection
@@ -323,6 +323,7 @@ class CRM_Revent_RegistrationFields {
    * Render and add the type specific fields,
    *  in particular 'type', 'validation', 'options'
    *
+   * @see https://api.drupal.org/api/drupal/modules%21poll%21poll.module/7.x
    */
   protected function renderType($custom_field, &$metadata) {
     switch ($custom_field['html_type']) {
@@ -341,6 +342,10 @@ class CRM_Revent_RegistrationFields {
         break;
 
       case 'Radio':
+        $metadata['type'] = 'radios';
+        $metadata['options'] = $this->getOptions($custom_field);
+        break;
+
       case 'Select':
       case 'Select Country':
         $metadata['type'] = 'select';

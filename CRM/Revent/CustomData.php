@@ -14,7 +14,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('CUSTOM_DATA_HELPER_VERSION', '0.3.8.dev');
+define('CUSTOM_DATA_HELPER_VERSION', '0.3.9.dev');
 define('CUSTOM_DATA_HELPER_LOG_LEVEL', 1);
 
 // log levels
@@ -518,6 +518,11 @@ class CRM_Revent_CustomData {
    *
    * This function reverses this in the array itself
    *
+   * Also, REST calls struggle with complex data structures,
+   *  such as arrays. If you add html encoded json_strings
+   *  (e.g. '%5B6%2C7%2C8%5D' for '[6,7,8]')
+   *  they will be unpacked as well.
+   *
    * @todo make it more efficient?
    *
    * @param $params      the parameter array as used by the API
@@ -535,6 +540,19 @@ class CRM_Revent_CustomData {
         $new_key = preg_replace("#^{$group_name}_#", "{$group_name}.", $key);
         if ($new_key != $key) {
           $params[$new_key] = $params[$key];
+        }
+      }
+    }
+
+    // also, unpack 'flattened' arrays
+    foreach ($params as $key => &$value) {
+      if (!is_array($value)) {
+        $first_character = substr($value, 0, 1);
+        if ($first_character == '[' || $first_character == '{') {
+          $unpacked_value = json_decode($value, TRUE);
+          if ($unpacked_value) {
+            $value = $unpacked_value;
+          }
         }
       }
     }
