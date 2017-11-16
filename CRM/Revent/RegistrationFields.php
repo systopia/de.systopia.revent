@@ -267,7 +267,7 @@ class CRM_Revent_RegistrationFields {
           throw new Exception("Unknown field set type '{$match['type']}'!");
       }
     } else {
-      throw new Exception("Unknown field set id '{$group_id}'!");
+      throw new Exception("Unknown field set id '{$custom_group_id}'!");
     }
 
 
