@@ -45,7 +45,7 @@
     },
     "suffix_id": {
       "group": "BuiltInProfile-3",
-      "title": "Suffix",
+      "title": "Namenszusatz",
       "maxlength": "128",
       "required": 0,
       "name": "suffix_id",
