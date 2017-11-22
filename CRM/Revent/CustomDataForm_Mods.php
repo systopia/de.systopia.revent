@@ -38,5 +38,12 @@ class CRM_Revent_CustomDataForm_Mods {
       'template' => "CRM/Revent/EventCustomDataForm.tpl"
     ));
   }
+
+  public static function buildFormHookNoEventId($formName, &$form) {
+
+    CRM_Core_Region::instance('page-body')->add(array(
+      'template' => "CRM/Revent/EventCustomDataFormDynamicEventId.tpl"
+    ));
+  }
 }
 
