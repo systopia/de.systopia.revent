@@ -23,6 +23,13 @@ class CRM_Revent_EventManagementForm {
   public static function buildFormHook() {
 
     $script = file_get_contents(__DIR__ . '/../../js/event_management_form.js');
+    $script = str_replace('__MESSAGE__',
+      ts(
+        // original message
+        // Bitte verwenden Sie nur alphanumerische Zeichen, Leerzeichen und Bindestriche für Veranstaltungs-Namen.
+      'Please use alphanumeric Characters, Space or Dash for Event Title. Event Title configured or edited here wont show up on the website.',
+        array('domain' => 'de.systopia.revent')),
+      $script);
     CRM_Core_Region::instance('page-footer')->add(array(
       'script' => $script,
     ));

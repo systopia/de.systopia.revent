@@ -24,7 +24,8 @@ cj("#tab_pcp").hide();
 cj("#tab_repeat").hide();
 
 // make some fields read-only
-cj("#title").prop("readonly", true);
+// cj("#title").prop("readonly", true);
+cj("#title").parent().find(".description").text("__MESSAGE__")
 cj("[id^=start_date_display]").prop('disabled', true);
 cj("#start_date_time").prop("readonly", true);
 cj("[id^=end_date_display]").prop('disabled', true);
