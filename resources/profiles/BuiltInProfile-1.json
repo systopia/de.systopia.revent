@@ -78,6 +78,7 @@
       "maxlength": "64",
       "required": 1,
       "name": "country_id",
+      "default_value": "1082",
       "type": "select",
       "options": "country_list",
       "weight": "80"
