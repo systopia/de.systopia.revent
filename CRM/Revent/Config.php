@@ -38,4 +38,13 @@ class CRM_Revent_Config {
       return $value['value'];
     }
   }
+
+  /**
+   * Get the list of custom group names that
+   * should _not_ be delivered to a remote event registration form
+   */
+  public static function getLocalCustomGroups() {
+    // TODO: config option?
+    return array('registration_address');
+  }
 }

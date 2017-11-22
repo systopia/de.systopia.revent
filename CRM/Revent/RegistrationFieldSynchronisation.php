@@ -82,6 +82,8 @@ class CRM_Revent_RegistrationFieldSynchronisation {
    * Get all eligible Participant CustomGroups
    */
   public static function getActiveFieldSets() {
+    $local_groups = CRM_Revent_Config::getLocalCustomGroups();
+
     $query = civicrm_api3('CustomGroup', 'get', array(
       'extends'         => 'Participant',
       'option.limit'    => 0,
@@ -92,6 +94,11 @@ class CRM_Revent_RegistrationFieldSynchronisation {
 
     $result = array();
     foreach ($query['values'] as $customGroup) {
+      if (in_array($customGroup['name'], $local_groups)) {
+        // don't consider local groups
+        continue;
+      }
+
       $key = "CustomGroup-{$customGroup['id']}";
       $result[$key] = array(
         'value'  => $key,
