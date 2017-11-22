@@ -47,6 +47,14 @@ class CRM_Revent_RegistrationProcessor {
       }
     }
 
+    // process 'special' prefix 'ka' (HBS-5606)
+    if (!empty($params['prefix_id']) && $params['prefix_id'] == 'ka') {
+      unset($params['prefix_id']);
+      if (empty($params['gender_id'])) {
+        $params['gender_id'] = 3;
+      }
+    }
+
 
     // simply call XCM
     $contact = civicrm_api3('Contact', 'getorcreate', $params);
