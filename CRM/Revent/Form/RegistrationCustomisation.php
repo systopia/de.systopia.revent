@@ -65,7 +65,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     }
     // sort associated groups according to weight
     foreach ($data['groups'] as &$group) {
-      usort($group['fields'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
+      if (!empty($group['fields'])) {
+        usort($group['fields'], array('CRM_Revent_Form_RegistrationCustomisation', 'compareHelper'));
+      }
       // FixMe: Still static language supprt here (as above). Needs generic solution in future releases
     }
 
@@ -75,6 +77,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
 
     // add arrays for option counts
     foreach ($data['groups'] as &$grp) {
+      if (empty($grp['fields'])) {
+        continue;
+      }
       foreach ($grp['fields'] as &$fld) {
         if (isset($fld['options'])) {
           // create a counter array for the template
@@ -92,6 +97,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     // some group names contain a '.', which messes with the quickform api or something else.
     // replace them with _, and store them locally, to be mapped afterwards
     foreach ($data['groups'] as &$g) {
+      if (empty($g['fields'])) {
+        continue;
+      }
       foreach ($g['fields'] as &$f) {
         if (strpos($f['name'], '.')) {
           // we need to replace this, and map it locally
@@ -110,6 +118,9 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
           $def_value = $indexed_group["title_{$display_lang}"];
         }
         $this->createGroupElements($indexed_group['name'], $display_lang, $def_value);
+      }
+      if (empty($indexed_group['fields'])) {
+        continue;
       }
       foreach ($indexed_group['fields'] as $indexed_field) {
         foreach ($indexed_field['languages'] as $indexed_language) {

@@ -19,6 +19,7 @@
       "name": "registration_fields",
       "label": "Registration Fields",
       "data_type": "String",
+      "text_length": "2048",
       "html_type": "Multi-Select",
       "option_group_id": "remote_registration_fields",
       "is_required": "0",
