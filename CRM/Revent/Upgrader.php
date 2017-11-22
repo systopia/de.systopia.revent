@@ -7,7 +7,7 @@ use CRM_Revent_ExtensionUtil as E;
 class CRM_Revent_Upgrader extends CRM_Revent_Upgrader_Base {
 
   /**
-   * Example: Run a couple simple queries.
+   * Extend length of civicrm_value_remote_event_registration.registration_fields to varchar(2048)
    *
    * @return TRUE on success
    * @throws Exception
