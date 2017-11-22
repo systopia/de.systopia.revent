@@ -34,7 +34,7 @@
     },
     "street_address": {
       "group": "BuiltInProfile-1",
-      "title": "Straße",
+      "title": "Straße und Hausnummer",
       "maxlength": "96",
       "required": 1,
       "name": "street_address",
