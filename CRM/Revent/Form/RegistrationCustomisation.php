@@ -200,6 +200,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
         $language = $matches['language'];
         $index    = $matches['index'];
 
+        error_log("DEBUG OPTION GROUP: {$name} -> {$value}; Field: {$field}, language: {$language}, index: {$index}");
+
         // Check if we did replacements for the field name. If so, overwrite them
         if (isset($this->replacement_index[$field])) {
           $field = $this->replacement_index[$field];
