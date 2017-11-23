@@ -28,6 +28,10 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
   protected $replacement_index      = array();
 
   public function buildQuickForm() {
+
+    // check php configuration
+    $this->checkPHPConfig();
+
     CRM_Utils_System::setTitle(ts('Registration Customisation', array('domain' => 'de.systopia.revent')));
 
     // get event ID
@@ -175,8 +179,8 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
    * post processing function
    */
   public function postProcess() {
-    $values = $this->exportValues();
 
+    $values = $this->exportValues();
     $groups = array();
     $fields = array();
 
@@ -283,6 +287,27 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
       return $a['weight'] - $b['weight'];
     }
 
+  /**
+   * Checks the local php config
+   *
+   * creates a warning if 'max_input_vars' is set to less than 10000
+   */
+    private function checkPHPConfig() {
+      $php_var_count = ini_get('max_input_vars');
+      if ($php_var_count < 10000) {
+        CRM_Core_Session::setStatus(
+          ts("The php configuration for 'max_input_vars' is currently set to {$php_var_count}. It should be increased to 10000 for large forms. "),
+          ts("PHP Configuration Warning"),
+          "info",
+          array('unique' => true, 'expires' => 0));
+      }
+    }
+
+  /**
+   * @param $group_title
+   * @param $language
+   * @param $default_value
+   */
     private function createGroupElements($group_title, $language, $default_value) {
       $this->add(
         'text',
