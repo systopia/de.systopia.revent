@@ -14,7 +14,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-define('CUSTOM_DATA_HELPER_VERSION', '0.3.9.dev');
+define('CUSTOM_DATA_HELPER_VERSION', '0.3.10.dev');
 define('CUSTOM_DATA_HELPER_LOG_LEVEL', 1);
 
 // log levels
@@ -551,7 +551,13 @@ class CRM_Revent_CustomData {
         if ($first_character == '[' || $first_character == '{') {
           $unpacked_value = json_decode($value, TRUE);
           if ($unpacked_value) {
-            $value = $unpacked_value;
+            if (is_array($unpacked_value) && empty($unpacked_value)) {
+              // this is a strange behaviour in the API,
+              //   but empty arrays are not processed properly
+              $value = '';
+            } else {
+              $value = $unpacked_value;
+            }
           }
         }
       }
