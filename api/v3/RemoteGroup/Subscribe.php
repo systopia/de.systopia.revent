@@ -23,16 +23,10 @@ function civicrm_api3_remote_group_subscribe($params) {
   // IF BUSINESS ADDRESS is given, ther should be an organisation
   $location_type_id = CRM_Utils_Array::value('location_type_id', $params);
   if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
-    $organisation_data = $params;
-    $organisation_data['organization_name'] = trim("{$params['organisation_name_1']} {$params['organisation_name_2']}");
-
-    if ($organisation_data['organization_name']) {
-      // there is an organisation -> look up
-      $organisation_data['contact_type'] = 'Organization';
-      $organization = civicrm_api3('Contact', 'getorcreate', $params);
-
+    $organisation_id = CRM_Revent_RegistrationProcessor::createOrganisation($params);
+    if ($organisation_id) {
       // add this organisation for address sharing
-      $params['address_master_contact_id'] = $organization['id'];
+      $params['address_master_contact_id'] = $organisation_id;
     }
   }
 

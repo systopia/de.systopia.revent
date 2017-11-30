@@ -36,28 +36,33 @@ class CRM_Revent_RegistrationProcessor {
   /**
    * Resolve the contact - using XCM
    */
-  public function resolveContact($params) {
-    // HBS-5627: business addresses should NOT be passed on to XCM
+  public function resolveContact(&$params) {
+    $data = $params; // copy
     $location_type_id = CRM_Utils_Array::value('location_type_id', $params);
     if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
+      // If this is a business address, the organisation should be created (HBS-5927)
+      $organisation_id = self::createOrganisation($params);
+      // and the address marked for sharing
+      $params['address_master_contact_id'] = $organisation_id;
+
+      // but also the business address should not be passed to the contact (HBS-5627)
       foreach (self::$address_attributes as $attribute_name) {
-        if (isset($params[$attribute_name])) {
-          unset($params[$attribute_name]);
+        if (isset($data[$attribute_name])) {
+          unset($data[$attribute_name]);
         }
       }
     }
 
     // process 'special' prefix 'ka' (HBS-5606)
-    if (!empty($params['prefix_id']) && $params['prefix_id'] == 'ka') {
-      unset($params['prefix_id']);
-      if (empty($params['gender_id'])) {
-        $params['gender_id'] = 3;
+    if (!empty($data['prefix_id']) && $data['prefix_id'] == 'ka') {
+      unset($data['prefix_id']);
+      if (empty($data['gender_id'])) {
+        $data['gender_id'] = 3;
       }
     }
 
-
-    // simply call XCM
-    $contact = civicrm_api3('Contact', 'getorcreate', $params);
+    // finally call XCM
+    $contact = civicrm_api3('Contact', 'getorcreate', $data);
     return $contact['id'];
   }
 
@@ -142,6 +147,37 @@ class CRM_Revent_RegistrationProcessor {
     // get all participant data
     return civicrm_api3('Participant', 'getsingle', array('id' => $participant['id']));
   }
+
+  /**
+   * Generate an organisation from the given data
+   */
+  public static function createOrganisation($params) {
+    $organisation_data = array(
+      'contact_type' => 'Organization'
+    );
+
+    // extract the organisation name
+    if (empty($params[$params['organization_name']])) {
+      $organisation_data['organization_name'] = trim("{$params['organisation_name_1']} {$params['organisation_name_2']}");
+    } else {
+      $organisation_data['organization_name'] = $params['organization_name'];
+    }
+
+    if ($organisation_data['organization_name']) {
+      // there is an organisation -> copy relevant data
+      $copy_fields = self::$address_attributes + array('organisation_name_1', 'organisation_name_2');
+      foreach ($copy_fields as $field_name) {
+        if (isset($params[$field_name])) {
+          $organisation_data[$field_name] = $params[$field_name];
+        }
+      }
+
+      // and pass through XCM
+      $organization = civicrm_api3('Contact', 'getorcreate', $params);
+      return $organization['id'];
+    }
+  }
+
 
   /**
    * are there currently people on the waiting list

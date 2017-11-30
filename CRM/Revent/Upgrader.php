@@ -1,4 +1,18 @@
 <?php
+/*-------------------------------------------------------+
+| SYSTOPIA REMOTE EVENT REGISTRATION                     |
+| Copyright (C) 2017 SYSTOPIA                            |
+| Author: B. Endres (endres@systopia.de)                 |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++--------------------------------------------------------*/
+
 use CRM_Revent_ExtensionUtil as E;
 
 /**
@@ -13,8 +27,21 @@ class CRM_Revent_Upgrader extends CRM_Revent_Upgrader_Base {
    * @throws Exception
    */
   public function upgrade_0906() {
-    $this->ctx->log->info('Applying update 0906 - changing size of the registration_fields column');
+    $this->ctx->log->info('Applying update 0.9.6 - changing size of the registration_fields column');
     CRM_Core_DAO::executeQuery('ALTER TABLE civicrm_value_remote_event_registration MODIFY registration_fields VARCHAR(2048);');
+    return TRUE;
+  }
+
+  /**
+   * Make sure custom field changes are applied
+   *
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_0908() {
+    $this->ctx->log->info('Applying update 0.9.8 - changes in custom fields');
+    $customData = new CRM_Revent_CustomData('de.systopia.revent');
+    $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_registration_address.json');
     return TRUE;
   }
 
