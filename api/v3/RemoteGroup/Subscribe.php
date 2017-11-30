@@ -20,6 +20,22 @@
 function civicrm_api3_remote_group_subscribe($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.subscribe');
 
+  // IF BUSINESS ADDRESS is given, ther should be an organisation
+  $location_type_id = CRM_Utils_Array::value('location_type_id', $params);
+  if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
+    $organisation_data = $params;
+    $organisation_data['organization_name'] = trim("{$params['organisation_name_1']} {$params['organisation_name_2']}");
+
+    if ($organisation_data['organization_name']) {
+      // there is an organisation -> look up
+      $organisation_data['contact_type'] = 'Organization';
+      $organization = civicrm_api3('Contact', 'getorcreate', $params);
+
+      // add this organisation for address sharing
+      $params['address_master_contact_id'] = $organization['id'];
+    }
+  }
+
   // resolve/create contact
   $contact = civicrm_api3('Contact', 'getorcreate', $params);
 
@@ -29,30 +45,6 @@ function civicrm_api3_remote_group_subscribe($params) {
     civicrm_api3('GroupContact', 'create', array(
       'contact_id' => $contact['id'],
       'group_id'   => $group_id));
-  }
-
-  // create activity for business addresses
-  $location_type_id = CRM_Utils_Array::value('location_type_id', $params);
-  if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
-    // resolve country_id
-    if (empty($params['country']) && !empty($params['country_id'])) {
-      $params['country'] = CRM_Core_PseudoConstant::country($params['country_id']);
-    }
-
-    // compile the details
-    $smarty = CRM_Core_Smarty::singleton();
-    $smarty->assign('data', $params);
-    $smarty->assign('contact_id', $contact['id']);
-    $details = $smarty->fetch('Activity/CheckAddress.tpl');
-
-    // create the activity
-    civicrm_api3('Activity', 'create', array(
-      'target_contact_id' => $contact['id'],
-      'subject'           => ts('via Newsletter Subscription', array('domain' => 'de.systopia.revent')),
-      'status_id'         => 1, // Scheduled
-      'details'           => $details,
-      'activity_type_id'  => CRM_Revent_Config::getCheckBusinessActivityType(),
-      ));
   }
 
   // remove opt-out flag
