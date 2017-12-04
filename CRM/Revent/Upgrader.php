@@ -41,7 +41,7 @@ class CRM_Revent_Upgrader extends CRM_Revent_Upgrader_Base {
   public function upgrade_0908() {
     $this->ctx->log->info('Applying update 0.9.8 - changes in custom fields');
     $customData = new CRM_Revent_CustomData('de.systopia.revent');
-    $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_registration_address.json');
+    $customData->syncCustomGroup(__DIR__ . '/../../resources/custom_group_registration_address.json');
     return TRUE;
   }
 
