@@ -30,6 +30,14 @@ function civicrm_api3_remote_group_subscribe($params) {
     }
   }
 
+  // process 'special' prefix 'ka' (HBS-5606)
+  if (!empty($params['prefix_id']) && $params['prefix_id'] == 'ka') {
+    unset($params['prefix_id']);
+    if (empty($params['gender_id'])) {
+      $params['gender_id'] = 3;
+    }
+  }
+
   // resolve/create contact
   $contact = civicrm_api3('Contact', 'getorcreate', $params);
 
