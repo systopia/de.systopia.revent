@@ -28,21 +28,8 @@ class CRM_Revent_CustomDataForm_Mods {
    */
   public static function buildFormHook($formName, &$form) {
 
-    $event_id = $form->getVar('_eID');
-    $registrationFields = new CRM_Revent_RegistrationFields(array('id' => $event_id));
-    $active_group_ids = $registrationFields->getActiveGroups();
-
-    $form->assign("active_group_ids", json_encode($active_group_ids));
-
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/EventCustomDataForm.tpl"
-    ));
-  }
-
-  public static function buildFormHookNoEventId($formName, &$form) {
-
-    CRM_Core_Region::instance('page-body')->add(array(
-      'template' => "CRM/Revent/EventCustomDataFormDynamicEventId.tpl"
     ));
   }
 }

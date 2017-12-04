@@ -182,10 +182,6 @@ function revent_civicrm_buildForm($formName, &$form) {
       break;
     case 'CRM_Event_Form_Participant':
       require_once 'CRM/Revent/CustomDataForm_Mods.php';
-      if (empty($form->getVar('_eID'))) {
-        CRM_Revent_CustomDataForm_Mods::buildFormHookNoEventId($formName, $form);
-        return;
-      }
       CRM_Revent_CustomDataForm_Mods::buildFormHook($formName, $form);
       break;
     case 'CRM_Event_Form_ParticipantView':
