@@ -14,8 +14,9 @@
 +-------------------------------------------------------*}
 
 <script type="text/javascript">
-    // get variables
+    var initial_contact_id = {$form_contact_id};
     var registration_address_custom_id = '0';
+
 
     {literal}
 
@@ -40,9 +41,7 @@
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @param event_custom_group_ids
-     */
+
     function revent_custom_data_mods(event_custom_group_ids) {
         cj("[id^='custom_group_']").each(function() {
             var pattern = /custom_group_([0-9]*?)_/;
@@ -54,25 +53,19 @@
         })
     }
 
-    /**
-     *
-     * @param address_data
-     */
     function revent_fill_address_data(address_data) {
         CRM.api3('CustomField', 'get', {
             "sequential": 1,
             "custom_group_id": "registration_address"
         }).done(function(result) {
-            var tmp_address_data = address_data[0];
-
             for (i=0; i < result.values.length; i++) {
-                if (revent_find_in_array(result.values[i]['name'], tmp_address_data)) {
+                if (revent_find_in_array(result.values[i]['name'], address_data)) {
                     if (result.values[i]['name'] === "country_id") {
                         var indexString_country = "select[name^=custom_" + result.values[i]['id'] + "]";
-                        cj(indexString_country).val(tmp_address_data[result.values[i]['name']]).trigger('change');
+                        cj(indexString_country).val(address_data[result.values[i]['name']]).trigger('change');
                     }
                     var indexString = "input#custom_" + result.values[i]['id'] + "_-1";
-                    cj(indexString).val(tmp_address_data[result.values[i]['name']]);
+                    cj(indexString).val(address_data[result.values[i]['name']]);
                 }
             }
         });
@@ -93,7 +86,9 @@
 
     function revent_initial_address_data() {
         var contactId = cj("input[name=contact_id]").val();
-        console.log("CONTACT_ID: " + contactId);
+        if (initial_contact_id !== 0) {
+            contactId = initial_contact_id;
+        }
         if (contactId !== '') {
             CRM.api3('Address', 'getsingle', {
                 "sequential": 1,
@@ -132,13 +127,13 @@
         cj("input[name=contact_id]").on("change", function(){
             var contactId = cj(this).val();
             if (contactId !== '') {
-                CRM.api3('Address', 'get', {
+                CRM.api3('Address', 'getsingle', {
                     "sequential": 1,
                     "contact_id": contactId,
-                    // "is_primary": 1
+                    "is_primary": 1
                 }).done(function (result) {
                     fill_change = true;
-                    revent_fill_address_data(result.values);
+                    revent_fill_address_data(result);
                 });
             }
         })

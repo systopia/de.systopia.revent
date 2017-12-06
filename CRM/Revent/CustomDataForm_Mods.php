@@ -28,11 +28,14 @@ class CRM_Revent_CustomDataForm_Mods {
    */
   public static function buildFormHook($formName, &$form) {
 
-    $event_id = $form->getVar('_eID');
-    $registrationFields = new CRM_Revent_RegistrationFields(array('id' => $event_id));
-    $active_group_ids = $registrationFields->getActiveGroups();
+    $cId = $form->getVar('_contactId');
 
-    $form->assign("active_group_ids", json_encode($active_group_ids));
+    if (!empty($cId)) {
+      $form->assign("form_contact_id", $cId);
+    } else {
+      // FixME: if this isn't initialized, js throws errors
+      $form->assign("form_contact_id", "0");
+    }
 
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/EventCustomDataForm.tpl"
