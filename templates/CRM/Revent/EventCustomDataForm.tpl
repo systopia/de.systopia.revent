@@ -101,7 +101,7 @@
     }
 
     cj(document).ready(function () {
-        // call adjustment once
+
         revent_get_custom_group_registration_address_id();
         revent_initial_address_data();
         revent_hide_custom_groups();
