@@ -32,6 +32,16 @@
       "verification": "string",
       "weight": "30"
     },
+    "job_title": {
+      "group": "BuiltInProfile-1",
+      "title": "Funktion",
+      "maxlength": "128",
+      "required": 0,
+      "name": "job_title",
+      "type": "textfield",
+      "verification": "string",
+      "weight": "35"
+    },
     "street_address": {
       "group": "BuiltInProfile-1",
       "title": "Straße und Hausnummer",

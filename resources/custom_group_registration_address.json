@@ -65,23 +65,6 @@
     {
         "_lookup": ["column_name"],
         "_translate": ["label"],
-        "name": "job_title",
-        "label": "Function",
-        "data_type": "String",
-        "html_type": "Text",
-        "weight": "25",
-        "is_required": "0",
-        "is_searchable": "1",
-        "is_search_range": "0",
-        "is_active": "1",
-        "is_view": "0",
-        "text_length": "128",
-        "column_name": "job_title",
-        "in_selector": "0"
-    },
-    {
-        "_lookup": ["column_name"],
-        "_translate": ["label"],
         "name": "street_address",
         "label": "Street Address",
         "data_type": "String",
