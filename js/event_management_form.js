@@ -25,14 +25,14 @@ cj("#tab_repeat").hide();
 
 // make some fields read-only
 // cj("#title").prop("readonly", true);
-cj("#title").parent().find(".description").text("__MESSAGE__")
-cj("[id^=start_date_display]").prop('disabled', true);
-cj("#start_date_time").prop("readonly", true);
-cj("[id^=end_date_display]").prop('disabled', true);
-cj("#end_date_time").prop("readonly", true);
-cj(".crm-clear-link").each(function(){
-    cj(this).hide()
-});
+cj("#title").parent().find(".description").text("__MESSAGE__");
+// cj("[id^=start_date_display]").prop('disabled', true);
+// cj("#start_date_time").prop("readonly", true);
+// cj("[id^=end_date_display]").prop('disabled', true);
+// cj("#end_date_time").prop("readonly", true);
+// cj(".crm-clear-link").each(function(){
+//     cj(this).hide()
+// });
 
 // uncheck social media checkbox (#5451)
 cj("#is_share").prop("checked", false);
