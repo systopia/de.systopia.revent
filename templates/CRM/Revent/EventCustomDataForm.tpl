@@ -51,11 +51,6 @@
                 // is not in array of valid custom groups, we shall hide it now
                 cj(this).prev().hide();
             }
-            console.log("Custom_gourp_id: " + custom_group_id + "; reg_id >>> " + registration_address_custom_id);
-            if (parseInt(custom_group_id) === registration_address_custom_id) {
-                // fill default values
-                console.log('<<< WE HAVE A WINNER >>>');
-            }
         })
     }
 
@@ -72,13 +67,14 @@
 
             for (i=0; i < result.values.length; i++) {
                 if (revent_find_in_array(result.values[i]['name'], tmp_address_data)) {
-                    // "input#custom_63_-1").val("balls")
+                    if (result.values[i]['name'] === "country_id") {
+                        var indexString_country = "select[name^=custom_" + result.values[i]['id'] + "]";
+                        cj(indexString_country).val(tmp_address_data[result.values[i]['name']]).trigger('change');
+                    }
                     var indexString = "input#custom_" + result.values[i]['id'] + "_-1";
                     cj(indexString).val(tmp_address_data[result.values[i]['name']]);
                 }
             }
-            // organisation_name_1
-            // organisation_name_2
         });
     }
 
