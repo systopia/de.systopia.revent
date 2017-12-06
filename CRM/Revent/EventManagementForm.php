@@ -49,4 +49,11 @@ class CRM_Revent_EventManagementForm {
       'script' => $script,
     ));
   }
+
+  public static function handleFormHookRedirect($formName, $form) {
+
+    $eventId = $form->getVar("_id");
+    CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/event/manage/settings',
+      "&reset=1&action=update&id={$eventId}"));
+  }
 }

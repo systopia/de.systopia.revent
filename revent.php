@@ -165,6 +165,7 @@ function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  * @param $form
  */
 function revent_civicrm_buildForm($formName, &$form) {
+  error_log("FormName: {$formName}");
   switch ($formName) {
     case 'CRM_Custom_Form_CustomDataByType':
       require_once 'CRM/Revent/EventRegistrationIntegration.php';
@@ -173,7 +174,7 @@ function revent_civicrm_buildForm($formName, &$form) {
       break;
     case 'CRM_Event_Form_ManageEvent_EventInfo':
       require_once 'CRM/Revent/EventManagementForm.php';
-      CRM_Revent_EventManagementForm::buildFormHook();
+      CRM_Revent_EventManagementForm::buildFormHook($formName, $form);
       break;
     case 'CRM_Event_Form_Search':
       require_once 'CRM/Revent/EventDashboardForm.php';
@@ -185,6 +186,9 @@ function revent_civicrm_buildForm($formName, &$form) {
       break;
     case 'CRM_Event_Form_ParticipantView':
       CRM_Revent_ParticipantViewMods::buildFormHook($form);
+      break;
+    case 'CRM_Event_Form_ManageEvent_Location':
+      CRM_Revent_EventManagementForm::handleFormHookRedirect($formName, $form);
       break;
     default:
       break;
