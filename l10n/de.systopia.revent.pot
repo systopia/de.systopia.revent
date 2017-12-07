@@ -160,34 +160,6 @@ msgstr ""
 msgid "via Newsletter Subscription"
 msgstr ""
 
-#: templates/Activity/CheckAddress.tpl
-msgid "Organisation Name (row 1)"
-msgstr ""
-
-#: templates/Activity/CheckAddress.tpl
-msgid "Organisation Name (row 2)"
-msgstr ""
-
-#: templates/Activity/CheckAddress.tpl
-msgid "Street Address"
-msgstr ""
-
-#: templates/Activity/CheckAddress.tpl
-msgid "Supplemental Address"
-msgstr ""
-
-#: templates/Activity/CheckAddress.tpl
-msgid "Postal Code"
-msgstr ""
-
-#: templates/Activity/CheckAddress.tpl
-msgid "City"
-msgstr ""
-
-#: templates/Activity/CheckAddress.tpl
-msgid "Country"
-msgstr ""
-
 #: templates/CRM/Revent/Form/RegistrationCustomisation.tpl
 msgid "Description"
 msgstr ""
