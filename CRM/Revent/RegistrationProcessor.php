@@ -37,32 +37,24 @@ class CRM_Revent_RegistrationProcessor {
    * Resolve the contact - using XCM
    */
   public function resolveContact(&$params) {
-    $data = $params; // copy
     $location_type_id = CRM_Utils_Array::value('location_type_id', $params);
     if ($location_type_id == CRM_Revent_Config::getBusinessLocationType()) {
       // If this is a business address, the organisation should be created (HBS-5927)
       $organisation_id = self::createOrganisation($params);
       // and the address marked for sharing
       $params['address_master_contact_id'] = $organisation_id;
-
-      // but also the business address should not be passed to the contact (HBS-5627)
-      foreach (self::$address_attributes as $attribute_name) {
-        if (isset($data[$attribute_name])) {
-          unset($data[$attribute_name]);
-        }
-      }
     }
 
     // process 'special' prefix 'ka' (HBS-5606)
-    if (!empty($data['prefix_id']) && $data['prefix_id'] == 'ka') {
-      unset($data['prefix_id']);
-      if (empty($data['gender_id'])) {
-        $data['gender_id'] = 3;
+    if (!empty($params['prefix_id']) && $params['prefix_id'] == 'ka') {
+      unset($params['prefix_id']);
+      if (empty($params['gender_id'])) {
+        $params['gender_id'] = 3;
       }
     }
 
     // finally call XCM
-    $contact = civicrm_api3('Contact', 'getorcreate', $data);
+    $contact = civicrm_api3('Contact', 'getorcreate', $params);
     return $contact['id'];
   }
 
@@ -152,16 +144,17 @@ class CRM_Revent_RegistrationProcessor {
   /**
    * Generate an organisation from the given data
    */
-  public static function createOrganisation($params) {
+  public static function createOrganisation(&$params) {
     $organisation_data = array(
       'contact_type' => 'Organization'
     );
 
     // extract the organisation name
-    if (empty($params[$params['organization_name']])) {
+    if (empty($params['organization_name'])) {
       $organisation_data['organization_name'] = trim("{$params['organisation_name_1']} {$params['organisation_name_2']}");
     } else {
       $organisation_data['organization_name'] = $params['organization_name'];
+      unset($params['organization_name']); // remove from params so it won't upset XCM
     }
 
     if ($organisation_data['organization_name']) {
@@ -174,7 +167,16 @@ class CRM_Revent_RegistrationProcessor {
       }
 
       // and pass through XCM
-      $organization = civicrm_api3('Contact', 'getorcreate', $params);
+      $organization = civicrm_api3('Contact', 'getorcreate', $organisation_data);
+
+      // We'll have to see if it's better for processing (i3val) when
+      //  the address is removed, or passed on to the contact
+      // foreach (self::$address_attributes as $attribute_name) {
+      //   if (isset($params[$attribute_name])) {
+      //     unset($params[$attribute_name]);
+      //   }
+      // }
+
       return $organization['id'];
     }
   }
