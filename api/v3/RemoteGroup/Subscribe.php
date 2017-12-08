@@ -39,6 +39,7 @@ function civicrm_api3_remote_group_subscribe($params) {
   }
 
   // resolve/create contact
+  CRM_Revent_CustomData::resolveCustomFields($params);
   $contact = civicrm_api3('Contact', 'getorcreate', $params);
 
   // register for each group

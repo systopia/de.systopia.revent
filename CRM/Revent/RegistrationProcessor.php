@@ -54,6 +54,7 @@ class CRM_Revent_RegistrationProcessor {
     }
 
     // finally call XCM
+    CRM_Revent_CustomData::resolveCustomFields($params);
     $contact = civicrm_api3('Contact', 'getorcreate', $params);
     return $contact['id'];
   }
@@ -140,15 +141,24 @@ class CRM_Revent_RegistrationProcessor {
     }
 
     if ($organisation_data['organization_name']) {
-      // there is an organisation -> copy relevant data
-      $copy_fields = self::$address_attributes + array('organisation_name_1', 'organisation_name_2');
+      // There is an organisation: copy address data
+      $copy_fields = self::$address_attributes;
       foreach ($copy_fields as $field_name) {
         if (isset($params[$field_name])) {
           $organisation_data[$field_name] = $params[$field_name];
         }
       }
 
-      // and pass through XCM
+      // ...copy organisation_name_1/2
+      if (isset($params['organisation_name_1'])) {
+        $organisation_data["organisation_name.organisation_name_1"] = $params['organisation_name_1'];
+      }
+      if (isset($params['organisation_name_2'])) {
+        $organisation_data["organisation_name.organisation_name_2"] = $params['organisation_name_2'];
+      }
+
+      // ...and pass through XCM
+      CRM_Revent_CustomData::resolveCustomFields($organisation_data);
       $organization = civicrm_api3('Contact', 'getorcreate', $organisation_data);
 
       // We'll have to see if it's better for processing (i3val) when
