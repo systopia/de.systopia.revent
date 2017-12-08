@@ -127,7 +127,8 @@ class CRM_Revent_RegistrationProcessor {
    */
   public static function createOrganisation(&$params) {
     $organisation_data = array(
-      'contact_type' => 'Organization'
+      'contact_type'     => 'Organization',
+      'location_type_id' => CRM_Revent_Config::getBusinessLocationType()
     );
 
     // extract the organisation name
