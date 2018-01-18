@@ -232,12 +232,14 @@ function revent_civicrm_permission(&$permissions) {
  * Set permissions for runner/engine API call
  */
 function revent_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
-  $permissions['remote_event']['create']            = array('access RemoteEvent');
-  $permissions['remote_event']['get']               = array('access RemoteEvent');
-  $permissions['remote_group']['list']              = array('access RemoteEvent');
-  $permissions['remote_group']['subscribe']         = array('access RemoteEvent');
-  $permissions['remote_group']['unsubscribe']       = array('access RemoteEvent');
-  $permissions['remote_registration']['get_form']   = array('access RemoteEvent');
-  $permissions['remote_registration']['register']   = array('access RemoteEvent');
-  $permissions['remote_registration']['unregister'] = array('access RemoteEvent');
+  $permissions['remote_event']['create']                    = array('access RemoteEvent');
+  $permissions['remote_event']['get']                       = array('access RemoteEvent');
+  $permissions['remote_group']['list']                      = array('access RemoteEvent');
+  $permissions['remote_group']['subscribe']                 = array('access RemoteEvent');
+  $permissions['remote_group']['unsubscribe']               = array('access RemoteEvent');
+  $permissions['remote_registration']['get_form']           = array('access RemoteEvent');
+  $permissions['remote_registration']['register']           = array('access RemoteEvent');
+  $permissions['remote_registration']['unregister']         = array('access RemoteEvent');
+  $permissions['remote_registration']['get_active_groups']  = array('access RemoteEvent');
+
 }

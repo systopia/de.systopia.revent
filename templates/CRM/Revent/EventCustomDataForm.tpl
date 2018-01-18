@@ -26,7 +26,10 @@
             "sequential": 1,
             "title": "Registration Address"
         }).done(function(result) {
-            // do something
+            if (result.is_error === 1) {
+                console.log(result.error_message);
+                return;
+            }
             registration_address_custom_id = parseInt(result['id']);
         });
     }
@@ -58,6 +61,10 @@
             "sequential": 1,
             "custom_group_id": "registration_address"
         }).done(function(result) {
+            if (result.is_error === 1) {
+                console.log(result.error_message);
+                return;
+            }
             for (i=0; i < result.values.length; i++) {
                 if (revent_find_in_array(result.values[i]['name'], address_data)) {
                     if (result.values[i]['name'] === "country_id") {
@@ -79,6 +86,10 @@
                 "sequential": 1,
                 "event_id": eId
             }).done(function(result) {
+                if (result.is_error === 1) {
+                    console.log(result.error_message);
+                    return;
+                }
                 revent_custom_data_mods(result.values);
             });
         }
@@ -95,6 +106,10 @@
                 "contact_id": contactId,
                 "is_primary": 1
             }).done(function (result) {
+                if (result.is_error === 1) {
+                    console.log(result.error_message);
+                    return;
+                }
                 revent_fill_address_data(result);
             });
         }
@@ -120,6 +135,10 @@
                 "sequential": 1,
                 "event_id": eventId
             }).done(function(result) {
+                if (result.is_error === 1) {
+                    console.log(result.error_message);
+                    return;
+                }
                 revent_custom_data_mods(result.values);
             });
         });
@@ -132,6 +151,10 @@
                     "contact_id": contactId,
                     "is_primary": 1
                 }).done(function (result) {
+                    if (result.is_error === 1) {
+                        console.log(result.error_message);
+                        return;
+                    }
                     fill_change = true;
                     revent_fill_address_data(result);
                 });
