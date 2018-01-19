@@ -242,5 +242,4 @@ function revent_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
   $permissions['remote_registration']['unregister']                 = array('access RemoteEvent');
   $permissions['remote_registration']['get_active_groups']          = array('access RemoteEvent');
   $permissions['remote_registration']['get_custom_group_meta_data'] = array('access RemoteEvent');
-
 }

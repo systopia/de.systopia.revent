@@ -43,9 +43,8 @@
     }
 
     function revent_fill_address_data(address_data) {
-        CRM.api3('CustomField', 'get', {
-            "sequential": 1,
-            "custom_group_id": "registration_address"
+        CRM.api3('RemoteRegistration', 'get_custom_group_meta_data', {
+            "sequential": 1
         }).done(function(result) {
             if (result.is_error === 1) {
                 console.log(result.error_message);
