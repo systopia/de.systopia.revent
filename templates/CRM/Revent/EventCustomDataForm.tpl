@@ -15,21 +15,10 @@
 
 <script type="text/javascript">
     var initial_contact_id = {$form_contact_id};
-    var registration_address_custom_id = '0';
-
 
     {literal}
 
     //////////// Helper ////////////
-    function revent_get_custom_group_registration_address_id() {
-        CRM.api3('CustomGroup', 'getsingle', {
-            "sequential": 1,
-            "title": "Registration Address"
-        }).done(function(result) {
-            // do something
-            registration_address_custom_id = parseInt(result['id']);
-        });
-    }
 
     function revent_find_in_array(value, search_array) {
         for (key in search_array) {
@@ -54,10 +43,13 @@
     }
 
     function revent_fill_address_data(address_data) {
-        CRM.api3('CustomField', 'get', {
-            "sequential": 1,
-            "custom_group_id": "registration_address"
+        CRM.api3('RemoteRegistration', 'get_custom_group_meta_data', {
+            "sequential": 1
         }).done(function(result) {
+            if (result.is_error === 1) {
+                console.log(result.error_message);
+                return;
+            }
             for (i=0; i < result.values.length; i++) {
                 if (revent_find_in_array(result.values[i]['name'], address_data)) {
                     if (result.values[i]['name'] === "country_id") {
@@ -79,6 +71,10 @@
                 "sequential": 1,
                 "event_id": eId
             }).done(function(result) {
+                if (result.is_error === 1) {
+                    console.log(result.error_message);
+                    return;
+                }
                 revent_custom_data_mods(result.values);
             });
         }
@@ -95,6 +91,10 @@
                 "contact_id": contactId,
                 "is_primary": 1
             }).done(function (result) {
+                if (result.is_error === 1) {
+                    console.log(result.error_message);
+                    return;
+                }
                 revent_fill_address_data(result);
             });
         }
@@ -102,13 +102,8 @@
 
     cj(document).ready(function () {
 
-        revent_get_custom_group_registration_address_id();
         revent_initial_address_data();
         revent_hide_custom_groups();
-        // TODO: if this doesn't work, we must use a timeout here for the initial hide action
-        // ajax complete doesn't work, b/c API-call ends in ajaxcomplete event, thus endless loop
-        // cj(document).bind("ajaxComplete", revent_initial_address_data);
-        // cj(document).bind("ajaxComplete", revent_hide_custom_groups);
 
         // on change method when eventId is chosen
         cj("input[name=event_id]").on("change", function(){
@@ -120,6 +115,10 @@
                 "sequential": 1,
                 "event_id": eventId
             }).done(function(result) {
+                if (result.is_error === 1) {
+                    console.log(result.error_message);
+                    return;
+                }
                 revent_custom_data_mods(result.values);
             });
         });
@@ -132,6 +131,10 @@
                     "contact_id": contactId,
                     "is_primary": 1
                 }).done(function (result) {
+                    if (result.is_error === 1) {
+                        console.log(result.error_message);
+                        return;
+                    }
                     fill_change = true;
                     revent_fill_address_data(result);
                 });
