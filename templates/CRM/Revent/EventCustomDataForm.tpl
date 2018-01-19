@@ -102,8 +102,10 @@
 
     cj(document).ready(function () {
 
-        revent_initial_address_data();
-        revent_hide_custom_groups();
+        setTimeout(function(){
+            revent_initial_address_data();
+            revent_hide_custom_groups();
+        }, 500);
 
         // on change method when eventId is chosen
         cj("input[name=event_id]").on("change", function(){
