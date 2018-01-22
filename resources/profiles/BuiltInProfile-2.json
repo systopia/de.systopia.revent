@@ -5,7 +5,7 @@
   "fields": {
     "email": {
       "group": "BuiltInProfile-2",
-      "title": "Email",
+      "title": "E-Mail",
       "maxlength": "254",
       "required": 1,
       "name": "email",
