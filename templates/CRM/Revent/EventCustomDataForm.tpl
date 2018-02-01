@@ -66,6 +66,10 @@
     function revent_hide_custom_groups(){
         // if event is already (pre-)chosen, filter groups as well
         var eId = cj("input[name=event_id]").val();
+        if (eId === '') {
+            // check for popup
+            eId = cj("[id^=crm-ajax-dialog-]").find("input[name=event_id]").val()
+        }
         if (eId !== '') {
             CRM.api3('RemoteRegistration', 'get_active_groups', {
                 "sequential": 1,
