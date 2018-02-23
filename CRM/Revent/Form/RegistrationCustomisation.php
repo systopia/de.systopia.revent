@@ -131,7 +131,12 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
           if (!isset($indexed_field['maxlength'])) {
             $indexed_field['maxlength'] = 128;
           }
-          $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_field['maxlength'], $indexed_language);
+          if (isset($indexed_field["options_{$indexed_language}"])) {
+            // If we have option types, then this is just a name, thus no maxLength is needed. Setting default to 128 for now
+            $this->createFormElements($indexed_group['name'], $indexed_field['name'], 128, $indexed_language);
+          } else {
+            $this->createFormElements($indexed_group['name'], $indexed_field['name'], $indexed_field['maxlength'], $indexed_language);
+          }
           $this->createDefaultFormValues($indexed_field, $indexed_group['name'], $indexed_field['name'], $indexed_language);
           if (isset($indexed_field["options_{$indexed_language}"])) {
             // iterate over options field, but create form elements for options_{language}
@@ -371,7 +376,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
    * @param $language
    * @param $default_value
    */
-    private function createFormElementOptions($group_title, $field_title, $option, $language,  $default_value) {
+    private function createFormElementOptions($group_title, $field_title, $option, $language, $default_value) {
       $this->add(
         'text',
         "option__{$group_title}__{$field_title}__{$option}__{$language}",
