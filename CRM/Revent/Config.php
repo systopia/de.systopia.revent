@@ -16,11 +16,44 @@
 
 class CRM_Revent_Config {
 
+  private static $orgname_group_id            = NULL;
+  private static $orgname_fields              = NULL;
+
   /**
    * get the business (geschäftlich) location type ID
    */
   public static function getBusinessLocationType() {
     return 8;
+  }
+
+  /**
+   * return the field name of the first field as
+   * API parameter, i.e. "custom_xx"
+   *
+   * @param $number  only supposed to be 1 or 2
+   */
+  public static function getOrgnameField($number) {
+    $fields = self::getOrgnameFields();
+    foreach ($fields as $field) {
+      if ($field['name'] == "organisation_name_{$number}") {
+        return "custom_{$field['id']}";
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * get all the fields from the orgname field group
+   */
+  public static function getOrgnameFields() {
+    if (self::$orgname_fields == NULL) {
+      $query = civicrm_api3('CustomField', 'get', array(
+        'custom_group_id' => self::getOrgnameGroupID(),
+        'options'         => array('limit' => 0),
+      ));
+      self::$orgname_fields = $query['values'];
+    }
+    return self::$orgname_fields;
   }
 
   /**
@@ -30,5 +63,16 @@ class CRM_Revent_Config {
   public static function getLocalCustomGroups() {
     // TODO: config option?
     return array('registration_address');
+  }
+
+  /**
+   * get CustomGroup ID of the organisation_names
+   */
+  public static function getOrgnameGroupID() {
+    if (self::$orgname_group_id == NULL) {
+      $group = civicrm_api3('CustomGroup', 'getsingle', array('name' => 'organisation_name'));
+      self::$orgname_group_id = $group['id'];
+    }
+    return self::$orgname_group_id;
   }
 }

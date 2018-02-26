@@ -16,6 +16,9 @@
 <script type="text/javascript">
     var initial_contact_id = {$form_contact_id};
 
+    var custom_id_reg_address = {$registration_address_custom_id};
+
+
     {literal}
 
     //////////// Helper ////////////
@@ -42,7 +45,7 @@
         })
     }
 
-    function revent_fill_address_data(address_data) {
+    function revent_fill_address_data(address_data, contact_id) {
         CRM.api3('RemoteRegistration', 'get_custom_group_meta_data', {
             "sequential": 1
         }).done(function(result) {
@@ -59,6 +62,16 @@
                     var indexString = "input#custom_" + result.values[i]['id'] + "_-1";
                     cj(indexString).val(address_data[result.values[i]['name']]);
                 }
+            }
+        });
+        // TODO: Fix call. Somehow ID isn't passed through
+        CRM.api3('Contact', 'getorgnamefromcontact', {
+            "sequential": 1,
+            "contact_id": contact_id
+        }).done(function(result) {
+            if (result['is_error'] === 0) {
+                cj("[id^='"+ custom_id_reg_address +"']").prev().find("[data-crm-custom$='organisation_name_1']").val(result['values']['master_1']);
+                cj("[id^='"+ custom_id_reg_address +"']").prev().find("[data-crm-custom$='organisation_name_2']").val(result['values']['master_2']);
             }
         });
     }
@@ -99,7 +112,7 @@
                     console.log(result.error_message);
                     return;
                 }
-                revent_fill_address_data(result);
+                revent_fill_address_data(result, contactId);
             });
         }
     }
@@ -142,7 +155,7 @@
                         return;
                     }
                     fill_change = true;
-                    revent_fill_address_data(result);
+                    revent_fill_address_data(result, contactId);
                 });
             }
         })

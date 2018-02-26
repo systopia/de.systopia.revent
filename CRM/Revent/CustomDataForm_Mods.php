@@ -37,6 +37,10 @@ class CRM_Revent_CustomDataForm_Mods {
       $form->assign("form_contact_id", "0");
     }
 
+    $custom_group_names = CRM_Revent_CustomData::getGroup2Name();
+    $custom_group_name = array_search("registration_address", $custom_group_names);
+    $form->assign("registration_address_custom_id", "\"custom_group_{$custom_group_name}\"");
+
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/EventCustomDataForm.tpl"
     ));
