@@ -181,7 +181,8 @@ class CRM_Revent_RegistrationProcessor {
     // there is a limit -> count the current participants
     $count = civicrm_api3('Participant', 'getcount', array(
       'event_id'              => $this->event_id,
-      'participant_status_id' => array('IN' => $this->getWatitingStatusIDs())
+      'participant_status_id' => array('IN' => $this->getWatitingStatusIDs()),
+      'options' => array('limit' => 0),
       ));
     // error_log("PEOPLE ON WAIT LIST: $count");
     return $count > 0;
@@ -217,7 +218,8 @@ class CRM_Revent_RegistrationProcessor {
       // there is a limit -> count the current participants
       $count = civicrm_api3('Participant', 'getcount', array(
         'event_id'              => $this->event_id,
-        'participant_status_id' => array('IN' => $this->getAttendingStatusIDs())
+        'participant_status_id' => array('IN' => $this->getAttendingStatusIDs()),
+        'options' => array('limit' => 0),
         ));
       // error_log("PEOPLE ATTENDING: $count");
 
