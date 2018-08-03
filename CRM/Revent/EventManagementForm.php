@@ -45,6 +45,12 @@ class CRM_Revent_EventManagementForm {
     $script = str_replace('__URL-import__', $base_url_import, $script);
     $script = str_replace('__Registration-Customisation-import__', ts('Import Customisation from other Event', array('domain' => 'de.systopia.revent')), $script);
 
+    $report_instance = 55; // static for now. If needed can be made configurable BOELL
+//    $report_instance = 26;   // LOKALE TESTUMGEBUNG
+    $report_url     = CRM_Utils_System::url("/civicrm/report/instance/{$report_instance}");
+    $script = str_replace('__REPORT-URL__', $report_url, $script);
+    $script = str_replace('__REPORT-URL-LABEL__', "Veranstaltungsbericht", $script);
+
     CRM_Core_Region::instance('page-footer')->add(array(
       'script' => $script,
     ));

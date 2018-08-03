@@ -29,6 +29,9 @@
 
     var reg_customization_link_label        = "{$registration_customisation}";
 
+    var event_report_link                   = "{$event_report_link}";
+    var event_report_link_label             = "{$event_report_link_label}";
+
     {literal}
 
     cj('*').filter(function() {
@@ -56,6 +59,11 @@
 
     var link_import_entry = '<li><a class="crm-popup" href="' + import_link + '" >' + reg_customization_label + '</a> </li>';
     cj(".crm-event-links-list-inner ul").append(link_import_entry);
+
+    // #6330 Event Report Link
+    var event_report_entry = '<li><a class="crm-popup" href="' + event_report_link + '" >' + event_report_link_label + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry);
+
 
 </script>
 {/literal}

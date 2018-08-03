@@ -65,7 +65,6 @@ class CRM_Revent_EventRegistrationIntegration {
   }
 
   public function pageRunHook() {
-
     $args = array(
       'eid'     => $this->eid,
       'reset'   =>  '1',
@@ -88,6 +87,19 @@ class CRM_Revent_EventRegistrationIntegration {
 
     // registration import menu entry
     $this->page->assign("registration_customisation_import", ts('Import Customisation from other Event', array('domain' => 'de.systopia.revent')));
+
+    // #6330 - Link to event report
+    $report_instance = 55; // static for now. If needed can be made configurable BOELL
+//    $report_instance = 26;   // LOKALE TESTUMGEBUNG
+    $report_args = array(
+      'reset'   =>  '1',
+      'force'   =>  '1',
+      'event_id_op'   => 'in',
+      'event_id_value' => $this->eid,
+    );
+    $event_report_link = CRM_Utils_System::url("/civicrm/report/instance/{$report_instance}", $report_args, TRUE);
+    $this->page->assign("event_report_link", $event_report_link);
+    $this->page->assign("event_report_link_label", "Veranstaltungsbericht");
 
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/RegistrationCustomizationPageRun.tpl"

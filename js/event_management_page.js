@@ -38,7 +38,12 @@ for (var i = 0; i < idArray.length; ++i) {
     var import_url = "__URL-import__?eid=" + idArray[i] + "&reset=1";
     var import_link_entry = '<li><a title="__Registration-Customisation-import__" class="action-item crm-hover-button crm-popup enabled" href="' + import_url + '" >__Registration-Customisation-import__</a> </li>'
 
+    // #6330 Event Report Link
+    var event_report_url = "__REPORT-URL__?reset=1&force=1&event_id_op=in&event_id_value=" + idArray[i];
+    var event_report_link_entry = '<li><a title="__REPORT-URL-LABEL__" class="action-item crm-hover-button crm-popup enabled" href="' + event_report_url + '" >__REPORT-URL-LABEL__</a> </li>'
+
+
     cj("ul#panel_info_" + idArray[i]).append(link_entry);
     cj("ul#panel_info_" + idArray[i]).append(import_link_entry);
-
+    cj("ul#panel_info_" + idArray[i]).append(event_report_link_entry);
 }
