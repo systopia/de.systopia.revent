@@ -97,7 +97,7 @@ class CRM_Revent_EventRegistrationIntegration {
       'event_id_op'   => 'in',
       'event_id_value' => $this->eid,
     );
-    $event_report_link = CRM_Utils_System::url("/civicrm/report/instance/{$report_instance}", $report_args, TRUE);
+    $event_report_link = CRM_Utils_System::url("civicrm/report/instance/{$report_instance}", $report_args, TRUE);
     $this->page->assign("event_report_link", $event_report_link);
     $this->page->assign("event_report_link_label", "Veranstaltungsbericht");
 

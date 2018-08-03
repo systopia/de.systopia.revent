@@ -47,7 +47,7 @@ class CRM_Revent_EventManagementForm {
 
     $report_instance = 55; // static for now. If needed can be made configurable BOELL
 //    $report_instance = 26;   // LOKALE TESTUMGEBUNG
-    $report_url     = CRM_Utils_System::url("/civicrm/report/instance/{$report_instance}");
+    $report_url     = CRM_Utils_System::url("civicrm/report/instance/{$report_instance}");
     $script = str_replace('__REPORT-URL__', $report_url, $script);
     $script = str_replace('__REPORT-URL-LABEL__', "Veranstaltungsbericht", $script);
 
