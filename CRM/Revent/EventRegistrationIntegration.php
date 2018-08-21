@@ -97,13 +97,13 @@ class CRM_Revent_EventRegistrationIntegration {
       74 => "Veranstaltungsbericht Teilnehmende GC Workshops sortiert nach Zahlung",
       64 => "Veranstaltungsbericht Teilnehmende 1 Panelblock nach Panels sortiert ",
       66 => "Veranstaltungsbericht Teilnehmende 1 Panelblock nach Tagen sortiert",
-      67 => "Veranstaltungsbericht Teilnehmende 2 Panelblock nach Panel 1 sortiert",
-      68 => "Veranstaltungsbericht Teilnehmende 2 Panelblock nach Panel 2 sortiert",
-      69 => "Veranstaltungsbericht Teilnehmende 2 Panelblock sortiert nach Tagen",
-      70 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Panel 1 sortiert",
-      71 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Panel 2 sortiert",
-      72 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Panel 3 sortiert",
-      73 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Tagen sortiert",
+      67 => "Veranstaltungsbericht Teilnehmende 2 Panelblöcke nach Panel 1 sortiert",
+      68 => "Veranstaltungsbericht Teilnehmende 2 Panelblöcke nach Panel 2 sortiert",
+      69 => "Veranstaltungsbericht Teilnehmende 2 Panelblöcke nach Tagen sortiert",
+      70 => "Veranstaltungsbericht Teilnehmende 3 Panelblöcke nach Panel 1 sortiert",
+      71 => "Veranstaltungsbericht Teilnehmende 3 Panelblöcke nach Panel 2 sortiert",
+      72 => "Veranstaltungsbericht Teilnehmende 3 Panelblöcke nach Panel 3 sortiert",
+      73 => "Veranstaltungsbericht Teilnehmende 3 Panelblöcke nach Tagen sortiert",
     );
 //    $report_instance = 26;   // LOKALE TESTUMGEBUNG
     $report_args = array(
