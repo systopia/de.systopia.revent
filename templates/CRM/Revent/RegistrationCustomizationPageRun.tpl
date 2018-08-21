@@ -29,6 +29,37 @@
 
     var reg_customization_link_label        = "{$registration_customisation}";
 
+
+    var event_report_link_56                         = "{$event_report_link_56}";
+    var event_report_link_label_56                   = "{$event_report_link_label_56}";
+    var event_report_link_61                         = "{$event_report_link_61}";
+    var event_report_link_label_61                   = "{$event_report_link_label_61}";
+    var event_report_link_62                         = "{$event_report_link_62}";
+    var event_report_link_label_62                   = "{$event_report_link_label_62}";
+    var event_report_link_63                         = "{$event_report_link_63}";
+    var event_report_link_label_63                   = "{$event_report_link_label_63}";
+    var event_report_link_74                         = "{$event_report_link_74}";
+    var event_report_link_label_74                   = "{$event_report_link_label_74}";
+    var event_report_link_64                         = "{$event_report_link_64}";
+    var event_report_link_label_64                   = "{$event_report_link_label_64}";
+    var event_report_link_66                         = "{$event_report_link_66}";
+    var event_report_link_label_66                   = "{$event_report_link_label_66}";
+    var event_report_link_67                         = "{$event_report_link_67}";
+    var event_report_link_label_67                   = "{$event_report_link_label_67}";
+    var event_report_link_68                         = "{$event_report_link_68}";
+    var event_report_link_label_68                   = "{$event_report_link_label_68}";
+    var event_report_link_69                         = "{$event_report_link_69}";
+    var event_report_link_label_69                   = "{$event_report_link_label_69}";
+    var event_report_link_70                         = "{$event_report_link_70}";
+    var event_report_link_label_70                   = "{$event_report_link_label_70}";
+    var event_report_link_71                         = "{$event_report_link_71}";
+    var event_report_link_label_71                   = "{$event_report_link_label_71}";
+    var event_report_link_72                         = "{$event_report_link_72}";
+    var event_report_link_label_72                   = "{$event_report_link_label_72}";
+    var event_report_link_73                         = "{$event_report_link_73}";
+    var event_report_link_label_73                   = "{$event_report_link_label_73}";
+
+
     {literal}
 
     cj('*').filter(function() {
@@ -56,6 +87,39 @@
 
     var link_import_entry = '<li><a class="crm-popup" href="' + import_link + '" >' + reg_customization_label + '</a> </li>';
     cj(".crm-event-links-list-inner ul").append(link_import_entry);
+
+    // #6330 Event Report Link
+    // var event_report_entry = '<li><a class="crm-popup" href="' + event_report_link + '" >' + event_report_link_label + '</a> </li>';
+    // cj(".crm-event-links-list-inner ul").append(event_report_entry);
+
+    var event_report_entry_56 = '<li><a class="crm-popup" href="' + event_report_link_56 + '" >' + event_report_link_label_56 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_56);
+    var event_report_entry_61 = '<li><a class="crm-popup" href="' + event_report_link_61 + '" >' + event_report_link_label_61 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_61);
+    var event_report_entry_62 = '<li><a class="crm-popup" href="' + event_report_link_62 + '" >' + event_report_link_label_62 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_62);
+    var event_report_entry_63 = '<li><a class="crm-popup" href="' + event_report_link_63 + '" >' + event_report_link_label_63 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_63);
+    var event_report_entry_74 = '<li><a class="crm-popup" href="' + event_report_link_74 + '" >' + event_report_link_label_74 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_74);
+    var event_report_entry_64 = '<li><a class="crm-popup" href="' + event_report_link_64 + '" >' + event_report_link_label_64 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_64);
+    var event_report_entry_66 = '<li><a class="crm-popup" href="' + event_report_link_66 + '" >' + event_report_link_label_66 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_66);
+    var event_report_entry_67 = '<li><a class="crm-popup" href="' + event_report_link_67 + '" >' + event_report_link_label_67 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_67);
+    var event_report_entry_68 = '<li><a class="crm-popup" href="' + event_report_link_68 + '" >' + event_report_link_label_68 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_68);
+    var event_report_entry_69 = '<li><a class="crm-popup" href="' + event_report_link_69 + '" >' + event_report_link_label_69 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_69);
+    var event_report_entry_70 = '<li><a class="crm-popup" href="' + event_report_link_70 + '" >' + event_report_link_label_70 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_70);
+    var event_report_entry_71 = '<li><a class="crm-popup" href="' + event_report_link_71 + '" >' + event_report_link_label_71 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_71);
+    var event_report_entry_72 = '<li><a class="crm-popup" href="' + event_report_link_72 + '" >' + event_report_link_label_72 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_72);
+    var event_report_entry_73 = '<li><a class="crm-popup" href="' + event_report_link_73 + '" >' + event_report_link_label_73 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_73);
 
 </script>
 {/literal}
