@@ -89,7 +89,22 @@ class CRM_Revent_EventRegistrationIntegration {
     $this->page->assign("registration_customisation_import", ts('Import Customisation from other Event', array('domain' => 'de.systopia.revent')));
 
     // #6330 - Link to event report
-    $report_instance = 55; // static for now. If needed can be made configurable BOELL
+    $reports = array(
+      56 => "Veranstaltungsbericht Teilnehmende Standard",
+      61 => "Veranstaltungsbericht Teilnehmende Extras",
+      62 => "Veranstaltungsbericht Teilnehmende Fachveranstaltung",
+      63 => "Veranstaltungsbericht Teilnehmende GC Workshops",
+      74 => "Veranstaltungsbericht Teilnehmende GC Workshops sortiert nach Zahlung",
+      64 => "Veranstaltungsbericht Teilnehmende 1 Panelblock nach Panels sortiert ",
+      66 => "Veranstaltungsbericht Teilnehmende 1 Panelblock nach Tagen sortiert",
+      67 => "Veranstaltungsbericht Teilnehmende 2 Panelblock nach Panel 1 sortiert",
+      68 => "Veranstaltungsbericht Teilnehmende 2 Panelblock nach Panel 2 sortiert",
+      69 => "Veranstaltungsbericht Teilnehmende 2 Panelblock sortiert nach Tagen",
+      70 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Panel 1 sortiert",
+      71 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Panel 2 sortiert",
+      72 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Panel 3 sortiert",
+      73 => "Veranstaltungsbericht Teilnehmende 3 Panelblock nach Tagen sortiert",
+    );
 //    $report_instance = 26;   // LOKALE TESTUMGEBUNG
     $report_args = array(
       'reset'   =>  '1',
@@ -97,9 +112,11 @@ class CRM_Revent_EventRegistrationIntegration {
       'event_id_op'   => 'in',
       'event_id_value' => $this->eid,
     );
-    $event_report_link = CRM_Utils_System::url("civicrm/report/instance/{$report_instance}", $report_args, TRUE);
-    $this->page->assign("event_report_link", $event_report_link);
-    $this->page->assign("event_report_link_label", "Veranstaltungsbericht");
+    foreach ($reports as $report_instance => $title) {
+      $event_report_link = CRM_Utils_System::url("civicrm/report/instance/{$report_instance}", $report_args, TRUE);
+      $this->page->assign("event_report_link_{$report_instance}", $event_report_link);
+      $this->page->assign("event_report_link_label_{$report_instance}", $title);
+    }
 
     CRM_Core_Region::instance('page-body')->add(array(
       'template' => "CRM/Revent/RegistrationCustomizationPageRun.tpl"
