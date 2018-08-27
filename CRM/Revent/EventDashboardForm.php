@@ -40,7 +40,7 @@ class CRM_Revent_EventDashboardForm {
       61 => "Veranstaltungsbericht Teilnehmende Extras",
       62 => "Veranstaltungsbericht Teilnehmende Fachveranstaltung",
       63 => "Veranstaltungsbericht Teilnehmende GC Workshops",
-      74 => "Veranstaltungsbericht Teilnehmende GC Workshops sortiert nach Zahlung",
+      74 => "Veranstaltungsbericht Teilnehmende GC Workshops nach Zahlung sortiert",
       64 => "Veranstaltungsbericht Teilnehmende 1 Panelblock nach Panels sortiert ",
       66 => "Veranstaltungsbericht Teilnehmende 1 Panelblock nach Tagen sortiert",
       67 => "Veranstaltungsbericht Teilnehmende 2 Panelblöcke nach Panel 1 sortiert",
