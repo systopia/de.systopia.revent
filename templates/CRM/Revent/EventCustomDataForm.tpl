@@ -18,7 +18,7 @@
 
     var custom_id_reg_address = {$registration_address_custom_id};
 
-
+    var reload_flag = false;
     {literal}
 
     //////////// Helper ////////////
@@ -40,9 +40,12 @@
             var custom_group_id = parseInt(pattern.exec(cj(this).attr("id"))[1]);
             if (cj.inArray(custom_group_id, event_custom_group_ids) === -1) {
                 // is not in array of valid custom groups, we shall hide it now
+                console.log("DEBUG: " + cj(this).prev());
+                cj(this).prev().find(':input').not('button').not('[type="submit"]').val(null).prop('checked', false);
                 cj(this).prev().hide();
             }
         })
+        reload_flag = true;
     }
 
     function revent_fill_address_data(address_data, contact_id) {
@@ -126,6 +129,21 @@
 
         // on change method when eventId is chosen
         cj("input[name=event_id]").on("change", function(){
+            if (reload_flag) {
+                var event_id = cj(this).val();
+                var contact_id = cj("#contact_id").val();
+                var queryString = location.search;
+                var params = new URLSearchParams(queryString.substring(1)); // substring(1) to drop the leading "?"
+
+                params.set('cid', contact_id);
+                params.set('eid', event_id);
+                // var eid = parseInt(params.get('eid'));
+                // var cid = parseInt(params.get('cid'));
+                if (contact_id) {
+                    params.set('context', 'participant');
+                }
+                location.href = location.protocol + "//" + location.host + location.pathname + '?' + params.toString();
+            }
             // show all groups again
             cj("[id^='custom_group_']").prev().show();
             var eventId = cj(this).val();
@@ -140,6 +158,7 @@
                 }
                 revent_custom_data_mods(result.values);
             });
+
         });
 
         cj("input[name=contact_id]").on("change", function(){
