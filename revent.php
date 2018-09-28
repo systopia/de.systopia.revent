@@ -159,6 +159,12 @@ function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _revent_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
+function revent_civicrm_pre($op, $objectName, $id, &$params) {
+  if ($op == 'create' && $objectName == 'Participant') {
+    CRM_Revent_CustomFieldFilter::filter_custom_fields($params);
+  }
+}
+
 /**
  * Implements hook_civicrm_buildForm()
  * @param $formName
