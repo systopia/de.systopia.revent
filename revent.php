@@ -160,7 +160,7 @@ function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
 }
 
 function revent_civicrm_pre($op, $objectName, $id, &$params) {
-  if ($op == 'create' && $objectName == 'Participant') {
+  if (($op == 'create' || $op == 'edit' ) && $objectName == 'Participant') {
     CRM_Revent_CustomFieldFilter::filter_custom_fields($params);
   }
 }
