@@ -189,6 +189,15 @@ function revent_civicrm_buildForm($formName, &$form) {
     case 'CRM_Event_Form_ManageEvent_Location':
       CRM_Revent_EventManagementForm::handleFormHookRedirect($formName, $form);
       break;
+    case 'CRM_Report_Form_Event_ParticipantListing':
+      /* @var \CRM_Report_Form_Event_ParticipantListing $form */
+      // Remove actions drop-down menu for users without permissions to change
+      // report criteria.
+      // @see https://github.com/systopia/de.systopia.revent/issues/1
+      if (!CRM_Core_Permission::check('access Report Criteria')) {
+        $form->removeElement('task');
+      }
+      break;
     default:
       break;
   }
