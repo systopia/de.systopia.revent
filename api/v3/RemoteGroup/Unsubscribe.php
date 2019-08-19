@@ -19,6 +19,7 @@
  */
 function civicrm_api3_remote_group_unsubscribe($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.unsubscribe');
+  CRM_Revent_APIProcessor::stripEmptyParameters($params);
 
   // just relay to MailingEventUnsubscribe.create
   $params['check_permissions'] = 0;

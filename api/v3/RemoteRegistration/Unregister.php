@@ -19,6 +19,7 @@
  */
 function civicrm_api3_remote_registration_unregister($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteRegistration.unregister');
+  CRM_Revent_APIProcessor::stripEmptyParameters($params);
 
   // find the participant
   $participant_search = civicrm_api3('Participant', 'get', array(
