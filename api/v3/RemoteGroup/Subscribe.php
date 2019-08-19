@@ -19,6 +19,7 @@
  */
 function civicrm_api3_remote_group_subscribe($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.subscribe');
+  CRM_Revent_APIProcessor::stripEmptyParameters($params);
 
   // IF BUSINESS ADDRESS is given, ther should be an organisation
   $location_type_id = CRM_Utils_Array::value('location_type_id', $params);

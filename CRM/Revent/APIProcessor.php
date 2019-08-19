@@ -35,4 +35,21 @@ class CRM_Revent_APIProcessor {
     $params['json'] = 1;
   }
 
+  /**
+   * Remove all empty parameters from the parameters
+   *  The reason is, that empty parameters will be interpreted as
+   *  'set parameter to empty' in I3Val, but in most cases it just
+   *  means 'no information available'.
+   *
+   * @see Ticket 8954
+   * @param $params array parameter set to filter
+   */
+  public static function stripEmptyParameters(&$params) {
+    $keys = array_keys($params);
+    foreach ($keys as $key) {
+      if (empty($params[$key])) {
+        unset($params[$key]);
+      }
+    }
+  }
 }
