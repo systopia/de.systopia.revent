@@ -15,7 +15,7 @@
 
 
 /**
- * Unegister a contact from the given event via participant_id
+ * Unregister a contact from the given event via participant_id
  */
 function civicrm_api3_remote_registration_unregister($params) {
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteRegistration.unregister');
@@ -23,19 +23,22 @@ function civicrm_api3_remote_registration_unregister($params) {
   // find the participant
   $participant_search = civicrm_api3('Participant', 'get', array(
     'id'           => $params['participant_id'],
-    'return'       => 'id,participant_status_id',
+    'return'       => 'id,register_date,event_id,contact_id',
     'option.limit' => 0));
   if (empty($participant_search['id'])) {
-    return civicrm_api3_create_error("Couln't find registration [{$params['participant_id']}]");
+    return civicrm_api3_create_error("Couldn't find registration [{$params['participant_id']}]");
   }
 
   // TODO: check for status?
 
   // set status to 'Cancelled'
-  civicrm_api3('Participant', 'create', array(
-    'id'                    => $params['participant_id'],
-    'participant_status_id' => 4, // 'Cancelled'
-  ));
+  civicrm_api3('Participant', 'create', [
+      'status_id'     => 4, // 'Cancelled'
+      'id'            => $params['participant_id'],
+      'contact_id'    => $params['contact_id'],
+      'event_id'      => $params['event_id'],
+      'register_date' => $params['register_date'],
+  ]);
 
   return civicrm_api3('Participant', 'getsingle', array('id' => $params['participant_id']));
 }
