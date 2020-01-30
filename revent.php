@@ -161,7 +161,11 @@ function revent_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
 
 function revent_civicrm_pre($op, $objectName, $id, &$params) {
   if (($op == 'create' || $op == 'edit' ) && $objectName == 'Participant') {
-    CRM_Revent_CustomFieldFilter::filter_custom_fields($params);
+    try {
+      CRM_Revent_CustomFieldFilter::filter_custom_fields($params);
+    } catch (Exception $ex) {
+      CRM_Core_Error::debug_log_message("Revent: filter_custom_fields() on {$op} failed: " . $ex->getMessage());
+    }
   }
 }
 
