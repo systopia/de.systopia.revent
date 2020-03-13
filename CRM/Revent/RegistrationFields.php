@@ -212,7 +212,7 @@ class CRM_Revent_RegistrationFields {
   public function getActiveGroups() {
     $active_groups = array();
 
-    $group_entries = $this->event['remote_event_registration.registration_fields'];
+    $group_entries = CRM_Utils_Array::value('remote_event_registration.registration_fields', $this->event, []);
     foreach ($group_entries as $group_entry) {
       // we only need the custom group IDs here
       if (substr($group_entry, 0, 12) == 'CustomGroup-') {
