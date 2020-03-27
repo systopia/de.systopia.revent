@@ -35,6 +35,12 @@ function civicrm_api3_remote_event_get($params) {
     CRM_Revent_CustomData::resolveCustomFields($query);
     $result = civicrm_api3('Event', 'get', $query);
 
+  } elseif(!empty($params['start_date'])) {
+    $query = array(
+      'check_permissions'                           => 0,
+      'start_date' => $params['start_date']);
+    CRM_Revent_CustomData::resolveCustomFields($query);
+    $result = civicrm_api3('Event', 'get', $query);
   } else {
     // you have to provide something
     return civicrm_api3_create_error("You have to provide either 'id' or 'external_identifier'");
@@ -72,4 +78,10 @@ function _civicrm_api3_remote_event_get_spec(&$params) {
     'type'         => CRM_Utils_Type::T_INT,
     'title'        => 'CiviCRM Event ID',
     );
+  $params['start_date'] = array(
+    'name'         => 'start_date',
+    'api.required' => 0,
+    'type'         => CRM_Utils_Type::T_DATE,
+    'title'        => 'Event Start Date',
+  );
 }
