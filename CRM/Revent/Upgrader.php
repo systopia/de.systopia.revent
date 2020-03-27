@@ -62,4 +62,17 @@ class CRM_Revent_Upgrader extends CRM_Revent_Upgrader_Base {
     return TRUE;
   }
 
+  /**
+   * Make sure custom field changes are applied
+   *
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_1300() {
+    $this->ctx->log->info('Applying update 1.3 - changes in custom fields');
+    $customData = new CRM_Revent_CustomData('de.systopia.revent');
+    $customData->syncCustomGroup(__DIR__ . '/../../resources/custom_group_remote_event_registration.json');
+    return TRUE;
+  }
+
 }
