@@ -91,6 +91,8 @@ function revent_civicrm_enable() {
 
   require_once 'CRM/Revent/RegistrationFields.php';
   CRM_Revent_RegistrationFieldSynchronisation::synchroniseFields();
+
+  CRM_Revent_Config::installScheduledJob();
 }
 
 /**

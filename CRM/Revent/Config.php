@@ -14,10 +14,14 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+use CRM_Revent_ExtensionUtil as E;
+
 class CRM_Revent_Config {
 
   private static $orgname_group_id            = NULL;
   private static $orgname_fields              = NULL;
+
+  protected static $jobs = NULL;
 
   /**
    * get the business (geschäftlich) location type ID
@@ -74,5 +78,37 @@ class CRM_Revent_Config {
       self::$orgname_group_id = $group['id'];
     }
     return self::$orgname_group_id;
+  }
+
+  /**
+   * Install a scheduled job if there isn't one already
+   */
+  public static function installScheduledJob() {
+    $jobs = self::getScheduledJobs();
+    if (empty($jobs)) {
+      // none found? create a new one
+      civicrm_api3('Job', 'create', array(
+        'api_entity'    => 'RemoteEvent',
+        'api_action'    => 'checkdeadline',
+        'run_frequency' => 'Daily',
+        'scheduled_run_date' => "00:00",
+        'name'          => E::ts('Check Registration Deadlines'),
+        'description'   => E::ts('Checks registration Deadlines and disables online registration if expired'),
+        'is_active'     => '0'));
+    }
+  }
+
+  /**
+   * get all scheduled jobs that trigger the dispatcher
+   */
+  public static function getScheduledJobs() {
+    if (self::$jobs === NULL) {
+      // find all scheduled jobs calling Sqltask.execute
+      $query = civicrm_api3('Job', 'get', array(
+        'api_entity'   => 'RemoteEvent',
+        'api_action'   => 'checkdeadline'));
+      self::$jobs = $query['values'];
+    }
+    return self::$jobs;
   }
 }
