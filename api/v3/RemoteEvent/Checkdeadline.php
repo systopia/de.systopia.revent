@@ -22,6 +22,7 @@ function civicrm_api3_remote_event_checkdeadline($params) {
   $result = civicrm_api3('RemoteEvent', 'get', [
     'sequential' => 1,
     'start_date' => ['>' => $now],
+    'options' => ['limit' => 0],
   ]);
   
   foreach ($result['values'] as $event_id => $event) {
