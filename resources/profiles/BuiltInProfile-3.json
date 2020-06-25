@@ -59,7 +59,10 @@
       "maxlength": "5",
       "required": 0,
       "name": "preferred_language",
-      "type": "select",
+      "type": "hidden",
+      "default_value": "de_DE",
+      "value_de": "de_DE",
+      "value_en": "en_GB",
       "options": {"de_DE": "Deutsch", "en_GB": "Englisch"},
       "weight": "6"
     }
