@@ -19,7 +19,7 @@
       "maxlength": "32",
       "required": 0,
       "name": "phone",
-      "type": "textfield",
+      "type": "hidden",
       "validation": "string",
       "weight": "2"
     },
@@ -29,7 +29,7 @@
       "maxlength": "32",
       "required": 0,
       "name": "phone_2",
-      "type": "textfield",
+      "type": "hidden",
       "validation": "string",
       "weight": "4"
     }
