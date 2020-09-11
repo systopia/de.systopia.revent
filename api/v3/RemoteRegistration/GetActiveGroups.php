@@ -19,6 +19,7 @@
  *  the given event
  */
 function civicrm_api3_remote_registration_get_active_groups($params) {
+  unset($params['check_permissions']);
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteRegistration.get_active_groups');
 
   // first: load the  event

@@ -18,6 +18,7 @@
  * Get an event based on the give data
  */
 function civicrm_api3_remote_group_subscribe($params) {
+  unset($params['check_permissions']);
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.subscribe');
   CRM_Revent_APIProcessor::stripEmptyParameters($params);
 
