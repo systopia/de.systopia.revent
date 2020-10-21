@@ -18,6 +18,7 @@
  * Unegister a contact from the given event via participant_id
  */
 function civicrm_api3_remote_registration_unregister($params) {
+  unset($params['check_permissions']);
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteRegistration.unregister');
   CRM_Revent_APIProcessor::stripEmptyParameters($params);
 

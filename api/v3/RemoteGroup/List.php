@@ -18,6 +18,7 @@
  * List all eligible groups
  */
 function civicrm_api3_remote_group_list($params) {
+  unset($params['check_permissions']);
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteGroup.list');
   $result = array();
 

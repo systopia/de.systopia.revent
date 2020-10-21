@@ -18,6 +18,7 @@
  * Register a contact for the given event
  */
 function civicrm_api3_remote_registration_register($params) {
+  unset($params['check_permissions']);
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteRegistration.register');
   CRM_Revent_APIProcessor::stripEmptyParameters($params);
 
