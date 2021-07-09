@@ -17,6 +17,7 @@
  * Check deadline for given Event and set online registration to false if deadline reached
  */
 function civicrm_api3_remote_event_checkdeadline($params) {
+  unset($params['check_permissions']);
   $now  = date("Y-m-d H:i:s");
   $counter = 0;
   $result = civicrm_api3('RemoteEvent', 'get', [

@@ -18,6 +18,7 @@
  * Create/update a Remote Event with the provided data
  */
 function civicrm_api3_remote_event_create($params) {
+  unset($params['check_permissions']);
   CRM_Revent_APIProcessor::preProcess($params, 'RemoteEvent.create');
 
   $params['remote_event_connection.external_identifier'] = $params['external_identifier'];
