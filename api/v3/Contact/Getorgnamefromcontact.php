@@ -20,6 +20,7 @@
  */
 function civicrm_api3_contact_getorgnamefromcontact($params) {
 
+  unset($params['check_permissions']);
   $business_location_typ_id = CRM_Uimods_Config::getBusinessLocationType();
   $contact_result = civicrm_api3('Address', 'get', array(
     'sequential'        => 1,
