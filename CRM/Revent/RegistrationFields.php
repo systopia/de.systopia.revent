@@ -334,6 +334,7 @@ class CRM_Revent_RegistrationFields {
 
       case 'Multi-Select':
         $metadata['type'] = 'checkboxes';
+        unset($metadata['maxlength']);
         $metadata['options'] = $this->getOptions($custom_field);
         break;
 
