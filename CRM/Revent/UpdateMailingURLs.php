@@ -177,6 +177,19 @@ class CRM_Revent_UpdateMailingURLs {
       if ($result['count'] != 1) {
         unset($mailing_ids[$key]);
       }
+      // we need to check if the respective group exists, otherwise the insert operation will fail
+      // see https://projekte.systopia.de/issues/11024?issue_count=61&issue_position=44&next_issue_id=10334&prev_issue_id=11184#note-60
+      // if group doesn't exist (anymore), we need to unset the mailing ID as well!
+      foreach ($result['values'] as $m_key => $m_values) {
+        // this really can only have one entry because of the above query
+        $mailing_group_result = civicrm_api3('Group', 'get', [
+          'id' => $m_values['entity_id'],
+        ]);
+        if ($mailing_group_result['count'] == 0) {
+          // unset as well, since the mailing group doesn't exist anymore!
+          unset($mailing_ids[$key]);
+        }
+      }
     }
   }
 
