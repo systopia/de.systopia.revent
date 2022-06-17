@@ -73,7 +73,7 @@ class CRM_Revent_UpdateMailingURLs {
   private function set_mailing_urls($mapped_mailing_urls) {
 
     $custom_field = $this->get_mailing_url_custom_field();
-
+    
     foreach ($mapped_mailing_urls as $mailing_id => $mailing_url) {
       $result = civicrm_api3('MailingGroup', 'get', [
         'mailing_id' => $mailing_id,
@@ -83,6 +83,8 @@ class CRM_Revent_UpdateMailingURLs {
         'id' => $group_id,
         $custom_field => $mailing_url,
       ]);
+      // this number is highly misleading, since it is possible and quitepossible that the same group gets updated multiple times
+      // So the real amount of mailing URLs in the system is very likely to be lower
       $this->url_counter++;
     }
   }
