@@ -42,6 +42,13 @@ class CRM_Revent_UpdateMailingURLs {
    * Main runner function
    */
   public function run() {
+    if (empty($this->hours_since_last_check)) {
+      // cleanup previous mailing_urls
+      // this prevents old mailing URLs for deleted mailings that never disappear
+      // this should only happen if no lsat date is configured!
+      $this->cleanup_old_mailing_urls();
+    }
+    
     // get all mailings since
     $mailing_ids = $this->get_all_mailing();
     $this->filter_mailing($mailing_ids);
@@ -51,6 +58,21 @@ class CRM_Revent_UpdateMailingURLs {
 
     // add url to respective group
     $this->set_mailing_urls($mapped_mailing_urls);
+  }
+
+  
+  /**
+   * @return void
+   */
+  private function cleanup_old_mailing_urls() {
+    try {
+      $query_string = "
+        UPDATE civicrm_value_group_fields 
+        SET mailing_url = '';";
+      $query = CRM_Core_DAO::executeQuery($query_string);
+    } catch (Exception $e) {
+      Civi::log()->log("DEBUG", "Failed to remove previous mailing_urls. Error: " . $e->getMessage());
+    }
   }
 
 
@@ -73,7 +95,7 @@ class CRM_Revent_UpdateMailingURLs {
   private function set_mailing_urls($mapped_mailing_urls) {
 
     $custom_field = $this->get_mailing_url_custom_field();
-
+    
     foreach ($mapped_mailing_urls as $mailing_id => $mailing_url) {
       $result = civicrm_api3('MailingGroup', 'get', [
         'mailing_id' => $mailing_id,
@@ -83,6 +105,8 @@ class CRM_Revent_UpdateMailingURLs {
         'id' => $group_id,
         $custom_field => $mailing_url,
       ]);
+      // this number is highly misleading, since it is possible and quitepossible that the same group gets updated multiple times
+      // So the real amount of mailing URLs in the system is very likely to be lower
       $this->url_counter++;
     }
   }
