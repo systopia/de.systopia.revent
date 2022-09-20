@@ -26,6 +26,13 @@ class CRM_Revent_UpdateMailingURLs {
   // counter for debug output
   private $url_counter;
 
+  //
+  private $regional_mailinggroups = [
+    1 => [138, 739], // Lateinamerika Newsletter
+    2 => [141, 737], // Nahost- & Nordafrika-Update
+    3 => [148, 740], // Ost- und Südosteuropa-Newsletter
+    4 => [110, 130], // Asien Newsletter
+  ];
 
   /**
    * CRM_Revent_UpdateMailingURLs constructor.
@@ -198,7 +205,28 @@ class CRM_Revent_UpdateMailingURLs {
       $result = civicrm_api3('MailingGroup', 'get', [
         'mailing_id' => $m_id['id'],
       ]);
-      if ($result['count'] != 1) {
+      // special handling, see https://projekte.systopia.de/issues/19238
+      // check if the respective mailing goes to exacly 2 mailing_groups specified in $regional_mailinggroups
+      if ($result['count'] == 2) {
+        if ($this->filter_regional_mapping($result['values'])) {
+          unset($mailing_ids[$key]);
+        }
+
+        $mailing_groups = [];
+        foreach ($result['values'] as $m_key => $m_values) {
+          array_push($mailing_groups, $m_values['entity_id']);
+        }
+        $b = False;
+        foreach ($this->regional_mailinggroups as $key => $group_ids) {
+          if (empty(array_diff($group_ids, $mailing_groups))) {
+            $b = True;
+          }
+        }
+        if (!$b) {
+          unset($mailing_ids[$key]);
+        }
+      }
+      if ($result['count'] > 2 || $result['count'] == 0) {
         unset($mailing_ids[$key]);
       }
       // we need to check if the respective group exists, otherwise the insert operation will fail
@@ -215,6 +243,25 @@ class CRM_Revent_UpdateMailingURLs {
         }
       }
     }
+  }
+
+
+  /**
+   * Return False if mailing groups are a regional tuple
+   *
+   * @return bool
+   */
+  private function filter_regional_mapping($mailing_group_results) {
+    $mailing_groups = [];
+    foreach ($mailing_group_results as $m_key => $m_values) {
+      array_push($mailing_groups, $m_values['entity_id']);
+    }
+    foreach ($this->regional_mailinggroups as $key => $group_ids) {
+      if (empty(array_diff($group_ids, $mailing_groups))) {
+        return False;
+      }
+    }
+    return True;
   }
 
 
