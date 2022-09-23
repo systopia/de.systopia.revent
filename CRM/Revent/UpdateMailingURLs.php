@@ -32,6 +32,7 @@ class CRM_Revent_UpdateMailingURLs {
     2 => [141, 737], // Nahost- & Nordafrika-Update
     3 => [148, 740], // Ost- und Südosteuropa-Newsletter
     4 => [110, 130], // Asien Newsletter
+//    5 => [3, 4], // local test groups
   ];
 
   /**
@@ -107,14 +108,16 @@ class CRM_Revent_UpdateMailingURLs {
       $result = civicrm_api3('MailingGroup', 'get', [
         'mailing_id' => $mailing_id,
       ]);
-      $group_id = $result['values'][$result['id']]['entity_id'];
-      $update_group_result = civicrm_api3('Group', 'create', [
-        'id' => $group_id,
-        $custom_field => $mailing_url,
-      ]);
-      // this number is highly misleading, since it is possible and quitepossible that the same group gets updated multiple times
-      // So the real amount of mailing URLs in the system is very likely to be lower
-      $this->url_counter++;
+      foreach ($result['values'] as $value) {
+        $group_id = $value['entity_id'];
+        $update_group_result = civicrm_api3('Group', 'create', [
+          'id' => $group_id,
+          $custom_field => $mailing_url,
+        ]);
+        // this number is highly misleading, since it is possible and quitepossible that the same group gets updated multiple times
+        // So the real amount of mailing URLs in the system is very likely to be lower
+        $this->url_counter++;
+      }
     }
   }
 
