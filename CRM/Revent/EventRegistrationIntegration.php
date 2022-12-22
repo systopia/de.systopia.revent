@@ -104,6 +104,7 @@ class CRM_Revent_EventRegistrationIntegration {
       71 => "Veranstaltungsbericht Teilnehmende 3 Panelblöcke nach Panel 2 sortiert",
       72 => "Veranstaltungsbericht Teilnehmende 3 Panelblöcke nach Panel 3 sortiert",
       73 => "Veranstaltungsbericht Teilnehmende 3 Panelblöcke nach Tagen sortiert",
+      77 => "Veranstaltungübersicht hybrid",
     );
 //    $report_instance = 26;   // LOKALE TESTUMGEBUNG
     $report_args = array(

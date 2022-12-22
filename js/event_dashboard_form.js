@@ -86,6 +86,9 @@ for (i = 0; i < eventIDs.length; ++i) {
     var event_report_url73 = "__REPORT-URL-73__?reset=1&force=1&event_id_op=in&event_id_value=" + eventIDs[i];
     var event_report_link_entry73 = '<li><a target="_blank" title="__REPORT-URL-LABEL-73__" class="action-item crm-hover-button no-popup enabled" href="' + event_report_url73 + '" >__REPORT-URL-LABEL-73__</a> </li>'
 
+    var event_report_url77 = "__REPORT-URL-77__?reset=1&force=1&event_id_op=in&event_id_value=" + eventIDs[i];
+    var event_report_link_entry77 = '<li><a target="_blank" title="__REPORT-URL-LABEL-77__" class="action-item crm-hover-button no-popup enabled" href="' + event_report_url77 + '" >__REPORT-URL-LABEL-77__</a> </li>'
+
 
     cj("ul#panel_info_" + eventIDs[i]).append(event_report_link_entry56);
     cj("ul#panel_info_" + eventIDs[i]).append(event_report_link_entry61);
@@ -101,5 +104,5 @@ for (i = 0; i < eventIDs.length; ++i) {
     cj("ul#panel_info_" + eventIDs[i]).append(event_report_link_entry71);
     cj("ul#panel_info_" + eventIDs[i]).append(event_report_link_entry72);
     cj("ul#panel_info_" + eventIDs[i]).append(event_report_link_entry73);
-
+    cj("ul#panel_info_" + eventIDs[i]).append(event_report_link_entry77);
 }

@@ -58,7 +58,8 @@
     var event_report_link_label_72                   = "{$event_report_link_label_72}";
     var event_report_link_73                         = "{$event_report_link_73}";
     var event_report_link_label_73                   = "{$event_report_link_label_73}";
-
+    var event_report_link_77                         = "{$event_report_link_77}";
+    var event_report_link_label_77                   = "{$event_report_link_label_77}";
 
     {literal}
 
@@ -120,6 +121,8 @@
     cj(".crm-event-links-list-inner ul").append(event_report_entry_72);
     var event_report_entry_73 = '<li><a target="_blank" class="no-popup" href="' + event_report_link_73 + '" >' + event_report_link_label_73 + '</a> </li>';
     cj(".crm-event-links-list-inner ul").append(event_report_entry_73);
+    var event_report_entry_77 = '<li><a target="_blank" class="no-popup" href="' + event_report_link_77 + '" >' + event_report_link_label_77 + '</a> </li>';
+    cj(".crm-event-links-list-inner ul").append(event_report_entry_77);
 
 </script>
 {/literal}
