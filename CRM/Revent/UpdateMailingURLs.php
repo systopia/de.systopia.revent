@@ -281,6 +281,8 @@ class CRM_Revent_UpdateMailingURLs {
     // we have hours here, create a timestamp and substract seconds
     $timestamp = strtotime('now') - ($this->hours_since_last_check * 3600);
     $params['scheduled_date'] = ['>' => date('Y-m-d H:i:s', $timestamp)];
+    // only use completed mailings, see https://projekte.systopia.de/issues/19238#note-6
+    $params['is_completed'] = 1;
   }
 
 
