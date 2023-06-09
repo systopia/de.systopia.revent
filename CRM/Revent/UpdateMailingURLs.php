@@ -31,7 +31,8 @@ class CRM_Revent_UpdateMailingURLs {
     1 => [138, 739], // Lateinamerika Newsletter
     2 => [141, 737], // Nahost- & Nordafrika-Update
     3 => [148, 740], // Ost- und Südosteuropa-Newsletter
-    4 => [110, 130], // Asien Newsletter
+    4 => [110, 130], // Asien Newsletter (falsche Gruppen IDs? 
+    5 => [110, 712], // 30_NEWS | Newsletter Asien (Web, IZ), 20_ASIEN (WEB | IZ)
 //    5 => [3, 4], // local test groups
   ];
 
