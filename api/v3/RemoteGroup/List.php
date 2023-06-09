@@ -23,7 +23,11 @@ function civicrm_api3_remote_group_list($params) {
   $result = array();
 
   // TODO: restrict to eligible groups
-  $result = civicrm_api3('Group', 'get', array('option.limit' => 0));
+  // 21588 only get mailing groups
+  $result = civicrm_api3('Group', 'get', [
+    'group_type' => "Mailing List",
+    'options' => ['limit' => 0],
+  ]);
   $groups = $result['values'];
 
   // replace custom fields with labels
@@ -56,6 +60,11 @@ function civicrm_api3_remote_group_list($params) {
     if (isset($group['created_id']))    unset($group['created_id']);
     if (isset($group['modified_id']))   unset($group['modified_id']);
     if (isset($group['is_reserved']))   unset($group['is_reserved']);
+
+    // 21588 - adding additional filters
+    if (isset($group['is_active']))   unset($group['is_active']);
+    if (isset($group['group_type']))   unset($group['group_type']);
+    if (isset($group['is_hidden']))   unset($group['is_hidden']);
 
     if (!empty($group['group_fields.display_section'])) {
       try {
