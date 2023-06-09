@@ -61,10 +61,17 @@ function civicrm_api3_remote_group_list($params) {
     if (isset($group['modified_id']))   unset($group['modified_id']);
     if (isset($group['is_reserved']))   unset($group['is_reserved']);
 
-    // 21588 - adding additional filters
+    // #21588 - adding additional filters
     if (isset($group['is_active']))   unset($group['is_active']);
     if (isset($group['group_type']))   unset($group['group_type']);
     if (isset($group['is_hidden']))   unset($group['is_hidden']);
+
+    // #11024 check if show_last_mailing is set. if not, remove mailing_ulr here
+    //        then remove show_last_mailing parameter, we don't want/need to expose this
+    if (isset($group['group_fields.show_last_mailing']) && !$group['group_fields.show_last_mailing']) {
+      unset($group['group_fields.mailing_url']);
+    }
+    if (isset($group['group_fields.show_last_mailing']))   unset($group['group_fields.show_last_mailing']);
 
     if (!empty($group['group_fields.display_section'])) {
       try {
