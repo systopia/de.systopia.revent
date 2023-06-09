@@ -190,7 +190,7 @@ class CRM_Revent_Form_RegistrationCustomisation extends CRM_Core_Form {
     $fields = array();
 
     $pattern = "/(?<type>[A-Za-z]+)__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<language>[a-z0]{1,2})$/";
-    $option_pattern = "/option__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<index>[0-9]*?)__(?<language>[a-z0]{1,2})$/";
+    $option_pattern = "/option__(?<group>[A-Za-z0-9-._]+)__(?<field>[0-9A-Za-z_.]+)__(?<index>[0-9a-zA-Z_]*?)__(?<language>[a-z0]{1,2})$/";
     $group_name_patter = "/group__display__(?<group>[A-Za-z0-9-._]+)__(?<language>[a-z0]{1,2})$/";
     $matches = array();
     // iterate values, then build group and fields array

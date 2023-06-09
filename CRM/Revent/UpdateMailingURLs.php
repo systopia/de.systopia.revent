@@ -26,6 +26,14 @@ class CRM_Revent_UpdateMailingURLs {
   // counter for debug output
   private $url_counter;
 
+  //
+  private $regional_mailinggroups = [
+    1 => [138, 739], // Lateinamerika Newsletter
+    2 => [141, 737], // Nahost- & Nordafrika-Update
+    3 => [148, 740], // Ost- und Südosteuropa-Newsletter
+    4 => [110, 130], // Asien Newsletter
+//    5 => [3, 4], // local test groups
+  ];
 
   /**
    * CRM_Revent_UpdateMailingURLs constructor.
@@ -42,6 +50,13 @@ class CRM_Revent_UpdateMailingURLs {
    * Main runner function
    */
   public function run() {
+    if (empty($this->hours_since_last_check)) {
+      // cleanup previous mailing_urls
+      // this prevents old mailing URLs for deleted mailings that never disappear
+      // this should only happen if no lsat date is configured!
+      $this->cleanup_old_mailing_urls();
+    }
+    
     // get all mailings since
     $mailing_ids = $this->get_all_mailing();
     $this->filter_mailing($mailing_ids);
@@ -51,6 +66,21 @@ class CRM_Revent_UpdateMailingURLs {
 
     // add url to respective group
     $this->set_mailing_urls($mapped_mailing_urls);
+  }
+
+  
+  /**
+   * @return void
+   */
+  private function cleanup_old_mailing_urls() {
+    try {
+      $query_string = "
+        UPDATE civicrm_value_group_fields 
+        SET mailing_url = '';";
+      $query = CRM_Core_DAO::executeQuery($query_string);
+    } catch (Exception $e) {
+      Civi::log()->log("DEBUG", "Failed to remove previous mailing_urls. Error: " . $e->getMessage());
+    }
   }
 
 
@@ -73,17 +103,21 @@ class CRM_Revent_UpdateMailingURLs {
   private function set_mailing_urls($mapped_mailing_urls) {
 
     $custom_field = $this->get_mailing_url_custom_field();
-
+    
     foreach ($mapped_mailing_urls as $mailing_id => $mailing_url) {
       $result = civicrm_api3('MailingGroup', 'get', [
         'mailing_id' => $mailing_id,
       ]);
-      $group_id = $result['values'][$result['id']]['entity_id'];
-      $update_group_result = civicrm_api3('Group', 'create', [
-        'id' => $group_id,
-        $custom_field => $mailing_url,
-      ]);
-      $this->url_counter++;
+      foreach ($result['values'] as $value) {
+        $group_id = $value['entity_id'];
+        $update_group_result = civicrm_api3('Group', 'create', [
+          'id' => $group_id,
+          $custom_field => $mailing_url,
+        ]);
+        // this number is highly misleading, since it is possible and quitepossible that the same group gets updated multiple times
+        // So the real amount of mailing URLs in the system is very likely to be lower
+        $this->url_counter++;
+      }
     }
   }
 
@@ -174,10 +208,63 @@ class CRM_Revent_UpdateMailingURLs {
       $result = civicrm_api3('MailingGroup', 'get', [
         'mailing_id' => $m_id['id'],
       ]);
-      if ($result['count'] != 1) {
+      // special handling, see https://projekte.systopia.de/issues/19238
+      // check if the respective mailing goes to exacly 2 mailing_groups specified in $regional_mailinggroups
+      if ($result['count'] == 2) {
+        if ($this->filter_regional_mapping($result['values'])) {
+          unset($mailing_ids[$key]);
+        }
+
+        $mailing_groups = [];
+        foreach ($result['values'] as $m_key => $m_values) {
+          array_push($mailing_groups, $m_values['entity_id']);
+        }
+        $b = False;
+        foreach ($this->regional_mailinggroups as $key => $group_ids) {
+          if (empty(array_diff($group_ids, $mailing_groups))) {
+            $b = True;
+          }
+        }
+        if (!$b) {
+          unset($mailing_ids[$key]);
+        }
+      }
+      if ($result['count'] > 2 || $result['count'] == 0) {
         unset($mailing_ids[$key]);
       }
+      // we need to check if the respective group exists, otherwise the insert operation will fail
+      // see https://projekte.systopia.de/issues/11024?issue_count=61&issue_position=44&next_issue_id=10334&prev_issue_id=11184#note-60
+      // if group doesn't exist (anymore), we need to unset the mailing ID as well!
+      foreach ($result['values'] as $m_key => $m_values) {
+        // this really can only have one entry because of the above query
+        $mailing_group_result = civicrm_api3('Group', 'get', [
+          'id' => $m_values['entity_id'],
+        ]);
+        if ($mailing_group_result['count'] == 0) {
+          // unset as well, since the mailing group doesn't exist anymore!
+          unset($mailing_ids[$key]);
+        }
+      }
     }
+  }
+
+
+  /**
+   * Return False if mailing groups are a regional tuple
+   *
+   * @return bool
+   */
+  private function filter_regional_mapping($mailing_group_results) {
+    $mailing_groups = [];
+    foreach ($mailing_group_results as $m_key => $m_values) {
+      array_push($mailing_groups, $m_values['entity_id']);
+    }
+    foreach ($this->regional_mailinggroups as $key => $group_ids) {
+      if (empty(array_diff($group_ids, $mailing_groups))) {
+        return False;
+      }
+    }
+    return True;
   }
 
 
@@ -194,6 +281,8 @@ class CRM_Revent_UpdateMailingURLs {
     // we have hours here, create a timestamp and substract seconds
     $timestamp = strtotime('now') - ($this->hours_since_last_check * 3600);
     $params['scheduled_date'] = ['>' => date('Y-m-d H:i:s', $timestamp)];
+    // only use completed mailings, see https://projekte.systopia.de/issues/19238#note-6
+    $params['is_completed'] = 1;
   }
 
 

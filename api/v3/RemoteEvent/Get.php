@@ -54,10 +54,7 @@ function civicrm_api3_remote_event_get($params) {
   foreach ($result['values'] as $event_id => &$event) {
     $event['civicrm_link'] = CRM_Utils_System::url('civicrm/event/info', "reset=1&id={$event_id}", true);
     // get the number of registered participants
-    $event['registered_participants'] = civicrm_api3('Participant', 'getcount', [
-      'event_id' => $event_id,
-      'status_id' => ['IN' => ["Registered", "Attended", "Pending from pay later", "Pending from incomplete transaction", "Partially paid"]],
-    ]);
+    $event['registered_participants'] = CRM_Revent_Utils::get_participant_count($event_id);
   }
 
   return $result;
