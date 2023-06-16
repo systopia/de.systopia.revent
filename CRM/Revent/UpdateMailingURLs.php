@@ -31,7 +31,7 @@ class CRM_Revent_UpdateMailingURLs {
     1 => [138, 739], // Lateinamerika Newsletter
     2 => [141, 737], // Nahost- & Nordafrika-Update
     3 => [148, 740], // Ost- und Südosteuropa-Newsletter
-    4 => [110, 130], // Asien Newsletter
+    4 => [110, 712], // 30_NEWS | Newsletter Asien (Web, IZ), 20_ASIEN (WEB | IZ)
 //    5 => [3, 4], // local test groups
   ];
 
@@ -191,6 +191,8 @@ class CRM_Revent_UpdateMailingURLs {
   private function get_all_mailing() {
     $params['options'] = ['limit' => 0];
     $params['return'] = ["id"];
+    // only use completed mailings, see https://projekte.systopia.de/issues/19238#note-6
+    $params['is_completed'] = 1;
     $this->get_date_param($params);
     $result = civicrm_api3('Mailing', 'get', $params);
     return array_values($result['values']);
@@ -281,8 +283,6 @@ class CRM_Revent_UpdateMailingURLs {
     // we have hours here, create a timestamp and substract seconds
     $timestamp = strtotime('now') - ($this->hours_since_last_check * 3600);
     $params['scheduled_date'] = ['>' => date('Y-m-d H:i:s', $timestamp)];
-    // only use completed mailings, see https://projekte.systopia.de/issues/19238#note-6
-    $params['is_completed'] = 1;
   }
 
 

@@ -10,7 +10,7 @@
       "required": 0,
       "name": "prefix_id",
       "type": "select",
-      "options": {"5": "Frau", "6": "Herr", "ka": "Keine Angabe"},
+      "options": {"5": "Frau", "6": "Herr", "ka": "Keine Angabe/divers"},
       "weight": "1"
     },
     "formal_title": {
