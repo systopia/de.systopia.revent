@@ -18,20 +18,11 @@
   <version>1.6.5</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.38</ver>
+    <ver>4.7</ver>
+    <ver>5.4</ver>
   </compatibility>
-  <comments/>
+  <comments></comments>
   <civix>
     <namespace>CRM/Revent</namespace>
-    <format>23.02.1</format>
   </civix>
-  <mixins>
-    <mixin>menu-xml@1.0.0</mixin>
-    <mixin>smarty-v2@1.0.1</mixin>
-  </mixins>
-  <classloader>
-    <psr0 prefix="CRM_" path="."/>
-    <psr4 prefix="Civi\" path="Civi"/>
-  </classloader>
-  <upgrader>CRM_Revent_Upgrader</upgrader>
 </extension>

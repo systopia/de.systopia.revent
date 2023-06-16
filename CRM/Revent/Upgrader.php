@@ -18,7 +18,7 @@ use CRM_Revent_ExtensionUtil as E;
 /**
  * Collection of upgrade steps.
  */
-class CRM_Revent_Upgrader extends CRM_Extension_Upgrader_Base {
+class CRM_Revent_Upgrader extends CRM_Revent_Upgrader_Base {
 
   /**
    * Extend length of civicrm_value_remote_event_registration.registration_fields to varchar(2048)
