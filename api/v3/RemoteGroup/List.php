@@ -34,7 +34,8 @@ function civicrm_api3_remote_group_list($params) {
   CRM_Revent_CustomData::labelCustomFields($groups, 2);
 
   // do some filtering / processing
-  foreach ($groups as &$group) {
+  foreach ($groups as $key => &$group) {
+
     // set profile
     $profile_type = CRM_Utils_Array::value('group_fields.profile_type', $group, '');
     switch ($profile_type) {
@@ -50,6 +51,11 @@ function civicrm_api3_remote_group_list($params) {
       case '3':
         $group['profile'] = 'email_name_postal';
         break;
+    }
+    // filter groups that do not have a profile or a group_fields.display_section
+    if (empty($group['profile']) || empty($group['group_fields.display_section'])) {
+      unset($groups[$key]);
+      continue;
     }
 
     // remove clutter
