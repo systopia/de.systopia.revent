@@ -20,6 +20,10 @@ use CRM_Revent_ExtensionUtil as E;
  */
 class CRM_Revent_Utils {
 
+  public static $API_ERROR_REFERENCE = [
+    "PARTICIPANT_NOT_FOUND" => '404'
+  ];
+
 
   /**
    * Count the number ob participant for given $event_id
@@ -50,5 +54,24 @@ class CRM_Revent_Utils {
       CRM_Core_Error::debug_log_message("[CRM_Revent_Utils::get_participant_count] Error while getting the number of participants for Event {$event_id}");
       throw new CiviCRM_API3_Exception("[CRM_Revent_Utils::get_participant_count] Error while getting the number of participants for Event {$event_id}");
     }
+  }
+
+  /**
+   * Generate a RemoteEvent conform API3 error
+   *
+   * @param $error_message
+   *
+   *
+   */
+  public static function createApi3Error($error_message, $error_reference = NULL)
+  {
+    return civicrm_api3_create_error($error_message, [
+      'status_messages' => [
+        [
+          'severity' => 'error',
+          'reference' => empty($error_reference) ? "" : $error_reference,
+        ]
+      ]
+    ]);
   }
 }
