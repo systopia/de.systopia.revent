@@ -119,6 +119,7 @@ class CRM_Revent_RegistrationProcessor {
     CRM_Revent_CustomData::resolveCustomFields($data);
     $participant = civicrm_api3('Participant', 'create', $data);
 
+    $this->initialize_contact_gender($data['contact_id']);
     // get all participant data
     return civicrm_api3('Participant', 'getsingle', array('id' => $participant['id']));
   }
@@ -299,4 +300,27 @@ class CRM_Revent_RegistrationProcessor {
     }
     return $this->_waiting_status_ids;
   }
+
+
+  /**
+   * @param $contact_id
+   * @return void
+   * @throws CiviCRM_API3_Exception
+   */
+  protected function initialize_contact_gender($contact_id) {
+    // check if contact already has gender
+    $result = civicrm_api3('Contact', 'getsingle', [
+      'return' => ["gender_id"],
+      'id' => $contact_id,
+    ]);
+    if (empty($result['gender_id'])) {
+      // set to diverse now
+      $result = civicrm_api3('Contact', 'create', [
+        'id' => 11,
+        'gender_id' => "Other",
+      ]);
+    }
+  }
 }
+
+
