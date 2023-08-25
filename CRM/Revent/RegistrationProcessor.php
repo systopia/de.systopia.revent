@@ -316,7 +316,7 @@ class CRM_Revent_RegistrationProcessor {
     if (empty($result['gender_id'])) {
       // set to diverse now
       $result = civicrm_api3('Contact', 'create', [
-        'id' => 11,
+        'id' => $contact_id,
         'gender_id' => "Other",
       ]);
     }
