@@ -270,6 +270,8 @@ function revent_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
  */
 function remoteevent_civicrm_copy($objectName, &$object)
 {
+  // do not "activate for now, see #21816 for details
+  return;
   if ($objectName == 'Event') {
     // we have the new event ID...
     $new_event_id = (int)$object->id;
