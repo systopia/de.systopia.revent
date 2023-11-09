@@ -28,7 +28,7 @@ function civicrm_api3_remote_registration_unregister($params) {
     'return'       => 'id,participant_status_id',
     'option.limit' => 0));
   if (empty($participant_search['id'])) {
-    return civicrm_api3_create_error("Couln't find registration [{$params['participant_id']}]");
+    return CRM_Revent_Utils::createApi3Error("Couldn't find registration [{$params['participant_id']}]", CRM_Revent_Utils::$API_ERROR_REFERENCE['PARTICIPANT_NOT_FOUND']);
   }
 
   // TODO: check for status?

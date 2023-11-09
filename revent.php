@@ -264,3 +264,51 @@ function revent_civicrm_alterAPIPermissions($entity, $action, &$params, &$permis
   $permissions['remote_registration']['get_active_groups']          = array('access RemoteEvent');
   $permissions['remote_registration']['get_custom_group_meta_data'] = array('access RemoteEvent');
 }
+
+/**
+ * Implementation of hook_civicrm_copy
+ */
+function remoteevent_civicrm_copy($objectName, &$object)
+{
+  // do not "activate for now, see #21816 for details
+  return;
+  if ($objectName == 'Event') {
+    // we have the new event ID...
+    $new_event_id = (int)$object->id;
+
+    // ...unfortunately, we have to dig up the original event ID
+    // shamelessly stolen from remoteevents
+    $callstack = debug_backtrace();
+    foreach ($callstack as $call) {
+      if (isset($call['class']) && isset($call['function'])) {
+        if ($call['class'] == 'CRM_Event_BAO_Event' && $call['function'] == 'copy') {
+          // this should be it:
+          $original_event_id = (int) $call['args'][0];
+          break;
+        }
+      }
+    }
+
+    if ($original_event_id && $new_event_id) {
+      // copy custom fields to new event
+
+      // get custom fields
+      $custom_group_customisations = CRM_Revent_CustomData::getCustomFieldKey("remote_event_registration", "registration_customisations");
+      $custom_group_fields = CRM_Revent_CustomData::getCustomFieldKey("remote_event_registration", "registration_fields");
+
+      $original_event = civicrm_api3('Event', 'getsingle', array(
+        'sequential' => 1,
+        'return' => array($custom_group_customisations, $custom_group_fields),
+        'id' => $original_event_id,
+      ));
+
+      // store it
+      $update_result = civicrm_api3('Event', 'create', array(
+        'sequential' => 1,
+        'id' => $new_event_id,
+        $custom_group_customisations => $original_event[$custom_group_customisations],
+        $custom_group_fields         => $original_event[$custom_group_fields],
+      ));
+    }
+  }
+}
