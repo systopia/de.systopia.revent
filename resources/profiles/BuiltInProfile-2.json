@@ -32,6 +32,16 @@
       "type": "hidden",
       "validation": "string",
       "weight": "4"
+    },
+    "civi_language": {
+      "group": "BuiltInProfile-2",
+      "title": "CiviCRM Language",
+      "maxlength": "32",
+      "required": 0,
+      "name": "civi_language",
+      "type": "hidden",
+      "validation": "string",
+      "weight": "5"
     }
   }
 }
