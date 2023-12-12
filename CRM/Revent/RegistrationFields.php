@@ -201,6 +201,17 @@ class CRM_Revent_RegistrationFields {
       $this->renderLocalisation($metadata);
     }
 
+    // Only send civi_communications here if eventmessages is active
+    if ($custom_group_id == "BuiltInProfile-2") {
+      $is_eventmessages_activated = (boolean) CRM_Core_DAO::singleValueQuery("
+                    SELECT settings.disable_default
+                    FROM civicrm_value_event_messages_settings settings
+                    WHERE settings.entity_id = {$this->event['id']}");
+      if (!$is_eventmessages_activated) {
+        unset($fields['civi_communications']);
+      }
+    }
+
     return $fields;
   }
 
@@ -228,7 +239,16 @@ class CRM_Revent_RegistrationFields {
         if (!empty($ra_group['id'])) {
           $active_groups[] = $ra_group['id'];
         }
+      // exception 2: if kommunikation Profile is selected, then the
+      // Language option shall be shown and parsed as well
+      } elseif ($group_entry == 'BuiltInProfile-2') {
+        $civi_language_group = civicrm_api3('CustomGroup', 'get', array('name' => 'registration_extra_info'));
+        if (!empty($civi_language_group['id'])) {
+          $active_groups[] = $civi_language_group['id'];
+        }
       }
+
+
     }
 
     return $active_groups;

@@ -15,7 +15,7 @@
     {
       "_lookup": ["column_name", "custom_group_id"],
       "_translate": ["label"],
-      "weight": "3",
+      "weight": "0",
       "name": "external_identifier",
       "label": "External Identifier",
       "data_type": "String",
@@ -58,6 +58,54 @@
       "is_active": "1",
       "is_view": "0",
       "column_name": "registration_link",
+      "in_selector": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "weight": "3",
+      "name": "registration_title_1",
+      "label": "Registration Titel 1",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "1",
+      "is_active": "1",
+      "is_view": "0",
+      "column_name": "registration_title_1",
+      "in_selector": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "weight": "4",
+      "name": "registration_title_2",
+      "label": "Registration Titel 2",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "1",
+      "is_active": "1",
+      "is_view": "0",
+      "column_name": "registration_title_2",
+      "in_selector": "1"
+    },
+    {
+      "_lookup": ["column_name", "custom_group_id"],
+      "_translate": ["label"],
+      "weight": "5",
+      "name": "registration_title_3",
+      "label": "Registration Titel 3",
+      "data_type": "String",
+      "html_type": "Text",
+      "is_required": "0",
+      "is_searchable": "1",
+      "is_search_range": "1",
+      "is_active": "1",
+      "is_view": "0",
+      "column_name": "registration_title_3",
       "in_selector": "1"
     }
   ]

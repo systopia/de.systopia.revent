@@ -88,7 +88,8 @@ function revent_civicrm_enable() {
   $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_remote_event_registration.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_registration_address.json');
   $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_registration_billing_address.json');
-  $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_participant_information.json');
+  $customData->syncCustomGroup(__DIR__ . '/resources/custom_group_participant_extra_information.json');
+
 
   require_once 'CRM/Revent/RegistrationFields.php';
   CRM_Revent_RegistrationFieldSynchronisation::synchroniseFields();

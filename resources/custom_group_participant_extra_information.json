@@ -1,32 +1,33 @@
 {
   "_lookup": ["name"],
   "_translate": ["title"],
-  "name": "registration_participant_information",
-  "title": "Registration Participant Information",
+  "name": "registration_extra_info",
+  "title": "Registration Extra Information",
   "extends": "Participant",
   "style": "Inline",
   "collapse_display": "1",
   "is_active": "1",
   "is_multiple": "0",
   "is_reserved": "0",
-  "table_name": "civicrm_value_participant_information",
+  "table_name": "civicrm_value_registration_extra_information",
   "collapse_adv_display": "1",
   "_fields": [
     {
-      "_lookup": ["column_name", "custom_group_id"],
+      "_lookup": ["column_name"],
       "_translate": ["label"],
-      "weight": "1",
       "name": "civi_language",
       "label": "CiviCRM Sprache",
       "data_type": "String",
-      "text_length": "64",
-      "html_type": "Text",
+      "html_type": "Select",
+      "option_group_id": "languages",
+      "weight": "0",
       "is_required": "0",
-      "is_searchable": "0",
+      "is_searchable": "1",
       "is_search_range": "0",
       "is_active": "1",
-      "is_view": "0",
-      "column_name": "civi_language"
+      "is_view": "1",
+      "column_name": "civi_language",
+      "in_selector": "0"
     }
   ]
 }
