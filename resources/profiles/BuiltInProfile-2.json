@@ -32,6 +32,24 @@
       "type": "hidden",
       "validation": "string",
       "weight": "4"
+    },
+    "civi_communications": {
+      "group": "BuiltInProfile-2",
+      "title": "CiviCRM Event Kommunikation",
+      "required": 0,
+      "name": "civi_communications",
+      "type": "hidden",
+      "validation": "string",
+      "weight": "5"
+    },
+    "civi_language": {
+      "group": "BuiltInProfile-2",
+      "title": "CiviCRM Event Kommunikation",
+      "required": 0,
+      "name": "civi_language",
+      "type": "hidden",
+      "validation": "string",
+      "weight": "6"
     }
   }
 }

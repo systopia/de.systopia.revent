@@ -108,4 +108,10 @@ function _civicrm_api3_remote_event_create_spec(&$params) {
     'type'         => CRM_Utils_Type::T_STRING,
     'title'        => 'Remote Event Registration Link',
   );
+  $params['remote_event_connection.additional_dates'] = array(
+    'name'         => 'remote_event_connection.additional_dates',
+    'api.required' => 0,
+    'type'         => CRM_Utils_Type::T_STRING,
+    'title'        => 'Remote Event Additional Dates',
+  );
 }

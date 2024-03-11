@@ -16,6 +16,9 @@
   </urls>
   <releaseDate></releaseDate>
   <version>1.6.9-dev</version>
+  <requires>
+    <ext>de.systopia.eventmessages</ext>
+  </requires>
   <develStage></develStage>
   <compatibility>
     <ver>4.7</ver>

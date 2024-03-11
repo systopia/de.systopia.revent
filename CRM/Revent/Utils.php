@@ -21,7 +21,8 @@ use CRM_Revent_ExtensionUtil as E;
 class CRM_Revent_Utils {
 
   public static $API_ERROR_REFERENCE = [
-    "PARTICIPANT_NOT_FOUND" => '404'
+    "PARTICIPANT_NOT_FOUND" => '404',
+    "PARTICIPANT_ALREADY_CANCELLED" => '406',
   ];
 
 

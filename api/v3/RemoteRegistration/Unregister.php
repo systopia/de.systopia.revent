@@ -30,8 +30,10 @@ function civicrm_api3_remote_registration_unregister($params) {
   if (empty($participant_search['id'])) {
     return CRM_Revent_Utils::createApi3Error("Couldn't find registration [{$params['participant_id']}]", CRM_Revent_Utils::$API_ERROR_REFERENCE['PARTICIPANT_NOT_FOUND']);
   }
-
-  // TODO: check for status?
+  if ($participant_search['values'][$participant_search['id']]['participant_status_id'] == '4') {
+    // nothing to do here, notify API with Error Code that
+    return CRM_Revent_Utils::createApi3Error("Participant [{$params['participant_id']}] already cancelled", CRM_Revent_Utils::$API_ERROR_REFERENCE['PARTICIPANT_ALREADY_CANCELLED']);
+  }
 
   // set status to 'Cancelled'
   civicrm_api3('Participant', 'create', array(
