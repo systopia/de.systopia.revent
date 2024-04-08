@@ -248,7 +248,11 @@ function revent_civicrm_pageRun( &$page ) {
  * Define custom (Drupal) permissions
  */
 function revent_civicrm_permission(&$permissions) {
-  $permissions['access RemoteEvent']    = 'access Remote Event API';
+  $prefix = E::ts('Revent') . ': ';
+  $permissions['access RemoteEvent']    = [
+    'label' => $prefix . E::ts('access Remote Event API'),
+    'description' => E::ts('Permission to access Remote Event API.'),
+  ];
 }
 
 /**
