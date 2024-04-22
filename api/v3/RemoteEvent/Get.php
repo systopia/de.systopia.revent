@@ -55,6 +55,17 @@ function civicrm_api3_remote_event_get($params) {
     $event['civicrm_link'] = CRM_Utils_System::url('civicrm/event/info', "reset=1&id={$event_id}", true);
     // get the number of registered participants
     $event['registered_participants'] = CRM_Revent_Utils::get_participant_count($event_id);
+
+    // add 'no_drupal_mails' field to RemoteEvent.get if event messages is active
+    $is_eventmessages_activated = (boolean) CRM_Core_DAO::singleValueQuery("
+                    SELECT settings.disable_default
+                    FROM civicrm_value_event_messages_settings settings
+                    WHERE settings.entity_id = {$event_id}");
+    if ($is_eventmessages_activated) {
+      $event['no_drupal_mails'] = TRUE;
+    } else {
+      $event['no_drupal_mails'] = (int) FALSE;
+    }
   }
 
   return $result;
