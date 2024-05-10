@@ -47,7 +47,7 @@
       "title": "CiviCRM Event Kommunikation",
       "required": 0,
       "name": "civi_language",
-      "type": "hidden",
+      "type": "civi_language",
       "validation": "string",
       "weight": "6"
     }
