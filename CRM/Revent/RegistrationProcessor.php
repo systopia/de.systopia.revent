@@ -115,6 +115,10 @@ class CRM_Revent_RegistrationProcessor {
       }
     }
 
+    if (isset($data['civi_language'])) {
+      $data['registration_extra_info.civi_language'] = $data['civi_language'];
+      unset($data['civi_language']);
+    }
     // create participant
     CRM_Revent_CustomData::resolveCustomFields($data);
     $participant = civicrm_api3('Participant', 'create', $data);
