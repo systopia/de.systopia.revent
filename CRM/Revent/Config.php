@@ -30,6 +30,14 @@ class CRM_Revent_Config {
     return 8;
   }
 
+    /**
+     * Get tempalte ID for default template
+     * @return int
+     */
+  public static function getEventTemplateId() {
+      return 2025;
+  }
+
   /**
    * return the field name of the first field as
    * API parameter, i.e. "custom_xx"

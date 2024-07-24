@@ -58,8 +58,10 @@ function civicrm_api3_remote_event_create($params) {
 
   CRM_Revent_CustomData::resolveCustomFields($params);
 
-  // TODO: template select by type or config
-  $params['template_id'] = 2025;
+// if no template_id is given add default template ID
+  if (empty($params['template_id'])) {
+      $params['template_id'] =  CRM_Revent_Config::getEventTemplateId();
+  }
 
   $result = civicrm_api3('Event', 'create', $params);
   return civicrm_api3('RemoteEvent', 'get', array('id' => $result['id']));
