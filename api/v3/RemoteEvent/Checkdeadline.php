@@ -20,7 +20,7 @@ function civicrm_api3_remote_event_checkdeadline($params) {
   unset($params['check_permissions']);
   $now  = date("Y-m-d H:i:s");
   $counter = 0;
-  $result = civicrm_api3('RemoteEvent', 'get', [
+  $result = civicrm_api3('Revent', 'get', [
     'sequential' => 1,
     'start_date' => ['>' => $now],
     'options' => ['limit' => 0],

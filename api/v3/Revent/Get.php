@@ -17,9 +17,9 @@
 /**
  * Get an event based on the give data
  */
-function civicrm_api3_remote_event_get($params) {
+function civicrm_api3_revent_get($params) {
   unset($params['check_permissions']);
-  CRM_Revent_APIProcessor::preProcess($params, 'RemoteEvent.get');
+  CRM_Revent_APIProcessor::preProcess($params, 'Revent.get');
   $result = array();
 
   if (!empty($params['id'])) {
@@ -63,7 +63,7 @@ function civicrm_api3_remote_event_get($params) {
 /**
  * Schedule a Contract modification
  */
-function _civicrm_api3_remote_event_get_spec(&$params) {
+function _civicrm_api3_revent_get_spec(&$params) {
   $params['external_identifier'] = array(
     'name'         => 'external_identifier',
     'api.required' => 0,

@@ -59,7 +59,7 @@ function civicrm_api3_remote_event_create($params) {
   CRM_Revent_CustomData::resolveCustomFields($params);
 
   $result = civicrm_api3('Event', 'create', $params);
-  return civicrm_api3('RemoteEvent', 'get', array('id' => $result['id']));
+  return civicrm_api3('Revent', 'get', array('id' => $result['id']));
 }
 
 /**
